@@ -1,6 +1,12 @@
 ﻿namespace Indigo.DesktopClient.ViewModel
 {
     using System;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using Indigo.BusinessLogicLayer.UserAccount;
+    using Indigo.DesktopClient.CommandDelegates;
     using Indigo.DesktopClient.View;
 
     /// <summary>
@@ -20,6 +26,8 @@
 
         #endregion
 
+        #region Properties
+
         /// <summary>
         /// The <see cref="Title" /> property's name.
         /// </summary>
@@ -33,10 +41,7 @@
         /// </summary>
         public String Title
         {
-            get
-            {
-                return this._title;
-            }
+            get { return this._title; }
 
             set
             {
@@ -49,6 +54,102 @@
                 RaisePropertyChanged(TitlePropertyName);
             }
         }
+
+        /// <summary>
+        /// The <see cref="EmailOrLogin" /> property's name.
+        /// </summary>
+        public const string EmailOrLoginPropertyName = "EmailOrLogin";
+
+        private String _emailOrLogin;
+
+        /// <summary>
+        /// Sets and gets the EmailOrLogin property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public String EmailOrLogin
+        {
+            get
+            {
+                return _emailOrLogin;
+            }
+
+            set
+            {
+                if (_emailOrLogin == value)
+                {
+                    return;
+                }
+
+                this._emailOrLogin = value;
+                base.RaisePropertyChanged(EmailOrLoginPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="Password" /> property's name.
+        /// </summary>
+        public const string PasswordPropertyName = "Password";
+
+        private String _password;
+
+        /// <summary>
+        /// Sets and gets the Password property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public String Password
+        {
+            get
+            {
+                return _password;
+            }
+
+            set
+            {
+                if (_password == value)
+                {
+                    return;
+                }
+
+                this._password = value;
+                base.RaisePropertyChanged(PasswordPropertyName);
+            }
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand SignInCommand
+        {
+            get
+            {
+                return new AsyncDelegateCommand(SignIn);
+            }
+        }
+
+        private async Task SignIn(object o)
+        {
+            if (String.IsNullOrEmpty(this.EmailOrLogin) || String.IsNullOrEmpty(this.Password))
+            {
+                MessageBox.Show("Введите логин и пароль!");
+                return;
+            }
+
+            try
+            {
+                IndigoUserPrincipal principal = await IndigoUserPrincipal.LoginAsync(this.EmailOrLogin, this.Password);
+            }
+            catch (LoginException e)
+            {
+                MessageBox.Show("Неудачный вход!");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Неизвестное исключение!");
+            }
+        }
+
+        #endregion
 
         #region Constructors
 

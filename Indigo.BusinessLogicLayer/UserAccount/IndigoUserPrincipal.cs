@@ -1,19 +1,12 @@
-﻿using System.Threading.Tasks;
-
-namespace Indigo.BusinessLogicLayer.UserAccount
+﻿namespace Indigo.BusinessLogicLayer.UserAccount
 {
     using System;
     using System.Security.Principal;
+    using System.Threading.Tasks;
 
     public class IndigoUserPrincipal : IPrincipal
     {
-        private IndigoUserIdentity _identity;
-
-        public IndigoUserIdentity Identity
-        {
-            get { return this._identity ?? new AnonymousIdentity(); }
-            set { this._identity = value; }
-        }
+        public IndigoUserIdentity Identity { get; private set; }
 
         #region Overrides
 
@@ -29,11 +22,57 @@ namespace Indigo.BusinessLogicLayer.UserAccount
 
         #endregion
 
-        public static async Task<UserAccount> LoginAsync(String email, String passeord)
+        public static async Task<IndigoUserPrincipal> LoginAsync(String emailOrLogin, String passeord)
         {
-            await Task.Delay(100);
+            UserAccount userAccount = await UserAccount.GetUserAsync(emailOrLogin);
 
-            return null;
+            if (userAccount == null)
+            {
+                throw new LoginException(LoginExceptionReason.EmailOrPasswordInvalid,
+                    String.Format("Неверные логин или пароль для пользователя {0}", emailOrLogin));
+            }
+
+            if (!userAccount.IsAcive)
+            {
+                throw new LoginException(LoginExceptionReason.AccountDisabled,
+                    String.Format("Пользователь {0} заблокирован", emailOrLogin));
+            }
+
+            if (!userAccount.ValidatePassword(passeord))
+            {
+                throw new LoginException(LoginExceptionReason.EmailOrPasswordInvalid,
+                    String.Format("Неверные логин или пароль для пользователя {0}", emailOrLogin));
+            }
+
+            IndigoUserIdentity identity = new IndigoUserIdentity(userAccount);
+            IndigoUserPrincipal principal = new IndigoUserPrincipal(identity);
+
+            principal.AssignPrincipalToApplicationContext();
+
+            return principal;
         }
+
+        #region Helpers
+
+        private void AssignPrincipalToApplicationContext()
+        {
+            AppDomain.CurrentDomain.SetThreadPrincipal(this);
+        }
+
+        #endregion
+
+        #region Constructors
+
+        public IndigoUserPrincipal()
+        {
+            this.Identity = new AnonymousIdentity();
+        }
+
+        public IndigoUserPrincipal(IndigoUserIdentity identity)
+        {
+            this.Identity = identity;
+        }
+
+        #endregion
     }
 }

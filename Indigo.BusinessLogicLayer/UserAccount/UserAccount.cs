@@ -3,6 +3,8 @@
     using System;
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
     using DataModels = Indigo.DataAccessLayer.Models;
     using Indigo.BusinessLogicLayer.Helpers;
     using Indigo.DataAccessLayer.IRepositories;
@@ -31,30 +33,42 @@
             String passwordSalt = PasswordHelper.GeneratePasswordSalt(UserAccount.MaxPasswordLength);
             String hashPassword = PasswordHelper.ComputePasswordHash(password, passwordSalt);
 
-            DataModels.UserAccount user = await UserAccountRepository.CreateAsync(login, email, hashPassword, passwordSalt, (byte) accountType);
+            DataModels.UserAccount dataUserAccount = await UserAccountRepository.CreateAsync(login, email, hashPassword, passwordSalt, (byte) accountType);
+            UserAccount userAccount = UserAccount.ConvertToBusinessObject(dataUserAccount);
 
-            return null;
+            return userAccount;
         }
 
-        public static async Task<UserAccount> GetUserAsync(String email)
+        public static async Task<UserAccount> GetUserAsync(String emailOrLogin)
         {
-            DataModels.UserAccount dataUser = await UserAccountRepository.GetAsync(email);
+            DataModels.UserAccount dataUserAccount = await UserAccountRepository.GetAsync(emailOrLogin);
+            UserAccount userAccount = dataUserAccount != null
+                ? UserAccount.ConvertToBusinessObject(dataUserAccount)
+                : null;
 
-            return null;
+            return userAccount;
+        }
+
+        public Boolean ValidatePassword(String password)
+        {
+            if (String.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            String hashPassword = PasswordHelper.ComputePasswordHash(password, this.PasswordSalt);
+
+            return this.Password.Equals(hashPassword);
         }
 
         #region Helpers
 
-        private UserAccount ConvertToBusinessObject(DataModels.UserAccount dataUserAccount)
+        private static UserAccount ConvertToBusinessObject(DataModels.UserAccount dataUserAccount)
         {
-            UserAccount userAccount = new UserAccount()
-            {
-                UserId = dataUserAccount.UserId,
-                UserGuid = dataUserAccount.UserGuid,
-                Email = dataUserAccount.Email,
-                Password = dataUserAccount.Password,
-                PasswordSalt = dataUserAccount.PasswordSalt
-            };
+            Mapper.CreateMap<DataModels.UserAccount, UserAccount>()
+                .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => (UserAccountType) src.AccountType));
+
+            UserAccount userAccount = Mapper.Map<DataModels.UserAccount, UserAccount>(dataUserAccount);
 
             return userAccount;
         }

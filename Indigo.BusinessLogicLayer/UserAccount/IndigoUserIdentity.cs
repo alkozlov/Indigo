@@ -2,11 +2,10 @@
 {
     using System;
     using System.Security.Principal;
-    using System.Threading.Tasks;
 
     public class IndigoUserIdentity : IIdentity
     {
-        protected IndigoUserIdentity(UserAccount user)
+        public IndigoUserIdentity(UserAccount user)
         {
             this.User = user;
         }
@@ -26,13 +25,6 @@
         public Boolean IsAuthenticated
         {
             get { return this.User != null; }
-        }
-
-        public static async Task<IndigoUserIdentity> GetIdentityAsync(UserAccount user)
-        {
-            await Task.Delay(100);
-
-            return null;
         }
     }
 }

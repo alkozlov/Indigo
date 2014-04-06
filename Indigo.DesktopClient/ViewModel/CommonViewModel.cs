@@ -6,7 +6,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Messaging;
 
-    using Indigo.BusinessLogicLayer.UserAccount;
+    using Indigo.BusinessLogicLayer.Account;
     using Indigo.DesktopClient.Helpers;
     using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.View;

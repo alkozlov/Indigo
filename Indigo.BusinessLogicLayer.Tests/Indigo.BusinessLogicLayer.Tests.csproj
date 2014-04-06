@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB49AE64-0021-40FD-B975-6276FFE16BFE}</ProjectGuid>
+    <ProjectGuid>{1B2EF48E-777A-4F93-B001-D571CDFAB522}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Indigo.BusinessLogicLayer</RootNamespace>
-    <AssemblyName>Indigo.BusinessLogicLayer</AssemblyName>
+    <RootNamespace>Indigo.BusinessLogicLayer.Tests</RootNamespace>
+    <AssemblyName>Indigo.BusinessLogicLayer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,13 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Net4">
-      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,34 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CryptographyHelper.cs" />
-    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Account\AnonymousIdentity.cs" />
-    <Compile Include="Account\IndigoUserIdentity.cs" />
-    <Compile Include="Account\IndigoUserPrincipal.cs" />
-    <Compile Include="Account\LoginException.cs" />
-    <Compile Include="Account\UserAccount.cs" />
-    <Compile Include="Account\UserAccountType.cs" />
+    <Compile Include="UserAccountTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Indigo.DataAccessLayer\Indigo.DataAccessLayer.csproj">
-      <Project>{af82e4ac-b2c5-4f78-9ddd-05471413404b}</Project>
-      <Name>Indigo.DataAccessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Indigo.Tools\Indigo.Tools.csproj">
-      <Project>{6f7de3c2-cd51-43fa-901a-8b481432faf2}</Project>
-      <Name>Indigo.Tools</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
-      <Link>AutoMapper.Net4.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Indigo.BusinessLogicLayer\Indigo.BusinessLogicLayer.csproj">
+      <Project>{fb49ae64-0021-40fd-b975-6276ffe16bfe}</Project>
+      <Name>Indigo.BusinessLogicLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿namespace Indigo.BusinessLogicLayer.UserAccount
+﻿namespace Indigo.BusinessLogicLayer.Account
 {
     using System;
     using System.Threading.Tasks;
@@ -66,11 +66,13 @@
         private static UserAccount ConvertToBusinessObject(DataModels.UserAccount dataUserAccount)
         {
             Mapper.CreateMap<DataModels.UserAccount, UserAccount>()
-                .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => (UserAccountType) src.AccountType));
+                .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => (UserAccountType)src.AccountType));
 
             UserAccount userAccount = Mapper.Map<DataModels.UserAccount, UserAccount>(dataUserAccount);
 
             return userAccount;
+
+            return null;
         }
 
         #endregion

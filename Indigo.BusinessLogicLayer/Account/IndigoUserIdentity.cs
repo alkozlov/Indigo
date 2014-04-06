@@ -1,4 +1,4 @@
-﻿namespace Indigo.BusinessLogicLayer.UserAccount
+﻿namespace Indigo.BusinessLogicLayer.Account
 {
     using System;
     using System.Security.Principal;

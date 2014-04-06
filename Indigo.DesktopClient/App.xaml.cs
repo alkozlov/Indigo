@@ -5,7 +5,7 @@
 
     using GalaSoft.MvvmLight.Threading;
 
-    using Indigo.BusinessLogicLayer.UserAccount;
+    using Indigo.BusinessLogicLayer.Account;
 
     /// <summary>
     /// Interaction logic for App.xaml

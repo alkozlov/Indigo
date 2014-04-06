@@ -5,7 +5,7 @@
     using System.Windows;
     using System.Windows.Input;
 
-    using Indigo.BusinessLogicLayer.UserAccount;
+    using Indigo.BusinessLogicLayer.Account;
     using Indigo.DesktopClient.CommandDelegates;
     using Indigo.DesktopClient.View;
 

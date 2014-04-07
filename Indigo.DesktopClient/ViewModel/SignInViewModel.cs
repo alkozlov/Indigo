@@ -1,6 +1,9 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using Indigo.DesktopClient.Model.Notifications;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using System;
+    using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
@@ -138,10 +141,13 @@
             try
             {
                 IndigoUserPrincipal principal = await IndigoUserPrincipal.LoginAsync(this.EmailOrLogin, this.Password);
+                principal.AssignPrincipalToCurrentContext();
+
+                base.NavigateAction(this.ViewType, ApplicationView.Penthouse, NotificationTokens.MainViewNavigationToken);
             }
             catch (LoginException e)
             {
-                MessageBox.Show("Неудачный вход!");
+                MessageBox.Show(e.Reason.ToString());
             }
             catch (Exception e)
             {
@@ -162,6 +168,5 @@
         }
 
         #endregion
-
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using Indigo.DesktopClient.ViewModel.Partial;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using System;
     using System.Windows.Input;
@@ -123,6 +125,36 @@
             }
         }
 
+        /// <summary>
+        /// The <see cref="CommandPanelViewModel" /> property's name.
+        /// </summary>
+        public const string CommandPanelViewModelPropertyName = "CommandPanelViewModel";
+
+        private ViewModelBase _commandPanelViewModel;
+
+        /// <summary>
+        /// Sets and gets the CommandPanelViewModel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ViewModelBase CommandPanelViewModel
+        {
+            get
+            {
+                return this._commandPanelViewModel;
+            }
+
+            set
+            {
+                if (this._commandPanelViewModel == value)
+                {
+                    return;
+                }
+
+                this._commandPanelViewModel = value;
+                base.RaisePropertyChanged(CommandPanelViewModelPropertyName);
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -180,6 +212,8 @@
             this.CurrentViewModel = ServiceLocator.Current.GetInstance<AnalysisViewModel>();
             this.IsJumpBackButtonAvailable = !NavigationHistoryService.Current.IsHistoryEmpty;
 
+            this.CommandPanelViewModel = ServiceLocator.Current.GetInstance<UnauthorizedViewModel>();
+
             #region Notifications
 
             #region Navigation messages
@@ -210,6 +244,11 @@
                         case ApplicationView.PasswordRecovery:
                         {
 
+                        } break;
+
+                        case ApplicationView.Penthouse:
+                        {
+                            targetViewModel = ServiceLocator.Current.GetInstance<PenthouseViewModel>();
                         } break;
                     }
 

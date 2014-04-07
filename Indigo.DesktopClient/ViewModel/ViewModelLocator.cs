@@ -11,6 +11,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using Indigo.DesktopClient.ViewModel.Partial;
 using Microsoft.Practices.ServiceLocation;
 using Indigo.DesktopClient.Model;
 
@@ -41,6 +42,9 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AnalysisViewModel>();
             SimpleIoc.Default.Register<SignInViewModel>();
+            SimpleIoc.Default.Register<PenthouseViewModel>();
+            SimpleIoc.Default.Register<UnauthorizedViewModel>();
+            SimpleIoc.Default.Register<AuthorizedViewModel>();
         }
 
         /// <summary>
@@ -82,6 +86,48 @@ namespace Indigo.DesktopClient.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<SignInViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the PenthouseViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public PenthouseViewModel PenthouseViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<PenthouseViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the UnauthorizedViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public UnauthorizedViewModel UnauthorizedViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<UnauthorizedViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the AuthorizedViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public AuthorizedViewModel AuthorizedViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AuthorizedViewModel>();
             }
         }
 

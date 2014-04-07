@@ -16,6 +16,12 @@
 
         AnalysisSettings = 6,
 
-        AnalysisResults = 7
+        AnalysisResults = 7,
+
+        Penthouse = 8,
+
+        UnauthorizedCommandPanel = 9,
+
+        AuthorizedCommandPanel = 10
     }
 }

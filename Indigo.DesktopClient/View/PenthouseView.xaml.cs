@@ -1,14 +1,14 @@
 ﻿namespace Indigo.DesktopClient.View
 {
     /// <summary>
-    /// Description for SignInView.
+    /// Description for PenthouseView.
     /// </summary>
-    public partial class SignInView
+    public partial class PenthouseView
     {
         /// <summary>
-        /// Initializes a new instance of the SignInView class.
+        /// Initializes a new instance of the PenthouseView class.
         /// </summary>
-        public SignInView()
+        public PenthouseView()
         {
             InitializeComponent();
         }

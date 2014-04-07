@@ -7,6 +7,8 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:Indigo.DesktopClient.ViewModel"
         xmlns:view="clr-namespace:Indigo.DesktopClient.View"
+        xmlns:partial="clr-namespace:Indigo.DesktopClient.ViewModel.Partial"
+        xmlns:partialView="clr-namespace:Indigo.DesktopClient.View.Partial"
         mc:Ignorable="d ignore"
         Height="500"
         Width="800"
@@ -25,22 +27,23 @@
             <DataTemplate DataType="{x:Type local:SignInViewModel}">
                 <view:SignInView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type local:PenthouseViewModel}">
+                <view:PenthouseView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type partial:UnauthorizedViewModel}">
+                <partialView:UnauthorizedView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type partial:AuthorizedViewModel}">
+                <partialView:AuthorizedView />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     
     <!-- Window commands panel -->
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands>
-            <Button Command="{Binding NavigateToSignInPageCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_people}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Войти в систему" />
-                </StackPanel>
-            </Button>
+            <ContentControl Content="{Binding CommandPanelViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
 

@@ -66,13 +66,12 @@
         private static UserAccount ConvertToBusinessObject(DataModels.UserAccount dataUserAccount)
         {
             Mapper.CreateMap<DataModels.UserAccount, UserAccount>()
-                .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => (UserAccountType)src.AccountType));
+                .ForMember(dest => dest.AccountType, opt => opt.MapFrom(src => (UserAccountType)src.AccountType))
+                .ForMember(dest => dest.IsAcive, opt => opt.MapFrom(src => src.IsActive));
 
             UserAccount userAccount = Mapper.Map<DataModels.UserAccount, UserAccount>(dataUserAccount);
 
             return userAccount;
-
-            return null;
         }
 
         #endregion

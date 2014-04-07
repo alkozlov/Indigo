@@ -93,13 +93,25 @@
     <Compile Include="ViewModel\CommonPartialViewModel.cs" />
     <Compile Include="ViewModel\CommonViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Partial\AuthorizedViewModel.cs" />
+    <Compile Include="ViewModel\Partial\UnauthorizedViewModel.cs" />
+    <Compile Include="ViewModel\PenthouseViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\AnalysisView.xaml.cs">
       <DependentUpon>AnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ApplicationView.cs" />
+    <Compile Include="View\Partial\AuthorizedView.xaml.cs">
+      <DependentUpon>AuthorizedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\UnauthorizedView.xaml.cs">
+      <DependentUpon>UnauthorizedView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PasswordBoxAssistant.cs" />
+    <Compile Include="View\PenthouseView.xaml.cs">
+      <DependentUpon>PenthouseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +137,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\AnalysisView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\AuthorizedView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\UnauthorizedView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PenthouseView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

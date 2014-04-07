@@ -2,6 +2,7 @@
 {
     using System;
     using System.Security.Principal;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public class IndigoUserPrincipal : IPrincipal
@@ -47,16 +48,14 @@
             IndigoUserIdentity identity = new IndigoUserIdentity(userAccount);
             IndigoUserPrincipal principal = new IndigoUserPrincipal(identity);
 
-            principal.AssignPrincipalToApplicationContext();
-
             return principal;
         }
 
         #region Helpers
 
-        private void AssignPrincipalToApplicationContext()
+        public void AssignPrincipalToCurrentContext()
         {
-            AppDomain.CurrentDomain.SetThreadPrincipal(this);
+            Thread.CurrentPrincipal = this;
         }
 
         #endregion

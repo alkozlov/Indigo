@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AccessType.cs" />
+    <Compile Include="Account\PermissionType.cs" />
     <Compile Include="Helpers\CryptographyHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

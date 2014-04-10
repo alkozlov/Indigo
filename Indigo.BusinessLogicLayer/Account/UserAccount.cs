@@ -1,6 +1,8 @@
 ﻿namespace Indigo.BusinessLogicLayer.Account
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -26,27 +28,31 @@
         public UserAccountType AccountType { get; set; }
         public Boolean IsAcive { get; set; }
 
-        private static readonly IUserAccountRepository UserAccountRepository = new UserAccountRepository();
-
         public static async Task<UserAccount> CreateAsync(String login, String email, String password, UserAccountType accountType)
         {
             String passwordSalt = PasswordHelper.GeneratePasswordSalt(UserAccount.MaxPasswordLength);
             String hashPassword = PasswordHelper.ComputePasswordHash(password, passwordSalt);
 
-            DataModels.UserAccount dataUserAccount = await UserAccountRepository.CreateAsync(login, email, hashPassword, passwordSalt, (byte) accountType);
-            UserAccount userAccount = UserAccount.ConvertToBusinessObject(dataUserAccount);
+            using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
+            {
+                DataModels.UserAccount dataUserAccount = await userAccountRepository.CreateAsync(login, email, hashPassword, passwordSalt, (byte)accountType);
+                UserAccount userAccount = UserAccount.ConvertToBusinessObject(dataUserAccount);
 
-            return userAccount;
+                return userAccount;
+            }
         }
 
         public static async Task<UserAccount> GetUserAsync(String emailOrLogin)
         {
-            DataModels.UserAccount dataUserAccount = await UserAccountRepository.GetAsync(emailOrLogin);
-            UserAccount userAccount = dataUserAccount != null
-                ? UserAccount.ConvertToBusinessObject(dataUserAccount)
-                : null;
+            using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
+            {
+                DataModels.UserAccount dataUserAccount = await userAccountRepository.GetAsync(emailOrLogin);
+                UserAccount userAccount = dataUserAccount != null
+                    ? ConvertToBusinessObject(dataUserAccount)
+                    : null;
 
-            return userAccount;
+                return userAccount;
+            }
         }
 
         public Boolean ValidatePassword(String password)
@@ -59,6 +65,21 @@
             String hashPassword = PasswordHelper.ComputePasswordHash(password, this.PasswordSalt);
 
             return this.Password.Equals(hashPassword);
+        }
+
+        public async Task<Dictionary<PermissionType, AccessType>> GetAccountPermissions()
+        {
+            using (IPermissionsRepository permissionsRepository = new PermissionsRepository())
+            {
+                List<DataModels.AccountPermission> accountPermissionsDataModel =
+                    (await permissionsRepository.GetAccountPermissionsAsync((byte)this.AccountType)).ToList();
+
+                Dictionary<PermissionType, AccessType> accountPermissions =
+                    accountPermissionsDataModel.ToDictionary(key => (PermissionType) key.PermissionType,
+                        value => (AccessType) value.AccessType);
+
+                return accountPermissions;
+            }
         }
 
         #region Helpers

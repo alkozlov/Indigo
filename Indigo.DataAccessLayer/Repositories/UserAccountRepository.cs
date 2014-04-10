@@ -117,5 +117,10 @@
 
             throw new EntitySqlException("Database not accessible.");
         }
+
+        public void Dispose()
+        {
+            
+        }
     }
 }

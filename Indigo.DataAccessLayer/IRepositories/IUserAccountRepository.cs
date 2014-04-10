@@ -5,7 +5,7 @@
 
     using Indigo.DataAccessLayer.Models;
 
-    public interface IUserAccountRepository
+    public interface IUserAccountRepository : IDisposable
     {
         Task<UserAccount> CreateAsync(String login, String email, String password, String passwordSalt, Byte accountType);
 

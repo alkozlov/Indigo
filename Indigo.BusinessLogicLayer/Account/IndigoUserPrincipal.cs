@@ -9,6 +9,16 @@
     {
         public IndigoUserIdentity Identity { get; private set; }
 
+        public static IndigoUserPrincipal Current
+        {
+            get
+            {
+                IPrincipal currentThreadPrincipal = Thread.CurrentPrincipal;
+
+                return currentThreadPrincipal as IndigoUserPrincipal;
+            }
+        }
+
         #region Overrides
 
         Boolean IPrincipal.IsInRole(String role)

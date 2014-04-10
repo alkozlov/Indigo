@@ -46,17 +46,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IndigoCreateDatabaseIfNotExists.cs" />
     <Compile Include="IndigoDataContext.cs" />
+    <Compile Include="IRepositories\IPermissionsRepository.cs" />
     <Compile Include="IRepositories\IUserAccountRepository.cs" />
+    <Compile Include="Migrations\201404061036430_InitialCreate.cs" />
+    <Compile Include="Migrations\201404061036430_InitialCreate.Designer.cs">
+      <DependentUpon>201404061036430_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404081536405_MigrationsName.cs" />
+    <Compile Include="Migrations\201404081536405_MigrationsName.Designer.cs">
+      <DependentUpon>201404081536405_MigrationsName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404081541456_NewTableNames.cs" />
+    <Compile Include="Migrations\201404081541456_NewTableNames.Designer.cs">
+      <DependentUpon>201404081541456_NewTableNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404081614384_CompositePromaryKey.cs" />
+    <Compile Include="Migrations\201404081614384_CompositePromaryKey.Designer.cs">
+      <DependentUpon>201404081614384_CompositePromaryKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountPermission.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\PermissionAccessType.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\PermissionsRepository.cs" />
     <Compile Include="Repositories\UserAccountRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201404061036430_InitialCreate.resx">
+      <DependentUpon>201404061036430_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404081536405_MigrationsName.resx">
+      <DependentUpon>201404081536405_MigrationsName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404081541456_NewTableNames.resx">
+      <DependentUpon>201404081541456_NewTableNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404081614384_CompositePromaryKey.resx">
+      <DependentUpon>201404081614384_CompositePromaryKey.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

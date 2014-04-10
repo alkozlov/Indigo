@@ -87,6 +87,7 @@
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Model\Notifications\AuthorizationMessage.cs" />
     <Compile Include="Model\Notifications\NavigationMessage.cs" />
     <Compile Include="Model\Notifications\NotificationTokens.cs" />
     <Compile Include="ViewModel\AnalysisViewModel.cs" />

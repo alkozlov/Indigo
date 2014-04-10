@@ -262,6 +262,22 @@ namespace Indigo.DesktopClient.ViewModel
 
             #endregion
 
+            #region Autorization panel
+
+            Messenger.Default.Register<AuthorizationMessage>(this, NotificationTokens.AuthorizationPanelToken, message =>
+            {
+                if (message.IsAuthorized)
+                {
+                    this.CommandPanelViewModel = ServiceLocator.Current.GetInstance<AuthorizedViewModel>();
+                }
+                else
+                {
+                    this.CommandPanelViewModel = ServiceLocator.Current.GetInstance<UnauthorizedViewModel>();
+                }
+            });
+
+            #endregion
+
             #endregion
         }
 

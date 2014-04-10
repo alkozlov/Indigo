@@ -41,5 +41,17 @@
         {
             get { return Thread.CurrentPrincipal as IndigoUserPrincipal; }
         }
+
+        public void SigninMessageSend()
+        {
+            AuthorizationMessage message = new AuthorizationMessage("Signin success!", true);
+            Messenger.Default.Send<AuthorizationMessage>(message, NotificationTokens.AuthorizationPanelToken);
+        }
+
+        public void SignoutMessageSend()
+        {
+            AuthorizationMessage message = new AuthorizationMessage("Signout success!", false);
+            Messenger.Default.Send<AuthorizationMessage>(message, NotificationTokens.AuthorizationPanelToken);
+        }
     }
 }

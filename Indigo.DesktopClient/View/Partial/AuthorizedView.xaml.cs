@@ -5,7 +5,7 @@ namespace Indigo.DesktopClient.View.Partial
     /// <summary>
     /// Description for AuthorizedView.
     /// </summary>
-    public partial class AuthorizedView : Window
+    public partial class AuthorizedView
     {
         /// <summary>
         /// Initializes a new instance of the AuthorizedView class.

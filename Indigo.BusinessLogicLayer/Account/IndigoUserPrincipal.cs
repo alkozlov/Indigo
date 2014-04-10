@@ -33,7 +33,7 @@
 
         #endregion
 
-        public static async Task<IndigoUserPrincipal> LoginAsync(String emailOrLogin, String passeord)
+        public static async Task<IndigoUserPrincipal> SigninAsync(String emailOrLogin, String passeord)
         {
             UserAccount userAccount = await UserAccount.GetUserAsync(emailOrLogin);
 
@@ -59,6 +59,13 @@
             IndigoUserPrincipal principal = new IndigoUserPrincipal(identity);
 
             return principal;
+        }
+
+        public async Task SignoutAsync()
+        {
+            await Task.Delay(1);
+            this.Identity = null;
+            Thread.CurrentPrincipal = this;
         }
 
         #region Helpers

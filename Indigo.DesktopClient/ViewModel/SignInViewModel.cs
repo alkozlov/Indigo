@@ -140,9 +140,10 @@ namespace Indigo.DesktopClient.ViewModel
 
             try
             {
-                IndigoUserPrincipal principal = await IndigoUserPrincipal.LoginAsync(this.EmailOrLogin, this.Password);
+                IndigoUserPrincipal principal = await IndigoUserPrincipal.SigninAsync(this.EmailOrLogin, this.Password);
                 principal.AssignPrincipalToCurrentContext();
 
+                base.SigninMessageSend();
                 base.NavigateAction(this.ViewType, ApplicationView.Penthouse, NotificationTokens.MainViewNavigationToken);
             }
             catch (LoginException e)

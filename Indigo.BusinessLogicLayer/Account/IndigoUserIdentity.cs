@@ -14,7 +14,17 @@
 
         public String Name
         {
-            get { return this.IsAuthenticated ? this.User.Login : String.Empty; }
+            get
+            {
+                String name = String.Empty;
+
+                if (this.IsAuthenticated)
+                {
+                    name = !String.IsNullOrEmpty(this.User.Login) ? this.User.Login : this.User.Email;
+                }
+                
+                return name;
+            }
         }
 
         public String AuthenticationType

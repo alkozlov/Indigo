@@ -83,7 +83,6 @@
     </ApplicationDefinition>
     <Compile Include="CommandDelegates\AsyncDelegateCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
-    <Compile Include="Helpers\NavigationHistoryService.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
@@ -199,7 +198,9 @@
       <Name>Indigo.BusinessLogicLayer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,7 +9,6 @@ namespace Indigo.DesktopClient.ViewModel
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
     using GalaSoft.MvvmLight.Messaging;
-    using Indigo.DesktopClient.Helpers;
     using Indigo.DesktopClient.Model;
     using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.View;
@@ -168,24 +167,7 @@ namespace Indigo.DesktopClient.ViewModel
         {
             base.NavigateAction(this.ViewType, ApplicationView.SignIn, NotificationTokens.MainViewNavigationToken);
         }
-
-        public ICommand JumpBackCommand
-        {
-            get
-            {
-                return new RelayCommand(JumpBack);
-            }
-        }
-
-        private void JumpBack()
-        {
-            ApplicationView lastVisitedView = NavigationHistoryService.Current.ExtractLastNavigationAction();
-            if (lastVisitedView != ApplicationView.Unknown)
-            {
-                base.NavigateAction(this.ViewType, lastVisitedView, NotificationTokens.MainViewNavigationToken, true);
-            }
-        }
-
+        
         #endregion
 
         #region Constructors
@@ -210,7 +192,6 @@ namespace Indigo.DesktopClient.ViewModel
 
             // Set AnalysisView as start page
             this.CurrentViewModel = ServiceLocator.Current.GetInstance<AnalysisViewModel>();
-            this.IsJumpBackButtonAvailable = !NavigationHistoryService.Current.IsHistoryEmpty;
 
             this.CommandPanelViewModel = ServiceLocator.Current.GetInstance<UnauthorizedViewModel>();
 
@@ -254,7 +235,6 @@ namespace Indigo.DesktopClient.ViewModel
 
                     if (targetViewModel != null)
                     {
-                        this.IsJumpBackButtonAvailable = !NavigationHistoryService.Current.IsHistoryEmpty;
                         this.CurrentViewModel = targetViewModel;
                     }
                 }

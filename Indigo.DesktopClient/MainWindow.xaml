@@ -61,16 +61,6 @@
                    HorizontalAlignment="Center"
                    TextWrapping="Wrap" />-->
         
-        <StackPanel Grid.Row="0" Height="40" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <Button Style="{DynamicResource MetroCircleButtonStyle}" Width="40" Command="{Binding JumpBackCommand}" IsEnabled="{Binding IsJumpBackButtonAvailable, UpdateSourceTrigger=PropertyChanged}">
-                <Rectangle Width="20" Height="20"
-                           Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_arrow_left}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle></Button>
-        </StackPanel>
-        
         <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"></ContentControl>
 
     </Grid>

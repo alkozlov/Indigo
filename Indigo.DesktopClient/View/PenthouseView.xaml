@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d ignore"
         DataContext="{Binding PenthouseViewModel, Source={StaticResource Locator}}">
 
@@ -15,6 +16,21 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
+        <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Actions, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedActionItem}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Text="{Binding ActionName}"></TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         
         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
                    HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>

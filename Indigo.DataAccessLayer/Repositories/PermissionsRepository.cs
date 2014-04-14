@@ -12,15 +12,19 @@
 
     public class PermissionsRepository : BaseRepository, IPermissionsRepository
     {
-        public async Task<IEnumerable<AccountPermission>> GetAccountPermissionsAsync(Byte accountType)
+        public Task<IEnumerable<AccountPermission>> GetAccountPermissionsAsync(Byte accountType)
         {
             if (base.DataContext != null)
             {
-                await Task.Delay(10);
-                IQueryable<AccountPermission> accountPermissions =
-                    base.DataContext.AccountPermissions.Where(x => x.AccountType.Equals(accountType));
+                Task<IEnumerable<AccountPermission>> asyncTask = Task<IEnumerable<AccountPermission>>.Factory.StartNew(() =>
+                {
+                    IQueryable<AccountPermission> accountPermissions =
+                        base.DataContext.AccountPermissions.Where(x => x.AccountType == accountType);
 
-                return accountPermissions;
+                    return accountPermissions as IEnumerable<AccountPermission>;
+                });
+
+                return asyncTask;
             }
 
             throw new EntitySqlException("Database not accessible.");

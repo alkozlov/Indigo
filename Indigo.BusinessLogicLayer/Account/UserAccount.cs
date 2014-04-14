@@ -69,8 +69,11 @@
 
         public async Task<Dictionary<PermissionType, AccessType>> GetAccountPermissions()
         {
+            //await Task.Delay(100);
             using (IPermissionsRepository permissionsRepository = new PermissionsRepository())
             {
+                //var s = permissionsRepository.GetAccountPermissionsAsync((byte) this.AccountType).Result;
+                
                 List<DataModels.AccountPermission> accountPermissionsDataModel =
                     (await permissionsRepository.GetAccountPermissionsAsync((byte)this.AccountType)).ToList();
 

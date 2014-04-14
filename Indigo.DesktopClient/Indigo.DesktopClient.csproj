@@ -81,8 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommandDelegates\AsyncDelegateCommand.cs" />
+    <Compile Include="CommandDelegates\AsyncCommand.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Model\ActionList.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />

@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    public class AsyncDelegateCommand : ICommand
+    public class AsyncCommand : ICommand
     {
         protected readonly Predicate<object> _canExecute;
         protected Func<object, Task> _asyncExecute;
@@ -16,12 +16,12 @@
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public AsyncDelegateCommand(Func<object, Task> execute)
+        public AsyncCommand(Func<object, Task> execute)
             : this(execute, null)
         {
         }
 
-        public AsyncDelegateCommand(Func<object, Task> asyncExecute,
+        public AsyncCommand(Func<object, Task> asyncExecute,
                        Predicate<object> canExecute)
         {
             _asyncExecute = asyncExecute;

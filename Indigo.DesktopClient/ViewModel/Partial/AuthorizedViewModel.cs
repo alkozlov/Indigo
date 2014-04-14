@@ -73,7 +73,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
         {
             get
             {
-                return new AsyncDelegateCommand(Signout);
+                return new AsyncCommand(Signout);
             }
         }
 

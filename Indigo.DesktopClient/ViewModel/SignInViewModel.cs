@@ -1,4 +1,5 @@
-﻿using Indigo.DesktopClient.Model.Notifications;
+﻿using GalaSoft.MvvmLight.Command;
+using Indigo.DesktopClient.Model.Notifications;
 
 namespace Indigo.DesktopClient.ViewModel
 {
@@ -126,7 +127,7 @@ namespace Indigo.DesktopClient.ViewModel
         {
             get
             {
-                return new AsyncDelegateCommand(SignIn);
+                return new AsyncCommand(SignIn);
             }
         }
 

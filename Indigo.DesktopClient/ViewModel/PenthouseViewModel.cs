@@ -1,41 +1,40 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Indigo.BusinessLogicLayer.Account;
-using Indigo.DesktopClient.Model;
-
-namespace Indigo.DesktopClient.ViewModel
+﻿namespace Indigo.DesktopClient.ViewModel
 {
+    using Microsoft.Practices.ServiceLocation;
+    using System;
+    using System.Linq;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using Indigo.BusinessLogicLayer.Account;
+    using Indigo.DesktopClient.Model;
+    using Indigo.DesktopClient.View;
+    using Indigo.DesktopClient.ViewModel.Partial;
+
     /// <summary>
     /// This class contains properties that a View can data bind to.
     /// <para>
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class PenthouseViewModel : ViewModelBase
+    public class PenthouseViewModel : CommonViewModel
     {
         public delegate void LoadViewModelHandler(UserAccount user);
 
         public event LoadViewModelHandler LoadViewModel;
 
-        /// <summary>
-        /// Initializes a new instance of the PenthouseViewModel class.
-        /// </summary>
-        public PenthouseViewModel()
-        {
-            this.LoadViewModel += async user =>
-            {
-                this.Actions = await ActionList.GetAccountActionList(IndigoUserPrincipal.Current.Identity.User);
-                this.SelectedActionItem = this.Actions.FirstOrDefault(x => x.Permission == PermissionType.ProfileInformation);
-            };
+        #region Overrides
 
-            this.LoadViewModel(IndigoUserPrincipal.Current.Identity.User);
+        public override ApplicationView ViewType
+        {
+            get { return ApplicationView.Penthouse; }
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// The <see cref="Title" /> property's name.
@@ -50,10 +49,7 @@ namespace Indigo.DesktopClient.ViewModel
         /// </summary>
         public String Title
         {
-            get
-            {
-                return this._title;
-            }
+            get { return this._title; }
 
             set
             {
@@ -80,10 +76,7 @@ namespace Indigo.DesktopClient.ViewModel
         /// </summary>
         public ActionList Actions
         {
-            get
-            {
-                return this._actions;
-            }
+            get { return this._actions; }
 
             set
             {
@@ -110,10 +103,7 @@ namespace Indigo.DesktopClient.ViewModel
         /// </summary>
         public ActionList.Item SelectedActionItem
         {
-            get
-            {
-                return this._selectedActionItem;
-            }
+            get { return this._selectedActionItem; }
 
             set
             {
@@ -127,6 +117,38 @@ namespace Indigo.DesktopClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="SelectedViewModel" /> property's name.
+        /// </summary>
+        public const string SelectedViewModelPropertyName = "SelectedViewModel";
+
+        private ViewModelBase _selectedViewModel;
+
+        /// <summary>
+        /// Sets and gets the SelectedViewModel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ViewModelBase SelectedViewModel
+        {
+            get
+            {
+                return this._selectedViewModel;
+            }
+
+            set
+            {
+                if (this._selectedViewModel == value)
+                {
+                    return;
+                }
+
+                this._selectedViewModel = value;
+                base.RaisePropertyChanged(SelectedViewModelPropertyName);
+            }
+        }
+
+        #endregion
+
         #region Commands
 
         public ICommand InitializeModelCommand
@@ -139,7 +161,53 @@ namespace Indigo.DesktopClient.ViewModel
 
         private void InitializeModelAsync()
         {
-            Debug.WriteLine(String.Format("New view is {0}", this.SelectedActionItem.ActionName));
+            switch (this.SelectedActionItem.Permission)
+            {
+                case PermissionType.ReferenceInformation:
+                {
+                    this.SelectedViewModel = ServiceLocator.Current.GetInstance<ReferencesViewModel>();
+                } break;
+
+                case PermissionType.DocumentsCollection:
+                {
+                    this.SelectedViewModel = ServiceLocator.Current.GetInstance<DocumentsViewModel>();
+                } break;
+
+                case PermissionType.ProfileInformation:
+                {
+                    this.SelectedViewModel = ServiceLocator.Current.GetInstance<ProfileViewModel>();
+                } break;
+
+                case PermissionType.UserDatabase:
+                {
+                    this.SelectedViewModel = ServiceLocator.Current.GetInstance<UsersViewModel>();
+                } break;
+
+                case PermissionType.Reports:
+                {
+                    this.SelectedViewModel = ServiceLocator.Current.GetInstance<ReportsViewModel>();
+                } break;
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the PenthouseViewModel class.
+        /// </summary>
+        public PenthouseViewModel()
+        {
+            this.LoadViewModel += async user =>
+            {
+                this.Actions = await ActionList.GetAccountActionList(IndigoUserPrincipal.Current.Identity.User);
+                this.SelectedActionItem =
+                    this.Actions.FirstOrDefault(x => x.Permission == PermissionType.ProfileInformation);
+                this.SelectedViewModel = ServiceLocator.Current.GetInstance<ProfileViewModel>();
+            };
+
+            this.LoadViewModel(IndigoUserPrincipal.Current.Identity.User);
         }
 
         #endregion

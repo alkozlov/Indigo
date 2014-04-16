@@ -1,18 +1,17 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using Indigo.BusinessLogicLayer.Account;
-using Indigo.DesktopClient.CommandDelegates;
-using Indigo.DesktopClient.Model.Notifications;
-using Indigo.DesktopClient.View;
-
-namespace Indigo.DesktopClient.ViewModel.Partial
+﻿namespace Indigo.DesktopClient.ViewModel.Partial
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight.Command;
+
+    using Indigo.BusinessLogicLayer.Account;
+    using Indigo.DesktopClient.CommandDelegates;
+    using Indigo.DesktopClient.Model.Notifications;
+    using Indigo.DesktopClient.View;
+
     /// <summary>
     /// This class contains properties that a View can data bind to.
     /// <para>
@@ -79,7 +78,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
 
         private async Task Signout(object o)
         {
-            if (IndigoUserPrincipal.Current == null || IndigoUserPrincipal.Current.Identity == null)
+            if (!IndigoUserPrincipal.Current.Identity.IsAuthenticated)
             {
                 MessageBox.Show("Не удалось распознать пользователя!");
             }

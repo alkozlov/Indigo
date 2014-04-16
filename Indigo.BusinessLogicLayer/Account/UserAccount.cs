@@ -24,7 +24,7 @@
         public String PasswordSalt { get; set; }
         public DateTime CreatedDateUtc { get; set; }
         public DateTime? LastLoginDateUtc { get; set; }
-        public DateTime? RemovedDateYtc { get; set; }
+        public DateTime? RemovedDateUtc { get; set; }
         public UserAccountType AccountType { get; set; }
         public Boolean IsAcive { get; set; }
 
@@ -69,11 +69,8 @@
 
         public async Task<Dictionary<PermissionType, AccessType>> GetAccountPermissions()
         {
-            //await Task.Delay(100);
             using (IPermissionsRepository permissionsRepository = new PermissionsRepository())
             {
-                //var s = permissionsRepository.GetAccountPermissionsAsync((byte) this.AccountType).Result;
-                
                 List<DataModels.AccountPermission> accountPermissionsDataModel =
                     (await permissionsRepository.GetAccountPermissionsAsync((byte)this.AccountType)).ToList();
 
@@ -82,6 +79,16 @@
                         value => (AccessType) value.AccessType);
 
                 return accountPermissions;
+            }
+        }
+
+        public async Task SaveAsync()
+        {
+            using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
+            {
+                await userAccountRepository.UpdateAsync(this.UserId, this.UserGuid, this.Login, this.Email,
+                    this.Password, this.PasswordSalt, this.CreatedDateUtc, this.LastLoginDateUtc,
+                    this.RemovedDateUtc, (byte) this.AccountType, this.IsAcive);
             }
         }
 

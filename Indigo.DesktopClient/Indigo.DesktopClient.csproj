@@ -95,7 +95,12 @@
     <Compile Include="ViewModel\CommonViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Partial\AuthorizedViewModel.cs" />
+    <Compile Include="ViewModel\Partial\DocumentsViewModel.cs" />
+    <Compile Include="ViewModel\Partial\ProfileViewModel.cs" />
+    <Compile Include="ViewModel\Partial\ReferencesViewModel.cs" />
+    <Compile Include="ViewModel\Partial\ReportsViewModel.cs" />
     <Compile Include="ViewModel\Partial\UnauthorizedViewModel.cs" />
+    <Compile Include="ViewModel\Partial\UsersViewModel.cs" />
     <Compile Include="ViewModel\PenthouseViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -106,8 +111,23 @@
     <Compile Include="View\Partial\AuthorizedView.xaml.cs">
       <DependentUpon>AuthorizedView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Partial\DocumentsView.xaml.cs">
+      <DependentUpon>DocumentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\ProfileView.xaml.cs">
+      <DependentUpon>ProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\ReferencesView.xaml.cs">
+      <DependentUpon>ReferencesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\ReportsView.xaml.cs">
+      <DependentUpon>ReportsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Partial\UnauthorizedView.xaml.cs">
       <DependentUpon>UnauthorizedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PasswordBoxAssistant.cs" />
     <Compile Include="View\PenthouseView.xaml.cs">
@@ -145,7 +165,27 @@
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Partial\DocumentsView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\ProfileView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\ReferencesView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\ReportsView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Partial\UnauthorizedView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\UsersView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

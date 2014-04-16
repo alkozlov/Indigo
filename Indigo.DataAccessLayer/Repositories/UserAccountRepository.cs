@@ -77,7 +77,7 @@
         }
 
         public async Task<UserAccount> UpdateAsync(Int32 userId, Guid userGuid, String login, String email, String password, String passwordSalt,
-            DateTime createDateUtc, DateTime lastLoginDateUtc, DateTime removedDateUtc, Byte accountType, Boolean isActive)
+            DateTime createDateUtc, DateTime? lastLoginDateUtc, DateTime? removedDateUtc, Byte accountType, Boolean isActive)
         {
             if (base.DataContext != null)
             {

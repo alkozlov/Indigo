@@ -9,14 +9,16 @@
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 */
 
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
-using Indigo.DesktopClient.ViewModel.Partial;
-using Microsoft.Practices.ServiceLocation;
-using Indigo.DesktopClient.Model;
-
 namespace Indigo.DesktopClient.ViewModel
 {
+    using Microsoft.Practices.ServiceLocation;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Ioc;
+
+    using Indigo.DesktopClient.Model;
+    using Indigo.DesktopClient.ViewModel.Partial;
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -45,6 +47,11 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<PenthouseViewModel>();
             SimpleIoc.Default.Register<UnauthorizedViewModel>();
             SimpleIoc.Default.Register<AuthorizedViewModel>();
+            SimpleIoc.Default.Register<ProfileViewModel>();
+            SimpleIoc.Default.Register<ReferencesViewModel>();
+            SimpleIoc.Default.Register<DocumentsViewModel>();
+            SimpleIoc.Default.Register<UsersViewModel>();
+            SimpleIoc.Default.Register<ReportsViewModel>();
         }
 
         /// <summary>
@@ -128,6 +135,76 @@ namespace Indigo.DesktopClient.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<AuthorizedViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the ProfileViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public ProfileViewModel ProfileViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ProfileViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the ReferencesViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public ReferencesViewModel ReferencesViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ReferencesViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the DocumentsViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public DocumentsViewModel DocumentsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<DocumentsViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the UsersViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public UsersViewModel UsersViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<UsersViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the ReportsViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public ReportsViewModel ReportsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ReportsViewModel>();
             }
         }
 

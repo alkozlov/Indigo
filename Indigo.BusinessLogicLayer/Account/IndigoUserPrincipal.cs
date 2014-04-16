@@ -9,14 +9,11 @@
     {
         public IndigoUserIdentity Identity { get; private set; }
 
+        private static IndigoUserPrincipal _current;
+
         public static IndigoUserPrincipal Current
         {
-            get
-            {
-                IPrincipal currentThreadPrincipal = Thread.CurrentPrincipal;
-
-                return currentThreadPrincipal as IndigoUserPrincipal;
-            }
+            get { return _current ?? (_current = new IndigoUserPrincipal()); }
         }
 
         #region Overrides
@@ -55,8 +52,12 @@
                     String.Format("Неверные логин или пароль для пользователя {0}", emailOrLogin));
             }
 
+            userAccount.LastLoginDateUtc = DateTime.UtcNow;
+            await userAccount.SaveAsync();
+
             IndigoUserIdentity identity = new IndigoUserIdentity(userAccount);
             IndigoUserPrincipal principal = new IndigoUserPrincipal(identity);
+            _current = principal;
 
             return principal;
         }
@@ -64,27 +65,18 @@
         public async Task SignoutAsync()
         {
             await Task.Delay(1);
-            this.Identity = null;
-            Thread.CurrentPrincipal = this;
+            this.Identity = new AnonymousIdentity();
+            Thread.CurrentPrincipal = new IndigoUserPrincipal(this.Identity);
         }
-
-        #region Helpers
-
-        public void AssignPrincipalToCurrentContext()
-        {
-            Thread.CurrentPrincipal = this;
-        }
-
-        #endregion
 
         #region Constructors
 
-        public IndigoUserPrincipal()
+        private IndigoUserPrincipal()
         {
             this.Identity = new AnonymousIdentity();
         }
 
-        public IndigoUserPrincipal(IndigoUserIdentity identity)
+        private IndigoUserPrincipal(IndigoUserIdentity identity)
         {
             this.Identity = identity;
         }

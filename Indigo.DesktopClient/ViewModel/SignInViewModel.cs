@@ -1,16 +1,13 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Indigo.DesktopClient.Model.Notifications;
-
-namespace Indigo.DesktopClient.ViewModel
+﻿namespace Indigo.DesktopClient.ViewModel
 {
     using System;
-    using System.ComponentModel;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
 
     using Indigo.BusinessLogicLayer.Account;
     using Indigo.DesktopClient.CommandDelegates;
+    using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.View;
 
     /// <summary>
@@ -141,8 +138,7 @@ namespace Indigo.DesktopClient.ViewModel
 
             try
             {
-                IndigoUserPrincipal principal = await IndigoUserPrincipal.SigninAsync(this.EmailOrLogin, this.Password);
-                principal.AssignPrincipalToCurrentContext();
+                await IndigoUserPrincipal.SigninAsync(this.EmailOrLogin, this.Password);
 
                 base.SigninMessageSend();
                 base.NavigateAction(this.ViewType, ApplicationView.Penthouse, NotificationTokens.MainViewNavigationToken);

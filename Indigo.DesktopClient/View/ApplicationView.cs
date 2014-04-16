@@ -22,6 +22,16 @@
 
         UnauthorizedCommandPanel = 9,
 
-        AuthorizedCommandPanel = 10
+        AuthorizedCommandPanel = 10,
+
+        Profile = 11,
+
+        References = 12,
+
+        DocumentsDatabase = 13,
+
+        UsersDatabase = 14,
+
+        Reports = 15
     }
 }

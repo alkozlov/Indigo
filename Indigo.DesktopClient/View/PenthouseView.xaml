@@ -5,19 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:pertialModel="clr-namespace:Indigo.DesktopClient.ViewModel.Partial"
+        xmlns:partialView="clr-namespace:Indigo.DesktopClient.View.Partial"
         mc:Ignorable="d ignore"
         DataContext="{Binding PenthouseViewModel, Source={StaticResource Locator}}">
-
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type pertialModel:ReferencesViewModel}">
+                <partialView:ReferencesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:DocumentsViewModel}">
+                <partialView:DocumentsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:ProfileViewModel}">
+                <partialView:ProfileView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:UsersViewModel}">
+                <partialView:UsersView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:ReportsViewModel}">
+                <partialView:ReportsView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Actions, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedActionItem}">
+        <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
+                  SelectedItem="{Binding Path=SelectedActionItem}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
@@ -31,8 +54,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
+
+        <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
     </Grid>
 </UserControl>

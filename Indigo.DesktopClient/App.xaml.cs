@@ -1,11 +1,8 @@
 ﻿namespace Indigo.DesktopClient
 {
-    using System;
     using System.Windows;
 
     using GalaSoft.MvvmLight.Threading;
-
-    using Indigo.BusinessLogicLayer.Account;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -19,11 +16,7 @@
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            //Create a custom principal with an anonymous identity at startup
-            IndigoUserPrincipal principal = new IndigoUserPrincipal();
-            AppDomain.CurrentDomain.SetThreadPrincipal(principal);
-
-            base.OnStartup(e);
+            
         }
     }
 }

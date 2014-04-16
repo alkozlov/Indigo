@@ -12,7 +12,7 @@
         mc:Ignorable="d ignore"
         Height="500"
         Width="800"
-        Title="MVVM Light Application"
+        Title="Indigo"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
     <Window.Resources>

@@ -7,13 +7,12 @@ obj/
 *.settings
 _ReSharper.*/
 *.resharper.user
-PrecompiledWeb
 
 # logs
 logs
 
-#min
-/syncp-website-my/WebSite/Script/OFB/templates.min.html
-
 #os
 .DS_Store
+
+#perfomances
+*.vsp

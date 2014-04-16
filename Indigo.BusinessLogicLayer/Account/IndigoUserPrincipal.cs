@@ -66,7 +66,7 @@
         {
             await Task.Delay(1);
             this.Identity = new AnonymousIdentity();
-            Thread.CurrentPrincipal = new IndigoUserPrincipal(this.Identity);
+            _current = new IndigoUserPrincipal(this.Identity);
         }
 
         #region Constructors

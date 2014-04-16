@@ -90,6 +90,7 @@
     <Compile Include="Model\Notifications\AuthorizationMessage.cs" />
     <Compile Include="Model\Notifications\NavigationMessage.cs" />
     <Compile Include="Model\Notifications\NotificationTokens.cs" />
+    <Compile Include="Model\ProfileModel.cs" />
     <Compile Include="ViewModel\AnalysisViewModel.cs" />
     <Compile Include="ViewModel\CommonPartialViewModel.cs" />
     <Compile Include="ViewModel\CommonViewModel.cs" />
@@ -229,6 +230,7 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\icon-user-default.png" />
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

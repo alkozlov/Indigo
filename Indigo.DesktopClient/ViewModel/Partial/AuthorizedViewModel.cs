@@ -1,4 +1,9 @@
-﻿namespace Indigo.DesktopClient.ViewModel.Partial
+﻿using System.Collections.Generic;
+using System.Linq;
+using GalaSoft.MvvmLight;
+using Microsoft.Practices.ServiceLocation;
+
+namespace Indigo.DesktopClient.ViewModel.Partial
 {
     using System;
     using System.Threading.Tasks;
@@ -85,6 +90,8 @@
             else
             {
                 await IndigoUserPrincipal.Current.SignoutAsync();
+                ViewModelLocator.Cleanup();
+
                 base.SignoutMessageSend();
                 base.NavigateAction(this.ViewType, ApplicationView.Analysis, NotificationTokens.MainViewNavigationToken);
             }

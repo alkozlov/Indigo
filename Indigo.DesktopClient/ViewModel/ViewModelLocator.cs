@@ -9,6 +9,8 @@
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 */
 
+using System.Linq;
+
 namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
@@ -213,6 +215,25 @@ namespace Indigo.DesktopClient.ViewModel
         /// </summary>
         public static void Cleanup()
         {
+            SimpleIoc.Default.Unregister<SignInViewModel>();
+            SimpleIoc.Default.Unregister<PenthouseViewModel>();
+            SimpleIoc.Default.Unregister<UnauthorizedViewModel>();
+            SimpleIoc.Default.Unregister<AuthorizedViewModel>();
+            SimpleIoc.Default.Unregister<ProfileViewModel>();
+            SimpleIoc.Default.Unregister<ReferencesViewModel>();
+            SimpleIoc.Default.Unregister<DocumentsViewModel>();
+            SimpleIoc.Default.Unregister<UsersViewModel>();
+            SimpleIoc.Default.Unregister<ReportsViewModel>();
+
+            SimpleIoc.Default.Register<SignInViewModel>();
+            SimpleIoc.Default.Register<PenthouseViewModel>();
+            SimpleIoc.Default.Register<UnauthorizedViewModel>();
+            SimpleIoc.Default.Register<AuthorizedViewModel>();
+            SimpleIoc.Default.Register<ProfileViewModel>();
+            SimpleIoc.Default.Register<ReferencesViewModel>();
+            SimpleIoc.Default.Register<DocumentsViewModel>();
+            SimpleIoc.Default.Register<UsersViewModel>();
+            SimpleIoc.Default.Register<ReportsViewModel>();
         }
     }
 }

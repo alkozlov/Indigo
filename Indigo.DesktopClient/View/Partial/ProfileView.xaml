@@ -8,7 +8,29 @@
         DataContext="{Binding ProfileViewModel, Source={StaticResource Locator}}">
 
     <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Profile Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <Image Width="125" Height="125" Source="../../Resources/icon-user-default.png" HorizontalAlignment="Left"></Image>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Content="Логин:" FontWeight="Bold"></Label>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=ProfileModel.Login}"></TextBlock>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Email:" FontWeight="Bold"></Label>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProfileModel.Email}"></TextBlock>
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>

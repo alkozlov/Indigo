@@ -55,6 +55,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
+        <ContentControl Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
     </Grid>
 </UserControl>

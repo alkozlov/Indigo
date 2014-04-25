@@ -27,6 +27,9 @@
             <DataTemplate DataType="{x:Type pertialModel:ReportsViewModel}">
                 <partialView:ReportsView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:AddDocumentsViewModel}">
+                <partialView:AddDocumentsView />
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -38,22 +41,24 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-        <ListView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
+
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <ListView ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
                   SelectedItem="{Binding Path=SelectedActionItem}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <TextBlock Text="{Binding ActionName}"></TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding ActionName}"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
 
         <ContentControl Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
     </Grid>

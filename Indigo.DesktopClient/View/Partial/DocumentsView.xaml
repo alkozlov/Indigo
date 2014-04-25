@@ -7,8 +7,9 @@
         mc:Ignorable="d ignore"
         DataContext="{Binding DocumentsViewModel, Source={StaticResource Locator}}">
 
-    <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Documents Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
+    <StackPanel>
+        <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
+        <TextBlock Text="Documents Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
                    HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
-    </Grid>
+    </StackPanel>
 </UserControl>

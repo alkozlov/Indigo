@@ -55,6 +55,19 @@
             }
         }
 
+        public static async Task<UserAccount> GetUserAsync(Int32 userId)
+        {
+            using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
+            {
+                DataModels.UserAccount dataUserAccount = await userAccountRepository.GetAsync(userId);
+                UserAccount userAccount = dataUserAccount != null
+                    ? ConvertToBusinessObject(dataUserAccount)
+                    : null;
+
+                return userAccount;
+            }
+        }
+
         public Boolean ValidatePassword(String password)
         {
             if (String.IsNullOrEmpty(password))

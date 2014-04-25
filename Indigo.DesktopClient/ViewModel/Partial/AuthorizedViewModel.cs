@@ -93,7 +93,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
                 ViewModelLocator.Cleanup();
 
                 base.SignoutMessageSend();
-                base.NavigateAction(this.ViewType, ApplicationView.Analysis, NotificationTokens.MainViewNavigationToken);
+                base.NavigateAction(this.ViewType, ApplicationView.HomaPage, NotificationTokens.MainViewNavigationToken);
             }
         }
 

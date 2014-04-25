@@ -32,6 +32,14 @@
 
         UsersDatabase = 14,
 
-        Reports = 15
+        Reports = 15,
+
+        HomaPage = 16,
+
+        DocumentAnalysis = 17,
+
+        TextAnalisys = 18,
+
+        AddDocuments = 19
     }
 }

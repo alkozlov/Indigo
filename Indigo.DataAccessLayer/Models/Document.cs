@@ -14,12 +14,10 @@
 
         public String StoredName { get; set; }
 
-        public String LematizationName { get; set; }
-
         public Int32 AddedUserId { get; set; }
 
-        public DateTime CreateDateTimeUtc { get; set; }
+        public DateTime CreateDateUtc { get; set; }
 
-
+        public UserAccount AddedUser { get; set; }
     }
 }

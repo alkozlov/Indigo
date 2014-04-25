@@ -21,8 +21,14 @@
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type local:AnalysisViewModel}">
-                <view:AnalysisView />
+            <DataTemplate DataType="{x:Type local:HomePageViewModel}">
+                <view:HomePageView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:DocumentAnalysisViewModel}">
+                <view:DocumentAnalysisView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:TextAnalysisViewModel}">
+                <view:TextAnalysisView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type local:SignInViewModel}">
                 <view:SignInView />
@@ -61,7 +67,8 @@
                    HorizontalAlignment="Center"
                    TextWrapping="Wrap" />-->
         
-        <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"></ContentControl>
+        <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1"
+                        Height="Auto" Width="Auto" Margin="0" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></ContentControl>
 
     </Grid>
 </controls:MetroWindow>

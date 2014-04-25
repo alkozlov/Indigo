@@ -7,5 +7,7 @@
         public static String MainViewNavigationToken = "MainViewNavigationToken";
 
         public static String AuthorizationPanelToken = "AuthorizationPanelToken";
+
+        public static String AddDocumentsToken = "AddDocumentsToken";
     }
 }

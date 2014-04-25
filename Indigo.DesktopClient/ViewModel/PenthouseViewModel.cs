@@ -1,4 +1,7 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using GalaSoft.MvvmLight.Messaging;
+using Indigo.DesktopClient.Model.Notifications;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
     using System;
@@ -208,6 +211,11 @@
             };
 
             this.LoadViewModel(IndigoUserPrincipal.Current.Identity.User);
+
+            Messenger.Default.Register<NavigationMessage>(this, NotificationTokens.AddDocumentsToken, message =>
+            {
+                this.SelectedViewModel = ServiceLocator.Current.GetInstance<AddDocumentsViewModel>();
+            });
         }
 
         #endregion

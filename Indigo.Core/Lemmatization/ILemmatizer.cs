@@ -5,6 +5,6 @@
 
     public interface ILemmatizer
     {
-        Task LemmatizationDocumentAsync(String origoinalDocument, String outputDocument);
+        Task LemmatizationDocumentAsync(String originalDocument, String outputDocument);
     }
 }

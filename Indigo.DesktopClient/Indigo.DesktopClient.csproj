@@ -54,13 +54,25 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.12.1.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Tools.Word, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -82,19 +94,29 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandDelegates\AsyncCommand.cs" />
+    <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Helpers\DocumentProcessor.cs" />
+    <Compile Include="Helpers\DocumentProcessorConfigurations.cs" />
     <Compile Include="Model\ActionList.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\DocumentAnalysisModel.cs" />
+    <Compile Include="Model\DocumentModel.cs" />
+    <Compile Include="Model\FileSizeFormatProvider.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\Notifications\AuthorizationMessage.cs" />
     <Compile Include="Model\Notifications\NavigationMessage.cs" />
     <Compile Include="Model\Notifications\NotificationTokens.cs" />
+    <Compile Include="Model\PenthouseModels\NewDocumentModel.cs" />
     <Compile Include="Model\ProfileModel.cs" />
     <Compile Include="ViewModel\AnalysisViewModel.cs" />
     <Compile Include="ViewModel\CommonPartialViewModel.cs" />
     <Compile Include="ViewModel\CommonViewModel.cs" />
+    <Compile Include="ViewModel\DocumentAnalysisViewModel.cs" />
+    <Compile Include="ViewModel\HomePageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Partial\AddDocumentsViewModel.cs" />
     <Compile Include="ViewModel\Partial\AuthorizedViewModel.cs" />
     <Compile Include="ViewModel\Partial\DocumentsViewModel.cs" />
     <Compile Include="ViewModel\Partial\ProfileViewModel.cs" />
@@ -104,11 +126,21 @@
     <Compile Include="ViewModel\Partial\UsersViewModel.cs" />
     <Compile Include="ViewModel\PenthouseViewModel.cs" />
     <Compile Include="ViewModel\SignInViewModel.cs" />
+    <Compile Include="ViewModel\TextAnalysisViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\AnalysisView.xaml.cs">
       <DependentUpon>AnalysisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ApplicationView.cs" />
+    <Compile Include="View\DocumentAnalysisView.xaml.cs">
+      <DependentUpon>DocumentAnalysisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\AddDocumentsView.xaml.cs">
+      <DependentUpon>AddDocumentsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Partial\AuthorizedView.xaml.cs">
       <DependentUpon>AuthorizedView.xaml</DependentUpon>
     </Compile>
@@ -137,6 +169,9 @@
     <Compile Include="View\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TextAnalysisView.xaml.cs">
+      <DependentUpon>TextAnalysisView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewsDictionary.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -159,6 +194,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\AnalysisView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DocumentAnalysisView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HomePageView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\AddDocumentsView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -198,6 +245,10 @@
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\TextAnalysisView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -230,7 +281,21 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icon-user-default.png" />
+    <Resource Include="Thumbnails\icon-user-default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Thumbnails\Odt_Format.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Thumbnails\Rtf_Format.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Thumbnails\Docx_Format.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Thumbnails\Doc_Format.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -240,10 +305,12 @@
       <Project>{fb49ae64-0021-40fd-b975-6276ffe16bfe}</Project>
       <Name>Indigo.BusinessLogicLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Indigo.Tools\Indigo.Tools.csproj">
+      <Project>{6f7de3c2-cd51-43fa-901a-8b481432faf2}</Project>
+      <Name>Indigo.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

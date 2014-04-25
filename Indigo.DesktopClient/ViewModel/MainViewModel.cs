@@ -191,7 +191,7 @@ namespace Indigo.DesktopClient.ViewModel
                 });
 
             // Set AnalysisView as start page
-            this.CurrentViewModel = ServiceLocator.Current.GetInstance<AnalysisViewModel>();
+            this.CurrentViewModel = ServiceLocator.Current.GetInstance<HomePageViewModel>();
 
             this.CommandPanelViewModel = ServiceLocator.Current.GetInstance<UnauthorizedViewModel>();
 
@@ -230,6 +230,21 @@ namespace Indigo.DesktopClient.ViewModel
                         case ApplicationView.Penthouse:
                         {
                             targetViewModel = ServiceLocator.Current.GetInstance<PenthouseViewModel>();
+                        } break;
+
+                        case ApplicationView.HomaPage:
+                        {
+                            targetViewModel = ServiceLocator.Current.GetInstance<HomePageViewModel>();
+                        } break;
+
+                        case ApplicationView.DocumentAnalysis:
+                        {
+                            targetViewModel = ServiceLocator.Current.GetInstance<DocumentAnalysisViewModel>();
+                        } break;
+
+                        case ApplicationView.TextAnalisys:
+                        {
+                            targetViewModel = ServiceLocator.Current.GetInstance<TextAnalysisViewModel>();
                         } break;
                     }
 

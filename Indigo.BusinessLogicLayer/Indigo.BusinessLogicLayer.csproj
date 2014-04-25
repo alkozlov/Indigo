@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="Account\AccessType.cs" />
     <Compile Include="Account\PermissionType.cs" />
+    <Compile Include="Document\Document.cs" />
+    <Compile Include="Document\DocumentList.cs" />
     <Compile Include="Helpers\CryptographyHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,15 +58,27 @@
     <Compile Include="Account\LoginException.cs" />
     <Compile Include="Account\UserAccount.cs" />
     <Compile Include="Account\UserAccountType.cs" />
+    <Compile Include="Shingles\AnalysisAccuracy.cs" />
+    <Compile Include="Shingles\CheckSumCollection.cs" />
+    <Compile Include="Shingles\Crc32.cs" />
+    <Compile Include="Shingles\Crc32Hasher.cs" />
+    <Compile Include="Shingles\HashAlgorithmType.cs" />
+    <Compile Include="Shingles\HasherFactory.cs" />
+    <Compile Include="Shingles\IHashAlgorithm.cs" />
+    <Compile Include="Shingles\MD5Hasher.cs" />
+    <Compile Include="Shingles\RIPEMD160Hasher.cs" />
+    <Compile Include="Shingles\SHA1Hasher.cs" />
+    <Compile Include="Shingles\SHA256Hasher.cs" />
+    <Compile Include="Shingles\SHA384Hasher.cs" />
+    <Compile Include="Shingles\SHA512Hasher.cs" />
+    <Compile Include="Shingles\Shingle.cs" />
+    <Compile Include="Shingles\ShingleList.cs" />
+    <Compile Include="Storage\StorageProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Indigo.DataAccessLayer\Indigo.DataAccessLayer.csproj">
       <Project>{af82e4ac-b2c5-4f78-9ddd-05471413404b}</Project>
       <Name>Indigo.DataAccessLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Indigo.Tools\Indigo.Tools.csproj">
-      <Project>{6f7de3c2-cd51-43fa-901a-8b481432faf2}</Project>
-      <Name>Indigo.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

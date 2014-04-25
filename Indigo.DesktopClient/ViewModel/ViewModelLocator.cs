@@ -54,6 +54,10 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<DocumentsViewModel>();
             SimpleIoc.Default.Register<UsersViewModel>();
             SimpleIoc.Default.Register<ReportsViewModel>();
+            SimpleIoc.Default.Register<HomePageViewModel>();
+            SimpleIoc.Default.Register<DocumentAnalysisViewModel>();
+            SimpleIoc.Default.Register<TextAnalysisViewModel>();
+            SimpleIoc.Default.Register<AddDocumentsViewModel>();
         }
 
         /// <summary>
@@ -211,6 +215,62 @@ namespace Indigo.DesktopClient.ViewModel
         }
 
         /// <summary>
+        /// Gets the HomePageViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public HomePageViewModel HomePageViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<HomePageViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the DocumentAnalysisViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public DocumentAnalysisViewModel DocumentAnalysisViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<DocumentAnalysisViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the TextAnalysisViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public TextAnalysisViewModel TextAnalysisViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TextAnalysisViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the AddDocumentsViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public AddDocumentsViewModel AddDocumentsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AddDocumentsViewModel>();
+            }
+        }
+
+        /// <summary>
         /// Cleans up all the resources.
         /// </summary>
         public static void Cleanup()
@@ -224,6 +284,7 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Unregister<DocumentsViewModel>();
             SimpleIoc.Default.Unregister<UsersViewModel>();
             SimpleIoc.Default.Unregister<ReportsViewModel>();
+            SimpleIoc.Default.Unregister<AddDocumentsViewModel>();
 
             SimpleIoc.Default.Register<SignInViewModel>();
             SimpleIoc.Default.Register<PenthouseViewModel>();
@@ -234,6 +295,7 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<DocumentsViewModel>();
             SimpleIoc.Default.Register<UsersViewModel>();
             SimpleIoc.Default.Register<ReportsViewModel>();
+            SimpleIoc.Default.Register<AddDocumentsViewModel>();
         }
     }
 }

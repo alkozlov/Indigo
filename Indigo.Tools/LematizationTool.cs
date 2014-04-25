@@ -16,11 +16,11 @@
         #endregion
 
         // Singleton pattern
-        private static LematizationTool _instance;
+        private static LematizationTool _current;
 
-        public static LematizationTool Instance
+        public static LematizationTool Current
         {
-            get { return _instance ?? (_instance = new LematizationTool()); }
+            get { return _current ?? (_current = new LematizationTool()); }
         }
 
         #region Fields

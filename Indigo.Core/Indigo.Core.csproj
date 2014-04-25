@@ -47,10 +47,9 @@
     <Compile Include="Lemmatization\MyStemLemmatizer.cs" />
     <Compile Include="Lemmatization\WordformsOutputMode.cs" />
     <Compile Include="Lemmatization\WordWrappingMode.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Parsers\MyStemParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shingles\Shingle.cs" />
-    <Compile Include="Shingles\ShingleList.cs" />
-    <Compile Include="Shingles\ShingleShredder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Analysis\" />

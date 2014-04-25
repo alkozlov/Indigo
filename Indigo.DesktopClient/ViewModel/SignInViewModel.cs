@@ -61,7 +61,7 @@
         /// </summary>
         public const string EmailOrLoginPropertyName = "EmailOrLogin";
 
-        private String _emailOrLogin;
+        private String _emailOrLogin = "bfc69ea118544ef7b3040af60b185e3b";
 
         /// <summary>
         /// Sets and gets the EmailOrLogin property.
@@ -91,7 +91,7 @@
         /// </summary>
         public const string PasswordPropertyName = "Password";
 
-        private String _password;
+        private String _password = "bfc69ea118544ef7b3040af60b185e3b";
 
         /// <summary>
         /// Sets and gets the Password property.

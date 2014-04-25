@@ -10,6 +10,8 @@
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<PermissionAccessType> PermissionAccessTypes { get; set; }
         public DbSet<AccountPermission> AccountPermissions { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<Shingle> Shingles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -49,6 +51,28 @@
             modelBuilder.Entity<AccountPermission>().HasKey(x => new {x.AccountType, x.PermissionType, x.AccessType});
             modelBuilder.Entity<AccountPermission>().Property(x => x.LastModifiedDateUtc).IsRequired();
             modelBuilder.Entity<AccountPermission>().HasOptional(x => x.UserAccount).WithMany().HasForeignKey(x => x.ModifiedByUserId);
+
+            #endregion
+
+            #region Document
+
+            modelBuilder.Entity<Document>().HasKey(x => x.DocumentId);
+            modelBuilder.Entity<Document>().Property(x => x.DocumentGuid).IsRequired();
+            modelBuilder.Entity<Document>().Property(x => x.FileExtension).IsRequired().HasMaxLength(15);
+            modelBuilder.Entity<Document>().Property(x => x.OriginalName).IsRequired().HasMaxLength(256);
+            modelBuilder.Entity<Document>().Property(x => x.StoredName).IsRequired().HasMaxLength(256);
+            modelBuilder.Entity<Document>().Property(x => x.AddedUserId).IsRequired();
+            modelBuilder.Entity<Document>().Property(x => x.CreateDateUtc).IsRequired();
+            modelBuilder.Entity<Document>().HasRequired(x => x.AddedUser).WithMany().HasForeignKey(x => x.AddedUserId);
+
+            #endregion
+
+            #region Shingle
+
+            modelBuilder.Entity<Shingle>().HasKey(x => x.ShingleId);
+            modelBuilder.Entity<Shingle>().HasRequired(x => x.Document).WithMany().HasForeignKey(x => x.DocumentId);
+            modelBuilder.Entity<Shingle>().Property(x => x.ShingleSize).IsRequired();
+            modelBuilder.Entity<Shingle>().Property(x => x.CheckSum).IsRequired();
 
             #endregion
 

@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="Indigo.WinClient.View.PenthouseView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.ignore.com"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:pertialModel="clr-namespace:Indigo.WinClient.ViewModel.Partial"
+        xmlns:partialView="clr-namespace:Indigo.WinClient.View.Partial"
+        mc:Ignorable="d ignore"
+        DataContext="{Binding PenthouseViewModel, Source={StaticResource Locator}}">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type pertialModel:ReferencesViewModel}">
+                <partialView:ReferencesView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:DocumentsViewModel}">
+                <partialView:DocumentsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:ProfileViewModel}">
+                <partialView:ProfileView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:UsersViewModel}">
+                <partialView:UsersView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:ReportsViewModel}">
+                <partialView:ReportsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pertialModel:AddDocumentsViewModel}">
+                <partialView:AddDocumentsView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
+                  SelectedItem="{Binding Path=SelectedActionItem}" Name="lstMenu">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.Resources>
+
+                <!-- Template that is used upon selection of an Area -->
+                <ControlTemplate x:Key="SelectedTemplate" TargetType="ListViewItem">
+                    <StackPanel Background="{Binding Path=BackgroundColor}">
+                        <Image Width="36" Height="36" Source="../Images/Home - White - 36x36.png"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                        <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                </ControlTemplate>
+
+                <ControlTemplate x:Key="MouseOverTemplate" TargetType="ListViewItem">
+                    <StackPanel Background="#222222">
+                        <Image Width="36" Height="36" Source="../Images/Home - White - 36x36.png"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                        <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                </ControlTemplate>
+
+                <Style TargetType="{x:Type ListView}">
+                    <Setter Property="Background" Value="#222222"></Setter>
+                    <Setter Property="Width" Value="84"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                </Style>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Width" Value="80"></Setter>
+                    <Setter Property="Height" Value="80"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="Background" Value="#222222"></Setter>
+                    <Setter Property="Foreground" Value="#80FFFFFF"></Setter>
+                    <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                    <Setter Property="FontSize" Value="9"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Template" Value="{StaticResource SelectedTemplate}" />
+                            <Setter Property="Width" Value="80"></Setter>
+                            <Setter Property="Height" Value="80"></Setter>
+                            <Setter Property="Margin" Value="0"></Setter>
+                            <Setter Property="Padding" Value="0"></Setter>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"></Condition>
+                                <Condition Property="IsSelected" Value="False"></Condition>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Template" Value="{StaticResource MouseOverTemplate}" />
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Width" Value="80"></Setter>
+                                <Setter Property="Height" Value="80"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                                <Setter Property="Padding" Value="0"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="80" Height="80">
+                        <Image Width="36" Height="36" Source="../Images/Home - Gray - 36x36.png"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                        <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <!--<StackPanel Grid.Column="1" Grid.Row="0">
+            <ListView ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
+                  SelectedItem="{Binding Path=SelectedActionItem}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding ActionName}"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>-->
+
+        <ContentControl Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
+    </Grid>
+</UserControl>

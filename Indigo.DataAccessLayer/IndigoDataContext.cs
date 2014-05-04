@@ -12,6 +12,8 @@
         public DbSet<AccountPermission> AccountPermissions { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Shingle> Shingles { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<StopWord> StopWords { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -73,6 +75,20 @@
             modelBuilder.Entity<Shingle>().HasRequired(x => x.Document).WithMany().HasForeignKey(x => x.DocumentId);
             modelBuilder.Entity<Shingle>().Property(x => x.ShingleSize).IsRequired();
             modelBuilder.Entity<Shingle>().Property(x => x.CheckSum).IsRequired();
+
+            #endregion
+
+            #region Subject
+
+            modelBuilder.Entity<Subject>().HasKey(x => x.SubjectId);
+            modelBuilder.Entity<Subject>().Property(x => x.SubjectHeader).IsRequired().HasMaxLength(100);
+
+            #endregion
+
+            #region StopWord
+
+            modelBuilder.Entity<StopWord>().HasKey(x => x.StopWordId);
+            modelBuilder.Entity<StopWord>().Property(x => x.Content).IsRequired().HasMaxLength(100);
 
             #endregion
 

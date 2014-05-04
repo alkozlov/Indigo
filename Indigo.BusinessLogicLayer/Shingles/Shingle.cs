@@ -6,41 +6,45 @@
 
     public class Shingle
     {
-        public List<String> Words { get; private set; }
+        public long? ShingleId { get; set; }
 
-        public byte Size
-        {
-            get { return (byte)this.Words.Count; }
-        }
+            public List<String> Words { get; private set; }
 
-        private String _asString;
-        public String AsString
-        {
-            get
+            public byte Size
             {
-                if (String.IsNullOrEmpty(this._asString))
+                get { return (byte) this.Words.Count; }
+            }
+
+            private String _asString;
+            public String AsString
+            {
+                get
                 {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    foreach (String word in this.Words)
+                    if (String.IsNullOrEmpty(this._asString))
                     {
-                        stringBuilder.Append(String.Format(" {0}", word));
+                        StringBuilder stringBuilder = new StringBuilder();
+                        foreach (String word in this.Words)
+                        {
+                            stringBuilder.Append(String.Format(" {0}", word));
+                        }
+
+                        this._asString = stringBuilder.ToString().Trim();
                     }
 
-                    this._asString = stringBuilder.ToString().Trim();
+                    return this._asString;
                 }
-
-                return this._asString;
             }
-        }
 
-        public Shingle()
-        {
-            this.Words = new List<String>();
-        }
+            public long? CheckSum { get; set; }
 
-        public Shingle(List<String> words)
-        {
-            this.Words = words;
-        }
+            public Shingle()
+            {
+                this.Words = new List<String>();
+            }
+
+            public Shingle(List<String> words)
+            {
+                this.Words = words;
+            }
     }
 }

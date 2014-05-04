@@ -26,10 +26,16 @@
             CheckSumCollection checkSumCollection = await Task<CheckSumCollection>.Run(() =>
             {
                 List<KeyValuePair<UInt32, Shingle>> checkSumList = new List<KeyValuePair<UInt32, Shingle>>();
-                foreach (Shingle shingle in shingles)
+                foreach (var shingle in shingles)
                 {
-                    UInt32 checkSum = ComputeCheckSum(shingle, hashAlgorithmType);
-                    checkSumList.Add(new KeyValuePair<UInt32, Shingle>(checkSum, shingle));
+                    Shingle businesShingle = new Shingle(shingle.Words)
+                    {
+                        ShingleId = shingle.ShingleId,
+                        CheckSum = shingle.CheckSum
+                    };
+
+                    UInt32 checkSum = ComputeCheckSum(businesShingle, hashAlgorithmType);
+                    checkSumList.Add(new KeyValuePair<UInt32, Shingle>(checkSum, businesShingle));
                 }
 
                 return new CheckSumCollection(checkSumList, shingles.DocumentId);

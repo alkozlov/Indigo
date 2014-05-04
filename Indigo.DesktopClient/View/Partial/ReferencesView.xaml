@@ -4,11 +4,133 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:pertialModel="clr-namespace:Indigo.DesktopClient.ViewModel.Partial"
+        xmlns:partialView="clr-namespace:Indigo.DesktopClient.View.Partial"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d ignore"
         DataContext="{Binding ReferencesViewModel, Source={StaticResource Locator}}">
+	
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type pertialModel:SubjectsViewModel}">
+                <partialView:SubjectsView />
+            </DataTemplate>
 
-    <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="References Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
+            <DataTemplate DataType="{x:Type pertialModel:StopWordsViewModel}">
+                <partialView:StopWordsView />
+            </DataTemplate>
+
+            <ControlTemplate x:Key="ListBoxControlTemplate1" TargetType="{x:Type ListBox}">
+                <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="True">
+                    <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    </ScrollViewer>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" TargetName="Bd" Value="White"/>
+                        <Setter Property="BorderBrush" TargetName="Bd" Value="#FFD9D9D9"/>
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsGrouping" Value="True"/>
+                            <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                    </MultiTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+	</UserControl.Resources>
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ListView Name="lstMenu" Grid.RowSpan="2" ItemsSource="{Binding Path=References}" SelectedItem="{Binding Path=SelectedReference, Mode=TwoWay}"
+                  Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Padding="0" Template="{DynamicResource ListBoxControlTemplate1}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding Path=ChangeReferenceViewCommand}" CommandParameter="{Binding ElementName=lstMenu, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.Resources>
+                <ControlTemplate x:Key="SelectedTemplate" TargetType="ListViewItem">
+                    <StackPanel Width="200" Height="20" Background="White">
+                        <TextBlock Text="{Binding Path=Header}" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ControlTemplate>
+
+                <ControlTemplate x:Key="MouseOverTemplate" TargetType="ListViewItem">
+                    <StackPanel Width="200" Height="20">
+                        <TextBlock Text="{Binding Path=Header}" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </ControlTemplate>
+
+                <Style TargetType="{x:Type ListView}">
+                    <Setter Property="Background" Value="#94A80C"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                </Style>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Width" Value="200"></Setter>
+                    <Setter Property="Height" Value="20"></Setter>
+                    <Setter Property="Margin" Value="0"></Setter>
+                    <Setter Property="Padding" Value="0"></Setter>
+                    <Setter Property="Background" Value="#94A80C"></Setter>
+                    <Setter Property="Foreground" Value="#80FFFFFF"></Setter>
+                    <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                    <Setter Property="FontSize" Value="12"></Setter>
+                    <Setter Property="FontWeight" Value="DemiBold"></Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Template" Value="{StaticResource SelectedTemplate}" />
+                            <Setter Property="Width" Value="200"></Setter>
+                            <Setter Property="Height" Value="20"></Setter>
+                            <Setter Property="Margin" Value="0"></Setter>
+                            <Setter Property="Padding" Value="0"></Setter>
+                            <Setter Property="Background" Value="White"></Setter>
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"></Condition>
+                                <Condition Property="IsSelected" Value="False"></Condition>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Template" Value="{StaticResource MouseOverTemplate}" />
+                                <Setter Property="Foreground" Value="White"></Setter>
+                                <Setter Property="Width" Value="200"></Setter>
+                                <Setter Property="Height" Value="20"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                                <Setter Property="Padding" Value="0"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="200" Height="20">
+                        <TextBlock Text="{Binding Path=Header}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <ContentControl Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+                        Content="{Binding Path=SelectedEntity}"></ContentControl>
     </Grid>
 </UserControl>

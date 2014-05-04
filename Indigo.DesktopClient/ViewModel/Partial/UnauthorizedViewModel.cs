@@ -21,11 +21,6 @@ namespace Indigo.DesktopClient.ViewModel.Partial
         {
         }
 
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.UnauthorizedCommandPanel; }
-        }
-
         #region Commands
 
         public ICommand NavigateToSignInPageCommand
@@ -35,7 +30,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
 
         private void NavigateToSignInPage()
         {
-            base.NavigateAction(this.ViewType, ApplicationView.SignIn, NotificationTokens.MainViewNavigationToken);
+            base.SendNavigationMessage(ApplicationView.SignIn, NavigationToken.MainViewNavigationToken);
         }
 
         #endregion

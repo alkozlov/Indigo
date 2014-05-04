@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="Indigo.DesktopClient.View.Partial.StopWordsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.ignore.com"
+        xmlns:controls="clr-namespace:Indigo.DesktopClient.Controls"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
+        mc:Ignorable="d ignore"
+        DataContext="{Binding StopWordsViewModel, Source={StaticResource Locator}}">
+
+    <UserControl.Resources>
+        <Style x:Key="DeleteRowsButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=grdStopWords, Path=SelectionSettings.SelectedRows.Count}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid HorizontalAlignment="Stretch" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- New subject fields -->
+            <TextBlock Text="Новая тематика:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI" VerticalAlignment="Center"
+                       HorizontalAlignment="Right"></TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewStopWord.Content, Mode=TwoWay}"
+                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0" Width="300"></TextBox>
+
+            <!-- Commands -->
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Добавить"
+                    Command="{Binding Path=AddNewStopWordCommand, IsAsync=True}"></Button>
+
+            <!-- Notification -->
+            <controls:IndigoStatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                DataContext="{Binding Path=NewStopWordNotification}"></controls:IndigoStatusBar>
+        </Grid>
+
+        <ig:XamGrid x:Name="grdStopWords" Grid.Row="1" AutoGenerateColumns="False"
+                    ItemsSource="{Binding Path=StopWords, UpdateSourceTrigger=PropertyChanged}" ColumnWidth="Auto"
+                    HorizontalAlignment="Left" Margin="15" DeleteKeyAction="DeleteRowOfActiveCell">
+            <ig:XamGrid.Columns>
+                <ig:TextColumn Key="Content">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Стоп-слово"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+
+                <ig:TextColumn Key="StopWordId">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Ключ"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+            </ig:XamGrid.Columns>
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.PagerSettings>
+                <ig:PagerSettings AllowPaging="Both" PageSize="20"  />
+            </ig:XamGrid.PagerSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.FilteringSettings>
+                <ig:FilteringSettings AllowFiltering="FilterMenu" FilteringScope="ColumnLayout" />
+            </ig:XamGrid.FilteringSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.SelectionSettings>
+                <ig:SelectionSettings CellClickAction="SelectRow" RowSelection="Multiple" CellSelection="None" />
+            </ig:XamGrid.SelectionSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.RowSelectorSettings>
+                <ig:RowSelectorSettings Visibility="Visible" EnableRowNumbering="True"/>
+            </ig:XamGrid.RowSelectorSettings>
+            <!--#END SNIPPET#-->
+        </ig:XamGrid>
+
+        <Grid Grid.Row="2" Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- This button will serve to trigger the "delete record" command only. -->
+            <Button Content="Удалить Записи" Style="{StaticResource DeleteRowsButtonStyle}" Width="150" Height="30"
+                Command="{Binding Path=RemoveSelectedStopWordsCommand, IsAsync=True}"  
+                CommandParameter="{Binding ElementName=grdStopWords, Path=SelectionSettings.SelectedRows}">
+            </Button>
+
+            <controls:IndigoStatusBar Grid.Row="1" DataContext="{Binding Path=ToolbarNotification}" Margin="15,0,0,0"></controls:IndigoStatusBar>
+        </Grid>
+    </Grid>
+</UserControl>

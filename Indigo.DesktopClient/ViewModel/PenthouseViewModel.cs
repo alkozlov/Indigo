@@ -1,7 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using Indigo.DesktopClient.Model.Notifications;
-
-namespace Indigo.DesktopClient.ViewModel
+﻿namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
     using System;
@@ -10,10 +7,12 @@ namespace Indigo.DesktopClient.ViewModel
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
+    using GalaSoft.MvvmLight.Ioc;
+    using GalaSoft.MvvmLight.Messaging;
 
     using Indigo.BusinessLogicLayer.Account;
     using Indigo.DesktopClient.Model;
-    using Indigo.DesktopClient.View;
+    using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.ViewModel.Partial;
 
     /// <summary>
@@ -27,15 +26,6 @@ namespace Indigo.DesktopClient.ViewModel
         public delegate void LoadViewModelHandler(UserAccount user);
 
         public event LoadViewModelHandler LoadViewModel;
-
-        #region Overrides
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.Penthouse; }
-        }
-
-        #endregion
 
         #region Properties
 
@@ -212,10 +202,54 @@ namespace Indigo.DesktopClient.ViewModel
 
             this.LoadViewModel(IndigoUserPrincipal.Current.Identity.User);
 
-            Messenger.Default.Register<NavigationMessage>(this, NotificationTokens.AddDocumentsToken, message =>
+            #region Messages
+
+            Messenger.Default.Register<NavigationMessage>(this, NavigationToken.AddDocumentsToken, message =>
             {
                 this.SelectedViewModel = ServiceLocator.Current.GetInstance<AddDocumentsViewModel>();
             });
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private ViewModelBase GetTabContentViewModel(PermissionType permission)
+        {
+            switch (permission)
+            {
+                case PermissionType.ProfileInformation:
+                {
+                    return SimpleIoc.Default.GetInstance<ProfileViewModel>();
+                }
+
+                case PermissionType.DocumentsCollection:
+                {
+                    return SimpleIoc.Default.GetInstance<DocumentsViewModel>();
+                }
+
+                case PermissionType.ReferenceInformation:
+                {
+                    return SimpleIoc.Default.GetInstance<ReferencesViewModel>();
+                }
+
+                case PermissionType.UserDatabase:
+                {
+                    return SimpleIoc.Default.GetInstance<UsersViewModel>();
+                }
+
+                case PermissionType.Reports:
+                {
+                    return SimpleIoc.Default.GetInstance<ReportsViewModel>();
+                }
+                
+                default:
+                {
+                    return null;
+                }
+            }
         }
 
         #endregion

@@ -18,15 +18,6 @@
     /// </summary>
     public class SignInViewModel : CommonViewModel
     {
-        #region Override
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.SignIn; }
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -141,7 +132,7 @@
                 await IndigoUserPrincipal.SigninAsync(this.EmailOrLogin, this.Password);
 
                 base.SigninMessageSend();
-                base.NavigateAction(this.ViewType, ApplicationView.Penthouse, NotificationTokens.MainViewNavigationToken);
+                base.SendNavigationMessage(ApplicationView.Penthouse, NavigationToken.MainViewNavigationToken);
             }
             catch (LoginException e)
             {

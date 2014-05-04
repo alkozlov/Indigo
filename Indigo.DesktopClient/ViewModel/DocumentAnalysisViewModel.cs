@@ -31,15 +31,6 @@
         private const String TempApplicationFolder = @"Indigo\\";
         private const String TempLematizationFilePostfix = "_LEM";
 
-        #region Overrides
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.DocumentAnalysis; }
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>

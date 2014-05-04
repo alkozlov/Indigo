@@ -18,15 +18,6 @@ namespace Indigo.DesktopClient.ViewModel
         {
         }
 
-        #region Override
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.Analysis;}
-        }
-
-        #endregion
-
         /// <summary>
         /// The <see cref="Title" /> property's name.
         /// </summary>

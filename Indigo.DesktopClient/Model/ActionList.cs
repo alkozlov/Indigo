@@ -1,8 +1,11 @@
-﻿namespace Indigo.DesktopClient.Model
+﻿using System.Windows.Media;
+
+namespace Indigo.DesktopClient.Model
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -15,6 +18,9 @@
              public String ActionName { get; set; }
              public PermissionType Permission { get; set; }
              public AccessType Access { get; set; }
+             public Brush BackgroundColor { get; set; }
+             public String Thumbnail { get; set; }
+             public String ActiveThumbnail { get; set; }
          }
 
         public ActionList(IList<Item> list) : base(list)
@@ -31,11 +37,16 @@
                     return null;
                 }
 
-                List<Item> actions = accountPermissions.Select(x => new Item
+                var availablePermissions = accountPermissions.Where(x => x.Value == AccessType.Editor || x.Value == AccessType.Reader);
+
+                List<Item> actions = availablePermissions.Select(x => new Item
                 {
                     Permission = x.Key,
                     Access = x.Value,
-                    ActionName = GetActionName(x.Key)
+                    ActionName = GetActionName(x.Key),
+                    BackgroundColor = GetActionBackgroundColor(x.Key),
+                    Thumbnail = GetThumbnail(x.Key),
+                    ActiveThumbnail = GetActiveThumbnail(x.Key)
                 }).ToList();
 
                 ActionList actionList = new ActionList(actions);
@@ -55,12 +66,12 @@
             {
                 case PermissionType.ReferenceInformation:
                 {
-                    actionName = "Справочная информация";
+                    actionName = "Справочники";
                 } break;
 
                 case PermissionType.DocumentsCollection:
                 {
-                    actionName = "База документов";
+                    actionName = "Документы";
                 } break;
 
                 case PermissionType.ProfileInformation:
@@ -70,7 +81,7 @@
 
                 case PermissionType.UserDatabase:
                 {
-                    actionName = "База пользователей";
+                    actionName = "Пользователи";
                 } break;
 
                 case PermissionType.Reports:
@@ -80,6 +91,112 @@
             }
 
             return actionName;
+        }
+
+        private static Brush GetActionBackgroundColor(PermissionType permission)
+        {
+            Color backgroundColor = Color.FromArgb(206, 26, 55);
+
+            switch (permission)
+            {
+                case PermissionType.ReferenceInformation:
+                    {
+                        backgroundColor = Color.FromArgb(248, 90, 50);
+                    } break;
+
+                case PermissionType.DocumentsCollection:
+                    {
+                        backgroundColor = Color.FromArgb(148, 168, 12);
+                    } break;
+
+                case PermissionType.ProfileInformation:
+                    {
+                        backgroundColor = Color.FromArgb(206, 26, 55);
+                    } break;
+
+                case PermissionType.UserDatabase:
+                    {
+                        backgroundColor = Color.FromArgb(2, 107, 193);
+                    } break;
+
+                case PermissionType.Reports:
+                    {
+                        backgroundColor = Color.FromArgb(102, 24, 136);
+                    } break;
+            }
+
+            Brush backgroundBrush = new SolidBrush(backgroundColor);
+            return backgroundBrush;
+        }
+
+        private static String GetThumbnail(PermissionType permission)
+        {
+            String thumbnail = String.Concat(AppDomain.CurrentDomain.BaseDirectory, "\\Images\\");
+
+            switch (permission)
+            {
+                case PermissionType.ReferenceInformation:
+                {
+                    thumbnail = String.Concat(thumbnail, "Orders - Gray - 36x36.png");
+                } break;
+
+                case PermissionType.DocumentsCollection:
+                {
+                    thumbnail = String.Concat(thumbnail, "Inventory - Gray - 36x36.png");
+                } break;
+
+                case PermissionType.ProfileInformation:
+                {
+                    thumbnail = String.Concat(thumbnail, "Home - Gray - 36x36.png");
+                } break;
+
+                case PermissionType.UserDatabase:
+                {
+                    thumbnail = String.Concat(thumbnail, "Customers - Gray - 36x36.png");
+                } break;
+
+                case PermissionType.Reports:
+                {
+                    thumbnail = String.Concat(thumbnail, "Reports - Gray - 36x36.png");
+                } break;
+            }
+
+            return thumbnail;
+        }
+
+        private static String GetActiveThumbnail(PermissionType permission)
+        {
+            String thumbnail = String.Concat(AppDomain.CurrentDomain.BaseDirectory, "\\Images\\");
+
+            switch (permission)
+            {
+                case PermissionType.ReferenceInformation:
+                    {
+                        thumbnail = String.Concat(thumbnail, "Orders - White - 36x36.png");
+                    } break;
+
+                case PermissionType.DocumentsCollection:
+                    {
+                        thumbnail = String.Concat(thumbnail, "Inventory - White - 36x36.png");
+                    } break;
+
+                case PermissionType.ProfileInformation:
+                    {
+                        thumbnail = String.Concat(thumbnail, "Home - White - 36x36.png");
+                    } break;
+
+                case PermissionType.UserDatabase:
+                    {
+                        thumbnail = String.Concat(thumbnail, "Customers - White - 36x36.png");
+                    } break;
+
+                case PermissionType.Reports:
+                    {
+                        thumbnail = String.Concat(thumbnail, "Reports - White - 36x36.png");
+                    } break;
+            }
+
+            return thumbnail;
         }
 
         #endregion

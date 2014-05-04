@@ -23,15 +23,6 @@ namespace Indigo.DesktopClient.ViewModel
     {
         private readonly IDataService _dataService;
 
-        #region Override
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.Analysis; }
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -165,7 +156,7 @@ namespace Indigo.DesktopClient.ViewModel
 
         private void NavigateToSignInPage()
         {
-            base.NavigateAction(this.ViewType, ApplicationView.SignIn, NotificationTokens.MainViewNavigationToken);
+            base.SendNavigationMessage(ApplicationView.SignIn, NavigationToken.MainViewNavigationToken);
         }
         
         #endregion
@@ -199,7 +190,7 @@ namespace Indigo.DesktopClient.ViewModel
 
             #region Navigation messages
 
-            Messenger.Default.Register<NavigationMessage>(this, NotificationTokens.MainViewNavigationToken, message =>
+            Messenger.Default.Register<NavigationMessage>(this, NavigationToken.MainViewNavigationToken, message =>
             {
                 if (message != null)
                 {
@@ -259,7 +250,7 @@ namespace Indigo.DesktopClient.ViewModel
 
             #region Autorization panel
 
-            Messenger.Default.Register<AuthorizationMessage>(this, NotificationTokens.AuthorizationPanelToken, message =>
+            Messenger.Default.Register<AuthorizationMessage>(this, NavigationToken.AuthorizationPanelToken, message =>
             {
                 if (message.IsAuthorized)
                 {

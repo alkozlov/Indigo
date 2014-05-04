@@ -4,12 +4,189 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:controls="clr-namespace:Indigo.DesktopClient.Controls"
         mc:Ignorable="d ignore"
         DataContext="{Binding DocumentsViewModel, Source={StaticResource Locator}}">
 
-    <StackPanel>
-        <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
-        <TextBlock Text="Documents Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
-    </StackPanel>
+    <UserControl.Resources>
+        <Style x:Key="DeleteRowsButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=grdDocuments, Path=SelectionSettings.SelectedRows.Count}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid HorizontalAlignment="Stretch" Margin="15">
+            <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
+        </Grid>
+
+        <ig:XamGrid Grid.Row="1" x:Name="grdDocuments" ItemsSource="{Binding Path=Documents}">
+            <ig:XamGrid.Columns>
+                <ig:TextColumn Key="DocumentFileName">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Документ"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="SizeAsString">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Размер файла"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="AddedByUser">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="DocumentGuid">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="StorageFileName">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="Size">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="DocumentType">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+                <ig:TextColumn Key="IsCorrupted">
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Автор"></TextBlock>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+
+                <ig:TemplateColumnLayout Key="ShinglesStatistic">
+                    <ig:TemplateColumnLayout.Template>
+                        <DataTemplate>
+                            <Border CornerRadius="3">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="#FF494949" />
+                                        <GradientStop Color="#FF333333" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"  />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Background="White" Grid.Row="1" d:LayoutOverrides="GridBox" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                                        <Grid Margin="1" Background="#FF929191">
+                                            <Image Source="../../Images/Doc_Format - 600x600.png" MaxWidth="100" Grid.Column="0" Grid.Row="0" Margin="1" />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" >
+                                        <Grid VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="20"/>
+                                                <RowDefinition Height="20"/>
+                                                <RowDefinition Height="20"/>
+                                                <RowDefinition Height="20"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock x:Name="Contact_Name" Text="Text" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Foreground="#FFFFFFFF" FontSize="20" FontFamily="Segoe UI" />
+                                            <TextBlock x:Name="Customer_ID" Text="Text" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Foreground="White" />
+                                            <TextBlock x:Name="Title" Text="Text" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Foreground="White" />
+                                            <TextBlock x:Name="Country" Text="Text" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Foreground="White" />
+                                            <TextBlock x:Name="Phone" Text="Text" VerticalAlignment="Top" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Foreground="White" />
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" Margin="0,0,5,0" Opacity="0.5"/>
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" Margin="0,0,5,0" Opacity="0.5"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" Margin="0,0,5,0" Opacity="0.5"/>
+                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" VerticalAlignment="Top" Margin="0,0,5,0" Opacity="0.5"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ig:TemplateColumnLayout.Template>
+                </ig:TemplateColumnLayout>
+            </ig:XamGrid.Columns>
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.PagerSettings>
+                <ig:PagerSettings AllowPaging="Both" PageSize="20"  />
+            </ig:XamGrid.PagerSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.FilteringSettings>
+                <ig:FilteringSettings AllowFiltering="FilterMenu" FilteringScope="ColumnLayout" />
+            </ig:XamGrid.FilteringSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.SelectionSettings>
+                <ig:SelectionSettings CellClickAction="SelectRow" RowSelection="Multiple" CellSelection="None" />
+            </ig:XamGrid.SelectionSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.RowSelectorSettings>
+                <ig:RowSelectorSettings Visibility="Visible" EnableRowNumbering="True"/>
+            </ig:XamGrid.RowSelectorSettings>
+            <!--#END SNIPPET#-->
+        </ig:XamGrid>
+
+        <Grid Grid.Row="2" Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- This button will serve to trigger the "delete record" command only. -->
+            <Button Content="Удалить Документы" Style="{StaticResource DeleteRowsButtonStyle}" Width="150" Height="30"
+                Command="{Binding Path=DeleteSelectedDocumentsCommand, IsAsync=True}"  
+                CommandParameter="{Binding ElementName=grdDocuments, Path=SelectionSettings.SelectedRows}">
+            </Button>
+
+            <controls:IndigoStatusBar Grid.Row="1" DataContext="{Binding Path=ToolbarNotification}" Margin="15,0,0,0"></controls:IndigoStatusBar>
+        </Grid>
+    </Grid>
 </UserControl>

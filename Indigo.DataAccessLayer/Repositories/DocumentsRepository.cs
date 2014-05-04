@@ -97,6 +97,8 @@
                     base.DataContext.Documents.Remove(entity);
                     await base.DataContext.SaveChangesAsync();
                 }
+
+                return;
             }
 
             throw new EntitySqlException("Database not accessible.");

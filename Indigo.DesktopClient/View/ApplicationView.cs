@@ -40,6 +40,10 @@
 
         TextAnalisys = 18,
 
-        AddDocuments = 19
+        AddDocuments = 19,
+
+        Subjects = 20,
+
+        StopWords = 21
     }
 }

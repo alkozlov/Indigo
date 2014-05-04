@@ -19,6 +19,16 @@
         private const String DefaultTempApplicationFolder = @"Indigo\\";
         private const String DefaultTempLematizationFilePostfix = "_LEM";
 
+        #region Events
+
+        public event EventHandler<DocumentProcessingEventArgs> OnDocumentProcessing;
+        public event EventHandler<DocumentProcessedEventArgs> OnDocumentProcessed;
+        public event EventHandler<DocumentProcessErrorEventArgs> OnDocumentProcessError;
+        public event EventHandler OnDocumentsProcessing;
+        public event EventHandler OnDocumentsProcessed;
+
+        #endregion
+
         #region Singltone
 
         private static DocumentProcessor _current;
@@ -63,68 +73,83 @@
                 return;
             }
 
+            this.OnDocumentsProcessing(this, null);
             await Task.Run(() => existingFiles.AsParallel().ForAll(ProcessFile));
         }
 
         private async void ProcessFile(String file)
         {
+            DocumentProcessingEventArgs documentProcessingEventArgs = new DocumentProcessingEventArgs(file);
+            this.OnDocumentProcessing(this, documentProcessingEventArgs);
+            
             Stopwatch stopwatch = new Stopwatch();
             String tempFileOnlyName = Guid.NewGuid().ToString("N");
             String tempTextFileName = String.Format("{0}.txt", tempFileOnlyName);
             String tempTextFileFullName = String.Concat(this.Configurations.TempApplicationFolder, tempTextFileName);
-
-            #region Shigles algoritm
-
-            // 1. Add new docuent to database and storage
-            Document storedDocument = await Document.CreateAsync(file, IndigoUserPrincipal.Current.Identity.User);
-
-            // 2. Convert original document to txt format and create copy in temp folder
-            using (IDocumentConverter converter = new MsWordDocumentConverter())
-            {
-                await converter.ConvertDocumentToTextFileAsync(file, tempTextFileFullName);
-            }
+            String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName, this.Configurations.TempLematizationFilePostfix);
+            String tempLematizationFileFullName = String.Concat(this.Configurations.TempApplicationFolder, tempLematizationFileName);
 
             try
             {
-                Debug.WriteLine("===========> D{0}: Shingle algorithm begin.", storedDocument.DocumentId);
-                stopwatch.Reset();
-                stopwatch.Start();
+                #region Shigles algoritm
 
-                // 3. Start shingles algorithm
-                String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName,
-                    this.Configurations.TempLematizationFilePostfix);
-                String tempLematizationFileFullName = String.Concat(this.Configurations.TempApplicationFolder,
-                    tempLematizationFileName);
-                await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
+                // 1. Add new docuent to database and storage
+                Document storedDocument = await Document.CreateAsync(file, IndigoUserPrincipal.Current.Identity.User);
 
-                // Parse temp documents to words
-                var words = (await ParserTool.Current.ParseFileAsync(tempLematizationFileFullName)).ToList();
-                
-                // TODO: get stop words from database
-                List<String> stopWords = new List<String>();
-
-                foreach (var shihgleSize in this.Configurations.ShihgleSizes)
+                // 2. Convert original document to txt format and create copy in temp folder
+                using (IDocumentConverter converter = new MsWordDocumentConverter())
                 {
-                    // Build shingle list for each shingle size
-                    ShingleList shingles = await ShingleList.CreateAsync(words, stopWords, shihgleSize, storedDocument.DocumentId);
-
-                    // Calculate check sum for shingles and save them to database
-                    CheckSumCollection checkSumCollection = await CheckSumCollection.CreateAsync(shingles, HashAlgorithmType.SHA256);
-                    await checkSumCollection.SaveAsync();
+                    await converter.ConvertDocumentToTextFileAsync(file, tempTextFileFullName);
                 }
 
-                stopwatch.Stop();
-                Debug.WriteLine("===========> D{0}: Shingle algorithm complete. Execiting time - {1} ms.", storedDocument.DocumentId, stopwatch.ElapsedMilliseconds);
-                // ====> End shingles algorithm
+                try
+                {
+                    Debug.WriteLine("===========> D{0}: Shingle algorithm begin.", storedDocument.DocumentId);
+                    stopwatch.Reset();
+                    stopwatch.Start();
+
+                    // 3. Start shingles algorithm
+                    await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
+
+                    // Parse temp documents to words
+                    var words = (await ParserTool.Current.ParseFileAsync(tempLematizationFileFullName)).ToList();
+                
+                    // TODO: get stop words from database
+                    List<String> stopWords = new List<String>();
+
+                    foreach (var shihgleSize in this.Configurations.ShihgleSizes)
+                    {
+                        // Build shingle list for each shingle size
+                        ShingleList shingles = await ShingleList.CreateAsync(words, stopWords, shihgleSize, storedDocument.DocumentId);
+
+                        // Calculate check sum for shingles and save them to database
+                        CheckSumCollection checkSumCollection = await CheckSumCollection.CreateAsync(shingles, HashAlgorithmType.SHA256);
+                        await checkSumCollection.SaveAsync();
+                    }
+
+                    stopwatch.Stop();
+                    Debug.WriteLine("===========> D{0}: Shingle algorithm complete. Execiting time - {1} ms.", storedDocument.DocumentId, stopwatch.ElapsedMilliseconds);
+                    // ====> End shingles algorithm
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error{0}: {1}", e.HResult, e.Message);
+                    throw;
+                }
+                finally
+                {
+                    // Remove temp files
+                    File.Delete(tempTextFileFullName);
+                    File.Delete(tempLematizationFileFullName);
+                }
+
+                DocumentProcessedEventArgs documentProcessedEventArgs = new DocumentProcessedEventArgs(file);
+                this.OnDocumentProcessed(this, documentProcessedEventArgs);
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error{0}: {1}", e.HResult, e.Message);
-            }
-            finally
-            {
-                // Remove temp file
-                File.Delete(tempTextFileFullName);
+                DocumentProcessErrorEventArgs documentProcessErrorEventArgs = new DocumentProcessErrorEventArgs(file, e);
+                this.OnDocumentProcessError(this, documentProcessErrorEventArgs);
             }
 
             #endregion

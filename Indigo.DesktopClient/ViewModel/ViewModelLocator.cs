@@ -9,8 +9,6 @@
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 */
 
-using System.Linq;
-
 namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
@@ -58,6 +56,8 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<DocumentAnalysisViewModel>();
             SimpleIoc.Default.Register<TextAnalysisViewModel>();
             SimpleIoc.Default.Register<AddDocumentsViewModel>();
+            SimpleIoc.Default.Register<SubjectsViewModel>();
+            SimpleIoc.Default.Register<StopWordsViewModel>();
         }
 
         /// <summary>
@@ -271,6 +271,34 @@ namespace Indigo.DesktopClient.ViewModel
         }
 
         /// <summary>
+        /// Gets the SubjectsViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public SubjectsViewModel SubjectsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SubjectsViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the StopWordsViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public StopWordsViewModel StopWordsViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<StopWordsViewModel>();
+            }
+        }
+
+        /// <summary>
         /// Cleans up all the resources.
         /// </summary>
         public static void Cleanup()
@@ -285,6 +313,7 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Unregister<UsersViewModel>();
             SimpleIoc.Default.Unregister<ReportsViewModel>();
             SimpleIoc.Default.Unregister<AddDocumentsViewModel>();
+            SimpleIoc.Default.Unregister<SubjectsViewModel>();
 
             SimpleIoc.Default.Register<SignInViewModel>();
             SimpleIoc.Default.Register<PenthouseViewModel>();
@@ -296,6 +325,7 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<UsersViewModel>();
             SimpleIoc.Default.Register<ReportsViewModel>();
             SimpleIoc.Default.Register<AddDocumentsViewModel>();
+            SimpleIoc.Default.Register<SubjectsViewModel>();
         }
     }
 }

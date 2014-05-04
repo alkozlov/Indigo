@@ -19,15 +19,6 @@ namespace Indigo.DesktopClient.ViewModel.Partial
     /// </summary>
     public class ProfileViewModel : CommonPartialViewModel
     {
-        #region Overrides
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.Profile; }
-        }
-
-        #endregion
-
         public delegate void LoadViewModelHandler(UserAccount user);
 
         public event LoadViewModelHandler LoadViewModel;

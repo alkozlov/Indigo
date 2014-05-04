@@ -49,6 +49,10 @@
     <Compile Include="Account\PermissionType.cs" />
     <Compile Include="Document\Document.cs" />
     <Compile Include="Document\DocumentList.cs" />
+    <Compile Include="Document\StopWord.cs" />
+    <Compile Include="Document\StopWordList.cs" />
+    <Compile Include="Document\Subject.cs" />
+    <Compile Include="Document\SubjectList.cs" />
     <Compile Include="Helpers\CryptographyHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,7 +77,12 @@
     <Compile Include="Shingles\SHA512Hasher.cs" />
     <Compile Include="Shingles\Shingle.cs" />
     <Compile Include="Shingles\ShingleList.cs" />
+    <Compile Include="Storage\LocalStorageConnection.cs" />
+    <Compile Include="Storage\ServerStorageConnection.cs" />
+    <Compile Include="Storage\StorageConnection.cs" />
+    <Compile Include="Storage\StorageConnector.cs" />
     <Compile Include="Storage\StorageProvider.cs" />
+    <Compile Include="Storage\StorageType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Indigo.DataAccessLayer\Indigo.DataAccessLayer.csproj">

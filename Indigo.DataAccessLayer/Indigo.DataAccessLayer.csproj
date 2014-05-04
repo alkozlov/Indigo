@@ -51,6 +51,8 @@
     <Compile Include="IRepositories\IDocumentsRepository.cs" />
     <Compile Include="IRepositories\IPermissionsRepository.cs" />
     <Compile Include="IRepositories\IShinglesRepository.cs" />
+    <Compile Include="IRepositories\IStopWordsRepository.cs" />
+    <Compile Include="IRepositories\ISubjectsRepository.cs" />
     <Compile Include="IRepositories\IUserAccountRepository.cs" />
     <Compile Include="Migrations\201404231135309_InitialCreate.cs" />
     <Compile Include="Migrations\201404231135309_InitialCreate.Designer.cs">
@@ -64,9 +66,23 @@
     <Compile Include="Migrations\201404240842575_Shingles_Table_Add.Designer.cs">
       <DependentUpon>201404240842575_Shingles_Table_Add.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405021048005_Table_Subjects_Add.cs" />
+    <Compile Include="Migrations\201405021048005_Table_Subjects_Add.Designer.cs">
+      <DependentUpon>201405021048005_Table_Subjects_Add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.cs" />
+    <Compile Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.Designer.cs">
+      <DependentUpon>201405031024313_Table_Subjects_PR_Name_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405031718206_Table_StopWords_Add.cs" />
+    <Compile Include="Migrations\201405031718206_Table_StopWords_Add.Designer.cs">
+      <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountPermission.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\StopWord.cs" />
+    <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\PermissionAccessType.cs" />
     <Compile Include="Models\Shingle.cs" />
@@ -76,6 +92,8 @@
     <Compile Include="Repositories\DocumentsRepository.cs" />
     <Compile Include="Repositories\PermissionsRepository.cs" />
     <Compile Include="Repositories\ShinglesRepository.cs" />
+    <Compile Include="Repositories\StopWordsRepository.cs" />
+    <Compile Include="Repositories\SubjectsRepository.cs" />
     <Compile Include="Repositories\UserAccountRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +109,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404240842575_Shingles_Table_Add.resx">
       <DependentUpon>201404240842575_Shingles_Table_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405021048005_Table_Subjects_Add.resx">
+      <DependentUpon>201405021048005_Table_Subjects_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.resx">
+      <DependentUpon>201405031024313_Table_Subjects_PR_Name_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405031718206_Table_StopWords_Add.resx">
+      <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

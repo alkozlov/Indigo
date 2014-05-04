@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:models="clr-namespace:Indigo.DesktopClient.Model.PenthouseModels"
         mc:Ignorable="d ignore"
         DataContext="{Binding AddDocumentsViewModel, Source={StaticResource Locator}}">
 
@@ -30,45 +31,134 @@
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         </Style>
-    </UserControl.Resources>
-
-    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
-        <Button Content="Выбрать файлы" Width="150" Style="{DynamicResource SquareButtonStyle}"
-                Command="{Binding Path=SelectDocumentsCommand, IsAsync=True}" HorizontalAlignment="Center"></Button>
         
-        <ListView ItemsSource="{Binding Path=SelectedDocumets}">
+        <DataTemplate DataType="{x:Type models:DocumentType}">
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Width" Value="100"/>
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Top"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="{x:Static models:DocumentType.Doc}">
+                                    <Setter Property="Source" Value="../../Images/Doc_Format - 600x600.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding}" Value="{x:Static models:DocumentType.Docx}">
+                                    <Setter Property="Source" Value="../../Images/Docx_Format - 600x600.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding}" Value="{x:Static models:DocumentType.Odt}">
+                                    <Setter Property="Source" Value="../../Images/Odt_Format - 600x600.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding}" Value="{x:Static models:DocumentType.Rtf}">
+                                    <Setter Property="Source" Value="../../Images/Rtf_Format - 600x600.png"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:ConsoleMessage}">
+            <StackPanel Orientation="Horizontal">
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Width" Value="24"/>
+                            <Setter Property="Height" Value="24"/>
+                            <Setter Property="Margin" Value="15,0,0,0"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:ConsoleMessageType.Success}">
+                                    <Setter Property="Source" Value="../../Images/Success-status.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:ConsoleMessageType.Error}">
+                                    <Setter Property="Source" Value="../../Images/Error-status.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:ConsoleMessageType.Warning}">
+                                    <Setter Property="Source" Value="../../Images/Warning-status.png"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:ConsoleMessageType.Info}">
+                                    <Setter Property="Source" Value="../../Images/Info-status.png"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <TextBlock Text="{Binding Path=Text}">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Segoe UI"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="5,0,0,0"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="15,0,15,0">
+            <Button Content="Выбрать файлы" Width="150" Style="{DynamicResource SquareButtonStyle}"
+                Command="{Binding Path=SelectDocumentsCommand, IsAsync=True}" HorizontalAlignment="Center"></Button>
+
+            <ListView ItemsSource="{Binding Path=SelectedDocumets, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" Margin="10,10,0,0">
+                            <ContentControl Content="{Binding Path=DocumentType}"></ContentControl>
+                            
+                            <Grid Margin="10,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <DockPanel Grid.Row="0" Grid.Column="1">
+                                    <TextBlock Text="Имя файла:" Style="{StaticResource DisplayHederStyle}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=DocumentName}" Style="{StaticResource DisplayNameStyle}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=SizeAsString}" Margin="10,0,0,0" Style="{StaticResource DisplayDescriptionStyle}"></TextBlock>
+                                </DockPanel>
+
+                                <DockPanel Grid.Row="1" Grid.Column="1">
+                                    <TextBlock Text="Расположение:" Style="{StaticResource DisplayHederStyle}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=DocumentLocation}" Style="{StaticResource DisplayNameStyle}"></TextBlock>
+                                </DockPanel>
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Width="100" Content="Добавить" Style="{DynamicResource SquareButtonStyle}" HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom" Command="{Binding Path=ProcessDocumentsAsyncCommand, IsAsync=True}"></Button>
+        </StackPanel>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=ConsoleMessages}" Margin="15,0,15,0" Height="200">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" Margin="10,10,0,0">
-                        <Image Source="{Binding Path=Thumbnail}" Width="150" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left"></Image>
-                        <Grid Margin="10,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <DockPanel Grid.Row="0" Grid.Column="1">
-                                <TextBlock Text="Имя файла:" Style="{StaticResource DisplayHederStyle}"></TextBlock>
-                                <TextBlock Text="{Binding Path=DocumentName}" Style="{StaticResource DisplayNameStyle}"></TextBlock>
-                                <TextBlock Text="{Binding Path=SizeAsString}" Margin="10,0,0,0" Style="{StaticResource DisplayDescriptionStyle}"></TextBlock>
-                            </DockPanel>
-
-                            <DockPanel Grid.Row="1" Grid.Column="1">
-                                <TextBlock Text="Расположение:" Style="{StaticResource DisplayHederStyle}"></TextBlock>
-                                <TextBlock Text="{Binding Path=DocumentLocation}" Style="{StaticResource DisplayNameStyle}"></TextBlock>
-                            </DockPanel>
-                        </Grid>
-                    </DockPanel>
+                    <ContentControl Content="{Binding}"></ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
-        <Button Width="100" Content="Добавить" Style="{DynamicResource SquareButtonStyle}" HorizontalAlignment="Stretch"
-                VerticalAlignment="Bottom" Command="{Binding Path=ProcessDocumentsAsyncCommand, IsAsync=True}"></Button>
-    </StackPanel>
+    </Grid>
 </UserControl>

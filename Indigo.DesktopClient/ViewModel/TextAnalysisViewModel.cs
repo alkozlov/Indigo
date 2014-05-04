@@ -22,15 +22,6 @@ namespace Indigo.DesktopClient.ViewModel
 
         #endregion
 
-        #region Overries
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.TextAnalisys; }
-        }
-
-        #endregion
-
         #region Commands
         #endregion
     }

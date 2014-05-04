@@ -21,14 +21,5 @@ namespace Indigo.DesktopClient.ViewModel.Partial
         }
 
         #endregion
-
-        #region Overrides
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.Reports; }
-        }
-
-        #endregion
     }
 }

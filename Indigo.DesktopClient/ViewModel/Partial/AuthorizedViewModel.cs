@@ -32,11 +32,6 @@ namespace Indigo.DesktopClient.ViewModel.Partial
         {
         }
 
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.AuthorizedCommandPanel; }
-        }
-
         /// <summary>
         /// Gets the UserFullName.
         /// </summary>
@@ -70,7 +65,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
 
         private void NavigateToPenthouse()
         {
-            base.NavigateAction(this.ViewType, ApplicationView.Penthouse, NotificationTokens.MainViewNavigationToken);
+            base.SendNavigationMessage(ApplicationView.Penthouse, NavigationToken.MainViewNavigationToken);
         }
 
         public ICommand SignOutCommand
@@ -93,7 +88,7 @@ namespace Indigo.DesktopClient.ViewModel.Partial
                 ViewModelLocator.Cleanup();
 
                 base.SignoutMessageSend();
-                base.NavigateAction(this.ViewType, ApplicationView.HomaPage, NotificationTokens.MainViewNavigationToken);
+                base.SendNavigationMessage(ApplicationView.HomaPage, NavigationToken.MainViewNavigationToken);
             }
         }
 

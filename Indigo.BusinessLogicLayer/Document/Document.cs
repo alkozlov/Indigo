@@ -1,4 +1,5 @@
-﻿using Indigo.BusinessLogicLayer.Storage;
+﻿using System.Linq;
+using Indigo.BusinessLogicLayer.Shingles;
 
 namespace Indigo.BusinessLogicLayer.Document
 {
@@ -10,6 +11,7 @@ namespace Indigo.BusinessLogicLayer.Document
 
     using DataModels = Indigo.DataAccessLayer.Models;
     using Indigo.BusinessLogicLayer.Account;
+    using Indigo.BusinessLogicLayer.Storage;
     using Indigo.DataAccessLayer.IRepositories;
     using Indigo.DataAccessLayer.Repositories;
 
@@ -60,8 +62,41 @@ namespace Indigo.BusinessLogicLayer.Document
                 dataDocument = await documentsRepository.CreateAsync(dataDocument);
                 Document document = ConvertToBusinessObject(dataDocument);
 
-                // 2. Add file to storage
-                StorageProvider.Current.AddFileToStorage(originalFileName, document.StoredFileName);
+                // 2. Add file to local and server storages
+                // 2.1. Local storage
+                using (StorageConnection localStorageConnection = StorageConnector.GetStorageConnection(StorageType.Local))
+                {
+                    if (localStorageConnection.IsAvailable)
+                    {
+                        localStorageConnection.UploadFile(originalFileName, document.StoredFileName);
+                    }
+                }
+
+                // TODO: implement leter
+                // 2.2. Remote storage
+                //using (StorageConnection serverStorageConnection = StorageConnector.GetStorageConnection(StorageType.Server))
+                //{
+                //    if (serverStorageConnection.IsAvailable)
+                //    {
+                //        serverStorageConnection.UploadFile(originalFileName, document.StoredFileName);
+                //    }
+                //}
+
+                return document;
+            }
+        }
+
+        public static async Task<Document> GetAsync(Guid documentGuid)
+        {
+            if (documentGuid.Equals(Guid.Empty))
+            {
+                throw new ArgumentException("Empty document guid.", "documentGuid");
+            }
+
+            using (IDocumentsRepository documentsRepository = new DocumentsRepository())
+            {
+                DataModels.Document dataDocument = await documentsRepository.GetByGuid(documentGuid);
+                Document document = dataDocument != null ? ConvertToBusinessObject(dataDocument) : null;
 
                 return document;
             }
@@ -69,6 +104,15 @@ namespace Indigo.BusinessLogicLayer.Document
 
         public async Task DeleteAsync()
         {
+            // Delete shingles
+            var availableShingleSizes = Enum.GetValues(typeof(AnalysisAccuracy)).Cast<AnalysisAccuracy>().ToArray();
+            foreach (var availableShingleSize in availableShingleSizes)
+            {
+                ShingleList shingleList = await ShingleList.GetAsync(this.DocumentId, availableShingleSize);
+                await shingleList.DeleteAllAsync();
+            }
+
+            // Delete document
             using (IDocumentsRepository documentsRepository = new DocumentsRepository())
             {
                 await documentsRepository.DeleteDocumentAsync(this.DocumentId);
@@ -88,7 +132,7 @@ namespace Indigo.BusinessLogicLayer.Document
             return document;
         }
 
-        private static DataModels.Document ConvertToDataModelOject(Document document)
+        private static DataModels.Document ConvertToDataModelObject(Document document)
         {
             Mapper.CreateMap<Document, DataModels.Document>()
                 .ForMember(dest => dest.OriginalName, opt => opt.MapFrom(src => Path.GetFileNameWithoutExtension(document.OriginalFileName)))

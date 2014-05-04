@@ -30,36 +30,123 @@
             <DataTemplate DataType="{x:Type pertialModel:AddDocumentsViewModel}">
                 <partialView:AddDocumentsView />
             </DataTemplate>
+            <ControlTemplate x:Key="ListBoxControlTemplate1" TargetType="{x:Type ListBox}">
+            	<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="True">
+            		<ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+            			<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            		</ScrollViewer>
+            	</Border>
+            	<ControlTemplate.Triggers>
+            		<Trigger Property="IsEnabled" Value="False">
+            			<Setter Property="Background" TargetName="Bd" Value="White"/>
+            			<Setter Property="BorderBrush" TargetName="Bd" Value="#FFD9D9D9"/>
+            		</Trigger>
+            		<MultiTrigger>
+            			<MultiTrigger.Conditions>
+            				<Condition Property="IsGrouping" Value="True"/>
+            				<Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="False"/>
+            			</MultiTrigger.Conditions>
+            			<Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+            		</MultiTrigger>
+            	</ControlTemplate.Triggers>
+            </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     
-    <Grid ShowGridLines="True">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <ListView ItemsSource="{Binding Path=Actions, Mode=TwoWay}"
-                  SelectedItem="{Binding Path=SelectedActionItem}">
+        
+        <Grid VerticalAlignment="Stretch">
+            <ListView ItemsSource="{Binding Path=Actions, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedActionItem, Mode=TwoWay}" Name="lstMenu"
+                      VerticalAlignment="Stretch" Template="{DynamicResource ListBoxControlTemplate1}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding Path=InitializeModelCommand}" CommandParameter="{Binding Path=SelectedActionItem}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
+                <ListView.Resources>
+                    <!-- Template that is used upon selection of an Area -->
+                    <ControlTemplate x:Key="SelectedTemplate" TargetType="ListViewItem">
+                        <StackPanel Width="80" Height="80" Background="#94A80C">
+                            <Image Width="36" Height="36" Source="{Binding Path=ActiveThumbnail}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                            <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ControlTemplate>
+
+                    <ControlTemplate x:Key="MouseOverTemplate" TargetType="ListViewItem">
+                        <StackPanel Width="80" Height="80" Background="#222222">
+                            <Image Width="36" Height="36" Source="{Binding Path=ActiveThumbnail}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                            <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ControlTemplate>
+
+                    <Style TargetType="{x:Type ListView}">
+                        <Setter Property="Background" Value="#222222"></Setter>
+                        <Setter Property="Width" Value="80"></Setter>
+                        <Setter Property="Margin" Value="0"></Setter>
+                        <Setter Property="Padding" Value="0"></Setter>
+                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                    </Style>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Width" Value="80"></Setter>
+                        <Setter Property="Height" Value="80"></Setter>
+                        <Setter Property="Margin" Value="0"></Setter>
+                        <Setter Property="Padding" Value="0"></Setter>
+                        <Setter Property="Background" Value="#222222"></Setter>
+                        <Setter Property="Foreground" Value="#80FFFFFF"></Setter>
+                        <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+                        <Setter Property="FontSize" Value="9"></Setter>
+                        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                        <Setter Property="BorderThickness" Value="0"></Setter>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Template" Value="{StaticResource SelectedTemplate}" />
+                                <Setter Property="Width" Value="80"></Setter>
+                                <Setter Property="Height" Value="80"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                                <Setter Property="Padding" Value="0"></Setter>
+                                <!--<Setter Property="Background" Value="#94A80C"></Setter>-->
+                                <!--<Setter Property="Background" Value="{Binding Path=SelectedActionItem.BackgroundColor}"></Setter>-->
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"></Condition>
+                                    <Condition Property="IsSelected" Value="False"></Condition>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Template" Value="{StaticResource MouseOverTemplate}" />
+                                    <Setter Property="Foreground" Value="White"></Setter>
+                                    <Setter Property="Width" Value="80"></Setter>
+                                    <Setter Property="Height" Value="80"></Setter>
+                                    <Setter Property="Margin" Value="0"></Setter>
+                                    <Setter Property="Padding" Value="0"></Setter>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <TextBlock Text="{Binding ActionName}"></TextBlock>
-                        </Grid>
+                        <StackPanel Width="80" Height="80">
+                            <Image Width="36" Height="36" Source="{Binding Path=Thumbnail}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                            <TextBlock Text="{Binding Path=ActionName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackPanel>
-
-        <ContentControl Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
+        </Grid>
+        
+        <ContentControl Grid.Row="0" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Content="{Binding SelectedViewModel, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
     </Grid>
 </UserControl>

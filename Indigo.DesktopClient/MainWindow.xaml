@@ -10,9 +10,10 @@
         xmlns:partial="clr-namespace:Indigo.DesktopClient.ViewModel.Partial"
         xmlns:partialView="clr-namespace:Indigo.DesktopClient.View.Partial"
         mc:Ignorable="d ignore"
-        Height="500"
-        Width="800"
+        Height="700"
+        Width="1000"
         Title="Indigo"
+        WindowState="Maximized"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
 
     <Window.Resources>

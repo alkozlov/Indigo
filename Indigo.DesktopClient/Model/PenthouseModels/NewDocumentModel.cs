@@ -28,6 +28,33 @@
             }
         }
 
-        public String Thumbnail { get; set; }
+        public DocumentType DocumentType
+        {
+            get
+            {
+                DocumentType documentType = DocumentType.Doc;
+
+                if (this.DocumentFullName.ToLower().EndsWith(".doc"))
+                {
+                    documentType = DocumentType.Doc;
+                }
+                else if (this.DocumentFullName.ToLower().EndsWith(".docx"))
+                {
+                    documentType = DocumentType.Docx;
+                }
+                else if (this.DocumentFullName.ToLower().EndsWith(".odt"))
+                {
+                    documentType = DocumentType.Odt;
+                }
+                else if (this.DocumentFullName.ToLower().EndsWith(".rtf"))
+                {
+                    documentType = DocumentType.Rtf;
+                }
+
+                return documentType;
+            }
+        }
+
+        public ProcessingStatus ProcessingStatus { get; set; }
     }
 }

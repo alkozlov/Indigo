@@ -23,56 +23,47 @@
              public String StoredFileName { get; set; }
              public UserAccount AddedByUser { get; set; }
              public DateTime CreatedDateUtc { get; set; }
-             public Boolean IsCorrupted { get; set; }
          }
 
         private DocumentList(IList<Item> list) : base(list)
         {
         }
 
-        public static async Task<DocumentList> GetAllDocumentsAsync(String storagePath)
+        public static async Task<DocumentList> GetAllDocumentsAsync()
         {
             using (IDocumentsRepository documentsRepository = new DocumentsRepository())
             {
                 List<DataModels.Document> dataDocuments = (await documentsRepository.GetAllDocumentsAsync()).ToList();
-                if (dataDocuments.Count == 0)
+                List<Item> documentItems = new List<Item>();
+                if (dataDocuments.Count > 0)
                 {
-                    return new DocumentList(new List<Item>());
-                }
-                else
-                {
-                    ConcurrentBag<Item> documents = new ConcurrentBag<Item>();
-                    dataDocuments.AsParallel().ForAll(async x =>
+                    foreach (var dataDocument in dataDocuments)
                     {
-                        UserAccount documentOwner = await UserAccount.GetUserAsync(x.AddedUserId);
-                        String originalFileName = String.Concat(x.OriginalName, x.FileExtension);
-                        String storedFileName = String.Concat(x.StoredName, x.FileExtension);
-                        Item item = new Item
+                        UserAccount documentOwner = await UserAccount.GetUserAsync(dataDocument.AddedUserId);
+                        String originalFileName = String.Concat(dataDocument.OriginalName, dataDocument.FileExtension);
+                        String storedFileName = String.Concat(dataDocument.StoredName, dataDocument.FileExtension);
+                        Item documentItem = new Item
                         {
-                            DocumentId = x.DocumentId,
-                            DocumentGuid = x.DocumentGuid,
+                            DocumentId = dataDocument.DocumentId,
+                            DocumentGuid = dataDocument.DocumentGuid,
                             OriginalFileName = originalFileName,
                             StoredFileName = storedFileName,
                             AddedByUser = documentOwner,
-                            CreatedDateUtc = x.CreateDateUtc,
-                            IsCorrupted = CheckFileIntegrity(String.Concat(storagePath, "\\", storedFileName))
+                            CreatedDateUtc = dataDocument.CreateDateUtc
                         };
 
-                        documents.Add(item);
-                    });
-
-                    return new DocumentList(documents.ToList());
+                        documentItems.Add(documentItem);
+                    }
                 }
+                
+                DocumentList documentList = new DocumentList(documentItems);
+                return documentList;
             }
         }
 
         #region Helpers
 
-        private static Boolean CheckFileIntegrity(String fileName)
-        {
-            FileInfo fileInfo = new FileInfo(fileName);
-            return fileInfo.Exists;
-        }
+        
 
         #endregion
     }

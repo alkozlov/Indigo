@@ -26,15 +26,6 @@ namespace Indigo.DesktopClient.ViewModel
 
         #endregion
 
-        #region Overrides
-
-        public override ApplicationView ViewType
-        {
-            get { return ApplicationView.HomaPage; }
-        }
-
-        #endregion
-
         #region Commands
 
         public ICommand DocumntAnalisysCommand
@@ -47,7 +38,7 @@ namespace Indigo.DesktopClient.ViewModel
 
         private void DocumentAnalysis()
         {
-            base.NavigateAction(this.ViewType, ApplicationView.DocumentAnalysis, NotificationTokens.MainViewNavigationToken);
+            base.SendNavigationMessage(ApplicationView.DocumentAnalysis, NavigationToken.MainViewNavigationToken);
         }
 
         public ICommand TextAnalisysCommand
@@ -60,7 +51,7 @@ namespace Indigo.DesktopClient.ViewModel
 
         private void TextAnalysis()
         {
-            base.NavigateAction(this.ViewType, ApplicationView.TextAnalisys, NotificationTokens.MainViewNavigationToken);
+            base.SendNavigationMessage(ApplicationView.TextAnalisys, NavigationToken.MainViewNavigationToken);
         }
 
         #endregion

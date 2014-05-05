@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:models="clr-namespace:Indigo.DesktopClient.Model.PenthouseModels"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
         mc:Ignorable="d ignore"
         DataContext="{Binding AddDocumentsViewModel, Source={StaticResource Locator}}">
 
@@ -104,6 +105,33 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+
+        <ControlTemplate x:Key="needleTemplate" TargetType="ig:RadialGaugeNeedle">
+
+            <!--
+        The Grid panel's Width property is not set in this template so 
+        that the RadialGaugeNeedle object can adjust the width based on its extent properties.
+        The objects within the Grid panel are set so they automatically fill the available space.
+        -->
+
+            <Grid Height="30">
+
+                <Path
+                Stretch="Fill"
+                Fill="{TemplateBinding Background}" 
+                Stroke="{TemplateBinding Stroke}" 
+                Data="M148.5,0.5 L148.50002,0.50000536 L151.5,0.50000536 L151.5,2.582355 L179.5,19.500002 L151.5,36.904938 L151.5,38.500004 L0.5,38.500004 L0.5,0.50000536 L148.5,0.50000536 z"
+                />
+
+
+                <TextBlock 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center" 
+                DataContext="{TemplateBinding Value}"
+                />
+
+            </Grid>
+        </ControlTemplate>
     </UserControl.Resources>
     
     <Grid>
@@ -111,6 +139,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="15,0,15,0">
             <Button Content="Выбрать файлы" Width="150" Style="{DynamicResource SquareButtonStyle}"
@@ -153,12 +185,50 @@
                 VerticalAlignment="Bottom" Command="{Binding Path=ProcessDocumentsAsyncCommand, IsAsync=True}"></Button>
         </StackPanel>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=ConsoleMessages}" Margin="15,0,15,0" Height="200">
+        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConsoleMessages}" Margin="15,0,15,0" Height="200">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}"></ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Margin="0,15,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Загрузка ЦР" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"
+                           FontFamily="Segoe UI" FontSize="16" Margin="0,0,0,5"></TextBlock>
+
+                <ig:XamRadialGauge Grid.Row="1" x:Name="radialGauge" Width="200">
+                    <ig:XamRadialGauge.Scales>
+                        <ig:RadialGaugeScale StartValue="0" EndValue="100">
+                            <ig:RadialGaugeScale.Needles>
+                                <ig:RadialGaugeNeedle Value="{Binding Path=CpuStatistic.CpuUsage}" AllowDrag="True" />
+                            </ig:RadialGaugeScale.Needles>
+                            <ig:RadialGaugeScale.LabelGroups>
+                                <ig:RadialGaugeLabelGroup Interval="10"/>
+                            </ig:RadialGaugeScale.LabelGroups>
+                            <ig:RadialGaugeScale.TickMarkGroups>
+                                <ig:RadialGaugeTickMarkGroup Interval="5" Margin="25"/>
+                            </ig:RadialGaugeScale.TickMarkGroups>
+
+                            <ig:RadialGaugeScale.Ranges>
+                                <ig:RadialGaugeRange InnerExtentStart="0.8" InnerExtentEnd="0.8" OuterExtent="0" StartValue="0" EndValue="35" Fill="#809ACD32"/>
+                                <ig:RadialGaugeRange InnerExtentStart="0.8" InnerExtentEnd="0.8" OuterExtent="0" StartValue="35" EndValue="70" Fill="#80FFD700"/>
+                                <ig:RadialGaugeRange InnerExtentStart="0.8" InnerExtentEnd="0.8" OuterExtent="0" StartValue="70" EndValue="100" Fill="#80FF6347"/>
+                            </ig:RadialGaugeScale.Ranges>
+                        </ig:RadialGaugeScale>
+                    </ig:XamRadialGauge.Scales>
+                </ig:XamRadialGauge>
+
+                <!--<TextBlock Grid.Row="2" Text="{Binding Path=CpuStatistic.CpuUsageAsString}" VerticalAlignment="Center"
+                           HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Segoe UI" FontSize="16" Margin="0,5,0,0"></TextBlock>-->
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>

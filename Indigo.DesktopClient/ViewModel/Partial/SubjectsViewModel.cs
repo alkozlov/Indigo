@@ -9,12 +9,12 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
 
+    using Infragistics.Controls.Grids;
+
     using Indigo.BusinessLogicLayer.Document;
     using Indigo.DesktopClient.CommandDelegates;
     using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.Model.PenthouseModels;
-
-    using Infragistics.Controls.Grids;
 
     /// <summary>
     /// This class contains properties that a View can data bind to.

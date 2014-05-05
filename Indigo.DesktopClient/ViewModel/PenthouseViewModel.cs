@@ -1,4 +1,6 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using Indigo.DesktopClient.View;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
     using System;
@@ -158,26 +160,31 @@
             {
                 case PermissionType.ReferenceInformation:
                 {
+                    base.ResetViewModel(ApplicationView.References);
                     this.SelectedViewModel = ServiceLocator.Current.GetInstance<ReferencesViewModel>();
                 } break;
 
                 case PermissionType.DocumentsCollection:
                 {
+                    base.ResetViewModel(ApplicationView.DocumentsDatabase);
                     this.SelectedViewModel = ServiceLocator.Current.GetInstance<DocumentsViewModel>();
                 } break;
 
                 case PermissionType.ProfileInformation:
                 {
+                    base.ResetViewModel(ApplicationView.Profile);
                     this.SelectedViewModel = ServiceLocator.Current.GetInstance<ProfileViewModel>();
                 } break;
 
                 case PermissionType.UserDatabase:
                 {
+                    base.ResetViewModel(ApplicationView.UsersDatabase);
                     this.SelectedViewModel = ServiceLocator.Current.GetInstance<UsersViewModel>();
                 } break;
 
                 case PermissionType.Reports:
                 {
+                    base.ResetViewModel(ApplicationView.Reports);
                     this.SelectedViewModel = ServiceLocator.Current.GetInstance<ReportsViewModel>();
                 } break;
             }
@@ -210,46 +217,6 @@
             });
 
             #endregion
-        }
-
-        #endregion
-
-        #region Helpers
-
-        private ViewModelBase GetTabContentViewModel(PermissionType permission)
-        {
-            switch (permission)
-            {
-                case PermissionType.ProfileInformation:
-                {
-                    return SimpleIoc.Default.GetInstance<ProfileViewModel>();
-                }
-
-                case PermissionType.DocumentsCollection:
-                {
-                    return SimpleIoc.Default.GetInstance<DocumentsViewModel>();
-                }
-
-                case PermissionType.ReferenceInformation:
-                {
-                    return SimpleIoc.Default.GetInstance<ReferencesViewModel>();
-                }
-
-                case PermissionType.UserDatabase:
-                {
-                    return SimpleIoc.Default.GetInstance<UsersViewModel>();
-                }
-
-                case PermissionType.Reports:
-                {
-                    return SimpleIoc.Default.GetInstance<ReportsViewModel>();
-                }
-                
-                default:
-                {
-                    return null;
-                }
-            }
         }
 
         #endregion

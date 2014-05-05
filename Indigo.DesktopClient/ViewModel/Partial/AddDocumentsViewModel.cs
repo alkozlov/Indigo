@@ -4,8 +4,10 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
@@ -33,6 +35,9 @@
         {
             this.SelectedDocumets = new ObservableCollection<NewDocumentModel>();
             this.ConsoleMessages = new ObservableCollection<ConsoleMessage>();
+            this.CpuStatistic = new CpuStatistic();
+
+            this.BeginMonitoringCpu();
 
             // Subscribe to document processor events
             DocumentProcessor.Current.OnDocumentProcessing += OnDocumentProcessingHandler;
@@ -103,6 +108,36 @@
 
                 this._consoleMessageses = value;
                 base.RaisePropertyChanged(ConsoleMessagePropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="CpuStatistic" /> property's name.
+        /// </summary>
+        public const string CpuStatisticPropertyName = "CpuStatistic";
+
+        private CpuStatistic _cpuStatistic;
+
+        /// <summary>
+        /// Sets and gets the CpuStatistic property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public CpuStatistic CpuStatistic
+        {
+            get
+            {
+                return this._cpuStatistic;
+            }
+
+            set
+            {
+                if (this._cpuStatistic == value)
+                {
+                    return;
+                }
+
+                this._cpuStatistic = value;
+                base.RaisePropertyChanged(CpuStatisticPropertyName);
             }
         }
 
@@ -197,19 +232,6 @@
                 ConsoleMessage consoleMessage = ConsoleMessageHelper.GetErrorMessage(message);
                 this.ConsoleMessages.Add(consoleMessage);
             });
-
-            //foreach (var document in SelectedDocumets)
-            //{
-            //    if (document.DocumentFullName.Equals(documentProcessErrorEventArgs.DocumentName))
-            //    {
-            //        App.Current.Dispatcher.Invoke(() =>
-            //        {
-            //            document.ProcessingStatus = ProcessingStatus.CompeteError;
-            //            String message = String.Format("Произошла ошибка при обработка документа '{0}'.", documentProcessErrorEventArgs.DocumentName);
-            //            this.DocumentsProcessedNotiication = base.GetErrorNotification(message);
-            //        });
-            //    }
-            //}
         }
 
         private void OnDocumentProcessedHandler(object sender, DocumentProcessedEventArgs documentProcessedEventArgs)
@@ -280,8 +302,36 @@
 
         #region Helpers
 
-        
+        private void BeginMonitoringCpu()
+        {
+            Thread thread = new Thread(() =>
+            {
+                CpuUsage cpuUsage = new CpuUsage();
 
+                try
+                {
+                    while (true)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            short cpuUsageData = cpuUsage.GetUsage();
+                            this.CpuStatistic = new CpuStatistic(cpuUsageData);
+                        });
+
+                        Thread.Sleep(250);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            });
+
+            thread.Priority = ThreadPriority.Highest;
+            thread.IsBackground = true;
+            thread.Start();
+        }
+        
         #endregion
     }
 }

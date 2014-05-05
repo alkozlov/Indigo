@@ -104,13 +104,8 @@ namespace Indigo.BusinessLogicLayer.Document
 
         public async Task DeleteAsync()
         {
-            // Delete shingles
-            var availableShingleSizes = Enum.GetValues(typeof(AnalysisAccuracy)).Cast<AnalysisAccuracy>().ToArray();
-            foreach (var availableShingleSize in availableShingleSizes)
-            {
-                ShingleList shingleList = await ShingleList.GetAsync(this.DocumentId, availableShingleSize);
-                await shingleList.DeleteAllAsync();
-            }
+            // Delete all document's shingles
+            await ShingleList.DeleteDocumentShingles(this.DocumentId);
 
             // Delete document
             using (IDocumentsRepository documentsRepository = new DocumentsRepository())

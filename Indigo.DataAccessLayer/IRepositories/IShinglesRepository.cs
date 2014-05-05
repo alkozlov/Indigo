@@ -16,5 +16,7 @@
         
         Task DeleteAsync(long shingleId);
         Task DeleteAllAsync(List<long> shingleIds);
+        Task DeleteAsync(Int32 documentId);
+        Task DeleteAsync(Int32 documentId, byte shingleSize);
     }
 }

@@ -52,11 +52,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net45\GalaSoft.MvvmLight.WPF45.dll</HintPath>
     </Reference>
+    <Reference Include="infragisticswpf4.controls.charts.xamdatachart.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="infragisticswpf4.controls.charts.xamgauge.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="infragisticswpf4.controls.grids.xamgrid.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.DataManager.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="infragisticswpf4.datapresenter.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="InfragisticsWPF4.DataVisualization.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.Editors.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="infragisticswpf4.reports.controls.charts.xamdatachart.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="InfragisticsWPF4.Reports.Controls.Common.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="InfragisticsWPF4.Reports.Controls.DataVisualization.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.12.1.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -110,6 +116,7 @@
     <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Helpers\ConsoleMessageHelper.cs" />
+    <Compile Include="Helpers\CpuUsage.cs" />
     <Compile Include="Helpers\DocumentProcessedEventArgs.cs" />
     <Compile Include="Helpers\DocumentProcessErrorEventArgs.cs" />
     <Compile Include="Helpers\DocumentProcessingEventArgs.cs" />
@@ -126,6 +133,7 @@
     <Compile Include="Model\Notifications\NavigationToken.cs" />
     <Compile Include="Model\Notifications\SystemNotification.cs" />
     <Compile Include="Model\PenthouseModels\ConsoleMessage.cs" />
+    <Compile Include="Model\PenthouseModels\CpuStatistic.cs" />
     <Compile Include="Model\PenthouseModels\DocumentModel.cs" />
     <Compile Include="Model\PenthouseModels\DocumentType.cs" />
     <Compile Include="Model\PenthouseModels\NewDocumentModel.cs" />
@@ -135,6 +143,7 @@
     <Compile Include="Model\PenthouseModels\ReferenceItem.cs" />
     <Compile Include="Model\PenthouseModels\StopWordModel.cs" />
     <Compile Include="Model\PenthouseModels\SubjectModel.cs" />
+    <Compile Include="Model\PenthouseModels\UserModel.cs" />
     <Compile Include="Model\ProfileModel.cs" />
     <Compile Include="ViewModel\AnalysisViewModel.cs" />
     <Compile Include="ViewModel\CommonPartialViewModel.cs" />

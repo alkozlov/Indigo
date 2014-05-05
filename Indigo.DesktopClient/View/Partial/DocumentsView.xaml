@@ -17,6 +17,17 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <SolidColorBrush x:Key="AxisLabelBorderBrush" Color="#FF1C82AD" />
+        
+        <LinearGradientBrush x:Key="XAxisLabelBackground" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="#FF3BB7EB"/>
+            <GradientStop Color="#FF2686AE" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="YAxisLabelBackground" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="#FF676767"/>
+            <GradientStop Color="#FF3E3E3E" Offset="1"/>
+        </LinearGradientBrush>
     </UserControl.Resources>
 
     <Grid>
@@ -30,7 +41,7 @@
             <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
         </Grid>
 
-        <ig:XamGrid Grid.Row="1" x:Name="grdDocuments" ItemsSource="{Binding Path=Documents}">
+        <ig:XamGrid Grid.Row="1" x:Name="grdDocuments" ItemsSource="{Binding Path=Documents}" ColumnWidth="Auto">
             <ig:XamGrid.Columns>
                 <ig:TextColumn Key="DocumentFileName">
                     <ig:TextColumn.HeaderTemplate>
@@ -119,7 +130,14 @@
                                         </Grid>
                                     </Grid>
                                     <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" >
-                                        <Grid VerticalAlignment="Top">
+                                        <ListView ItemsSource="{Binding}">
+                                            <ListView.Template>
+                                                <ControlTemplate>
+                                                    <TextBlock Text="{Binding Key}"></TextBlock>
+                                                </ControlTemplate>
+                                            </ListView.Template>
+                                        </ListView>
+                                        <!--<Grid VerticalAlignment="Top">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
@@ -131,6 +149,7 @@
                                                 <RowDefinition Height="20"/>
                                                 <RowDefinition Height="20"/>
                                             </Grid.RowDefinitions>
+                                            
                                             <TextBlock x:Name="Contact_Name" Text="Text" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Foreground="#FFFFFFFF" FontSize="20" FontFamily="Segoe UI" />
                                             <TextBlock x:Name="Customer_ID" Text="Text" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Foreground="White" />
                                             <TextBlock x:Name="Title" Text="Text" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Foreground="White" />
@@ -140,7 +159,7 @@
                                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" Margin="0,0,5,0" Opacity="0.5"/>
                                             <TextBlock Grid.Row="3" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" Margin="0,0,5,0" Opacity="0.5"/>
                                             <TextBlock Grid.Row="4" Grid.Column="0" Text="Text" TextWrapping="Wrap" HorizontalAlignment="Left" Foreground="White" VerticalAlignment="Top" Margin="0,0,5,0" Opacity="0.5"/>
-                                        </Grid>
+                                        </Grid>-->
                                     </Grid>
                                 </Grid>
                             </Border>

@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using Indigo.BusinessLogicLayer.Document;
-using Indigo.BusinessLogicLayer.Shingles;
-using Indigo.BusinessLogicLayer.Storage;
-using Indigo.DesktopClient.CommandDelegates;
-using Indigo.DesktopClient.Model;
-using Indigo.DesktopClient.Model.Notifications;
-using Indigo.DesktopClient.Model.PenthouseModels;
-using Indigo.DesktopClient.View;
-using System.Threading.Tasks;
-using Infragistics.Controls.Grids;
-
-namespace Indigo.DesktopClient.ViewModel.Partial
+﻿namespace Indigo.DesktopClient.ViewModel.Partial
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight.Command;
+
+    using Infragistics.Controls.Grids;
+
+    using Indigo.BusinessLogicLayer.Document;
+    using Indigo.BusinessLogicLayer.Shingles;
+    using Indigo.BusinessLogicLayer.Storage;
+    using Indigo.DesktopClient.CommandDelegates;
+    using Indigo.DesktopClient.Model.Notifications;
+    using Indigo.DesktopClient.Model.PenthouseModels;
+    using Indigo.DesktopClient.View;
+
     /// <summary>
     /// This class contains properties that a View can data bind to.
     /// <para>
@@ -144,37 +144,37 @@ namespace Indigo.DesktopClient.ViewModel.Partial
                                 removedRecords++;
                             }
                         }
+                    }
 
-                        if (removedRecords > 0)
+                    if (removedRecords > 0)
+                    {
+                        String toolbarStatusMessage;
+                        if (removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("1"))
                         {
-                            String toolbarStatusMessage;
-                            if (removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("1"))
+                            toolbarStatusMessage = String.Format("Удалена {0} запись.", removedRecords);
+                        }
+                        else
+                        {
+                            if (removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("2") ||
+                                removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("3") ||
+                                removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("4"))
                             {
-                                toolbarStatusMessage = String.Format("Удалена {0} запись.", removedRecords);
+                                toolbarStatusMessage = String.Format("Удалено {0} записи.", removedRecords);
                             }
                             else
                             {
-                                if (removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("2") ||
-                                    removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("3") ||
-                                    removedRecords.ToString(CultureInfo.InvariantCulture).EndsWith("4"))
-                                {
-                                    toolbarStatusMessage = String.Format("Удалено {0} записи.", removedRecords);
-                                }
-                                else
-                                {
-                                    toolbarStatusMessage = String.Format("Удалено {0} записей.", removedRecords);
-                                }
+                                toolbarStatusMessage = String.Format("Удалено {0} записей.", removedRecords);
                             }
-
-                            this.ToolbarNotification = base.GetSuccessNotification(toolbarStatusMessage);
                         }
-                        await LoadDocumentsAsync();
+
+                        this.ToolbarNotification = base.GetSuccessNotification(toolbarStatusMessage);
                     }
+                    await LoadDocumentsAsync();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    
-                    throw;
+                    String errorMessage = "Произошло непредвиденное исключение. Попробуйте еще раз.";
+                    this.ToolbarNotification = base.GetErrorNotification(errorMessage);
                 }
             }
         }

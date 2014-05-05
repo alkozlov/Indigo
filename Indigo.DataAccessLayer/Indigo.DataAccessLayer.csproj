@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201405031718206_Table_StopWords_Add.Designer.cs">
       <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405050727316_SP_DELETE_ShingleTable.cs" />
+    <Compile Include="Migrations\201405050727316_SP_DELETE_ShingleTable.Designer.cs">
+      <DependentUpon>201405050727316_SP_DELETE_ShingleTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountPermission.cs" />
     <Compile Include="Models\Document.cs" />
@@ -118,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405031718206_Table_StopWords_Add.resx">
       <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405050727316_SP_DELETE_ShingleTable.resx">
+      <DependentUpon>201405050727316_SP_DELETE_ShingleTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

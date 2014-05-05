@@ -126,6 +126,37 @@ namespace Indigo.BusinessLogicLayer.Shingles
             }
         }
 
+        public static async Task DeleteDocumentShingles(Int32 documentId)
+        {
+            if (documentId <= 0)
+            {
+                throw new ArgumentException("Document ID must be greater then 0.", "documentId");
+            }
+
+            using (IShinglesRepository shinglesRepository = new ShinglesRepository())
+            {
+                await shinglesRepository.DeleteAsync(documentId);
+            }
+        }
+
+        public static async Task DeleteDocumentShingles(Int32 documentId, byte shingleSize)
+        {
+            if (documentId <= 0)
+            {
+                throw new ArgumentException("Document ID must be greater then 0.", "documentId");
+            }
+
+            if (shingleSize < 3 || shingleSize > 10)
+            {
+                throw new ArgumentException("Shingle size must be between 3 and 10.", "shingleSize");
+            }
+
+            using (IShinglesRepository shinglesRepository = new ShinglesRepository())
+            {
+                await shinglesRepository.DeleteAsync(documentId, shingleSize);
+            }
+        }
+
         public async Task DeleteAllAsync()
         {
             List<long> shingleIds = this.Where(x => x.ShingleId.HasValue).Select(x => x.ShingleId.Value).ToList();

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Account\AccessType.cs" />
     <Compile Include="Account\PermissionType.cs" />
+    <Compile Include="Account\UserAccountList.cs" />
     <Compile Include="Document\Document.cs" />
     <Compile Include="Document\DocumentList.cs" />
     <Compile Include="Document\StopWord.cs" />

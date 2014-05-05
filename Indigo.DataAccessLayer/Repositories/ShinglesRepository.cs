@@ -109,6 +109,31 @@
             throw new EntitySqlException("Database not accessible.");
         }
 
+        public async Task DeleteAsync(Int32 documentId)
+        {
+            if (base.DataContext != null)
+            {
+                String query = String.Format("DELETE FROM dbo.Shingles WHERE [DocumentId]={0}", documentId);
+                await base.DataContext.Database.ExecuteSqlCommandAsync(query);
+                return;
+            }
+
+            throw new EntitySqlException("Database not accessible.");
+        }
+
+        public async Task DeleteAsync(Int32 documentId, byte shingleSize)
+        {
+            if (base.DataContext != null)
+            {
+                String query =
+                    String.Format("DELETE FROM dbo.Shingles WHERE [DocumentId]={0} AND [ShingleSize]={1}", documentId, shingleSize);
+                await base.DataContext.Database.ExecuteSqlCommandAsync(query);
+                return;
+            }
+
+            throw new EntitySqlException("Database not accessible.");
+        }
+
         #endregion
     }
 }

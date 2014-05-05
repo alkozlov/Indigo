@@ -1,6 +1,7 @@
 ﻿namespace Indigo.DataAccessLayer.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Core;
     using System.Threading.Tasks;
@@ -76,6 +77,18 @@
             throw new EntitySqlException("Database not accessible.");
         }
 
+        public async Task<IEnumerable<UserAccount>> GetAllUsersAsync()
+        {
+            if (base.DataContext != null)
+            {
+                List<UserAccount> userAccounts = await base.DataContext.UserAccounts.ToListAsync();
+
+                return userAccounts;
+            }
+
+            throw new EntitySqlException("Database not accessible.");
+        }
+
         public async Task<UserAccount> UpdateAsync(Int32 userId, Guid userGuid, String login, String email, String password, String passwordSalt,
             DateTime createDateUtc, DateTime? lastLoginDateUtc, DateTime? removedDateUtc, Byte accountType, Boolean isActive)
         {
@@ -113,6 +126,8 @@
                     base.DataContext.UserAccounts.Remove(userAccount);
                     await base.DataContext.SaveChangesAsync();
                 }
+
+                return;
             }
 
             throw new EntitySqlException("Database not accessible.");

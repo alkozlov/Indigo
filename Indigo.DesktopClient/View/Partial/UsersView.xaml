@@ -4,11 +4,86 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
         mc:Ignorable="d ignore"
         DataContext="{Binding UsersViewModel, Source={StaticResource Locator}}">
 
     <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Users Content" FontWeight="Bold" Foreground="Purple" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="36"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ig:XamGrid x:Name="grdSubjects" Grid.Row="1" AutoGenerateColumns="False"
+                    ItemsSource="{Binding Path=Users, UpdateSourceTrigger=PropertyChanged}" ColumnWidth="Auto"
+                    HorizontalAlignment="Left" Margin="15" DeleteKeyAction="DeleteRowOfActiveCell">
+            <ig:XamGrid.Columns>
+                <ig:TextColumn Key="UserAccountId">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="UserAccountId"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                    <ig:TextColumn.Visibility>Hidden</ig:TextColumn.Visibility>
+                </ig:TextColumn>
+
+                <ig:TextColumn Key="Login">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Логин"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+
+                <ig:TextColumn Key="Email">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Почта"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+
+                <ig:DateColumn Key="CreatedDateUtc">
+                    <ig:DateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Дата создания"></TextBlock>
+                        </DataTemplate>
+                    </ig:DateColumn.HeaderTemplate>
+                </ig:DateColumn>
+
+                <ig:TextColumn Key="AccountType">
+                    <ig:TextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Тип аккаунта"/>
+                        </DataTemplate>
+                    </ig:TextColumn.HeaderTemplate>
+                </ig:TextColumn>
+            </ig:XamGrid.Columns>
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.PagerSettings>
+                <ig:PagerSettings AllowPaging="Both" PageSize="20"  />
+            </ig:XamGrid.PagerSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.FilteringSettings>
+                <ig:FilteringSettings AllowFiltering="FilterMenu" FilteringScope="ColumnLayout" />
+            </ig:XamGrid.FilteringSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.SelectionSettings>
+                <ig:SelectionSettings CellClickAction="SelectRow" RowSelection="Multiple" CellSelection="None" />
+            </ig:XamGrid.SelectionSettings>
+            <!--#END SNIPPET#-->
+
+            <!--#BEGIN SNIPPET#-->
+            <ig:XamGrid.RowSelectorSettings>
+                <ig:RowSelectorSettings Visibility="Visible" EnableRowNumbering="True"/>
+            </ig:XamGrid.RowSelectorSettings>
+            <!--#END SNIPPET#-->
+        </ig:XamGrid>
     </Grid>
 </UserControl>

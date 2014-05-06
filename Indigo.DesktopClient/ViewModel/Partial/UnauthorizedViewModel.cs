@@ -33,6 +33,19 @@ namespace Indigo.DesktopClient.ViewModel.Partial
             base.SendNavigationMessage(ApplicationView.SignIn, NavigationToken.MainViewNavigationToken);
         }
 
+        public ICommand NavigateToHomePageCommand
+        {
+            get
+            {
+                return new RelayCommand(NavigateToHomePage);
+            }
+        }
+
+        private void NavigateToHomePage()
+        {
+            base.SendNavigationMessage(ApplicationView.HomaPage, NavigationToken.MainViewNavigationToken);
+        }
+
         #endregion
     }
 }

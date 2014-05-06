@@ -26,29 +26,36 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid HorizontalAlignment="Stretch" Margin="15">
+        <Grid HorizontalAlignment="Stretch" Margin="15,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
 
-            <!-- New subject fields -->
-            <TextBlock Text="Новая тематика:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI" VerticalAlignment="Center"
+            <Grid HorizontalAlignment="Stretch" Margin="0,15,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- New subject fields -->
+                <TextBlock Text="Новая стоп-слово:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI" VerticalAlignment="Center"
                        HorizontalAlignment="Right"></TextBlock>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewStopWord.Content, Mode=TwoWay}"
-                     VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0" Width="300"></TextBox>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewStopWord.Content, Mode=TwoWay}"
+                     VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Width="300"></TextBox>
 
-            <!-- Commands -->
-            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Добавить"
+                <!-- Commands -->
+                <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Добавить"
                     Command="{Binding Path=AddNewStopWordCommand, IsAsync=True}"></Button>
+            </Grid>
 
             <!-- Notification -->
-            <controls:IndigoStatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+            <controls:IndigoStatusBar Grid.Row="1" Grid.Column="0"
                                 DataContext="{Binding Path=NewStopWordNotification}"></controls:IndigoStatusBar>
         </Grid>
 

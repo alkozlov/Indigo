@@ -44,6 +44,11 @@
 
         public static async Task<UserAccount> GetUserAsync(String emailOrLogin)
         {
+            if (String.IsNullOrEmpty(emailOrLogin) || String.IsNullOrEmpty(emailOrLogin.Trim()))
+            {
+                throw new ArgumentException("Email or login can't be null or empty.");
+            }
+
             using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
             {
                 DataModels.UserAccount dataUserAccount = await userAccountRepository.GetAsync(emailOrLogin);
@@ -102,6 +107,14 @@
                 await userAccountRepository.UpdateAsync(this.UserId, this.UserGuid, this.Login, this.Email,
                     this.Password, this.PasswordSalt, this.CreatedDateUtc, this.LastLoginDateUtc,
                     this.RemovedDateUtc, (byte) this.AccountType, this.IsAcive);
+            }
+        }
+
+        public async Task DeleteAsync()
+        {
+            using (IUserAccountRepository userAccountRepository = new UserAccountRepository())
+            {
+                await userAccountRepository.DeleteAsync(this.UserId);
             }
         }
 

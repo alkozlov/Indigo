@@ -6,15 +6,28 @@
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         DataContext="{Binding UnauthorizedViewModel, Source={StaticResource Locator}}">
+    
+    <StackPanel Orientation="Horizontal">
+        <Button Command="{Binding NavigateToHomePageCommand, IsAsync=True}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_home}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="На главную" />
+            </StackPanel>
+        </Button>
 
-    <Button Command="{Binding NavigateToSignInPageCommand}">
-        <StackPanel Orientation="Horizontal">
-            <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_people}" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Войти в систему" />
-        </StackPanel>
-    </Button>
+        <Button Command="{Binding NavigateToSignInPageCommand}">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_people}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="Войти в систему" />
+            </StackPanel>
+        </Button>
+    </StackPanel>
 </UserControl>

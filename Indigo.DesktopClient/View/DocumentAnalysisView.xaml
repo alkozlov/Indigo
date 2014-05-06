@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d ignore"
         DataContext="{Binding DocumentAnalysisViewModel, Source={StaticResource Locator}}">
     
@@ -37,15 +38,17 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Content="Выбрать документ" Height="50" Width="150" Style="{DynamicResource SquareButtonStyle}"
+        <Button Grid.Row="0" Grid.Column="1" Content="Выбрать документ" Height="50" Width="150" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding Path=LoadDocumentComand}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,20"></Button>
 
-        <DockPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto"
+        <DockPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto"
                    Visibility="{Binding Path=IsDocumentSelected}" Margin="10,10,0,0">
             <Image Source="{Binding Path=DocumentAnalysisModel.Thumbnail}" Width="150" Height="150" VerticalAlignment="Top" HorizontalAlignment="Left"></Image>
             <Grid Margin="10,0,0,0">
@@ -76,5 +79,14 @@
                 </DockPanel>
             </Grid>
         </DockPanel>
+
+        <Grid Grid.Row="0" Grid.RowSpan="4" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle Name="rect" Width="100" VerticalAlignment="Stretch" Fill="#99000000" Visibility="Collapsed" />
+            <Button Grid.Column="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="32" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" Background="White">&gt;</Button>
+        </Grid>
     </Grid>
 </UserControl>

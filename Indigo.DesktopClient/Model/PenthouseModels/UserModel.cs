@@ -13,6 +13,18 @@
 
         public DateTime CreatedDateUtc { get; set; }
 
+        public AccountTypeModel AccountTypeModel { get; set; }
+
+        public UserModel()
+        {
+            this.AccountTypeModel = new AccountTypeModel();
+        }
+    }
+
+    public class AccountTypeModel
+    {
         public UserAccountType AccountType { get; set; }
+
+        public String AccountTypeName { get; set; }
     }
 }

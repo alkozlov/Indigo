@@ -1,6 +1,4 @@
-﻿using Indigo.DesktopClient.View;
-
-namespace Indigo.DesktopClient.ViewModel
+﻿namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Practices.ServiceLocation;
     using System;
@@ -15,6 +13,7 @@ namespace Indigo.DesktopClient.ViewModel
     using Indigo.BusinessLogicLayer.Account;
     using Indigo.DesktopClient.Model;
     using Indigo.DesktopClient.Model.Notifications;
+    using Indigo.DesktopClient.View;
     using Indigo.DesktopClient.ViewModel.Partial;
 
     /// <summary>

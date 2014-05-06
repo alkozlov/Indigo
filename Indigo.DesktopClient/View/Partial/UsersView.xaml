@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:controls="clr-namespace:Indigo.DesktopClient.Controls"
         mc:Ignorable="d ignore"
         DataContext="{Binding UsersViewModel, Source={StaticResource Locator}}">
+
+    <UserControl.Resources>
+        <Style x:Key="DeleteRowsButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=grdUsers, Path=SelectionSettings.SelectedRows.Count}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,8 +25,58 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
+        <Grid HorizontalAlignment="Stretch" Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <Grid HorizontalAlignment="Stretch" Margin="0,15,15,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <ig:XamGrid x:Name="grdSubjects" Grid.Row="1" AutoGenerateColumns="False"
+                <!-- New user fields -->
+                <TextBlock Text="Email:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI" VerticalAlignment="Center"
+                       HorizontalAlignment="Right"></TextBlock>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NewUser.Email, Mode=TwoWay}"
+                     VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0" Width="300"></TextBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Логин:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=NewUser.Login, Mode=TwoWay}"
+                     VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0" Width="300"></TextBox>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Тип аккаунта:" FontWeight="Bold" FontSize="12" FontFamily="Segoe UI"
+                       VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+                <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0"
+                     Width="300" ItemsSource="{Binding Path=AccountTypes}" SelectedItem="{Binding Path=NewUser.AccountTypeModel}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=AccountTypeName}"></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!-- Commands -->
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="100" Height="30" Content="Добавить"
+                    Command="{Binding Path=AddNewUserCommand, IsAsync=True}"></Button>
+            </Grid>
+
+            <!-- Notification -->
+            <controls:IndigoStatusBar Grid.Row="1" Grid.Column="0"
+                                DataContext="{Binding Path=NewUserNotification}"></controls:IndigoStatusBar>
+        </Grid>
+
+        <ig:XamGrid x:Name="grdUsers" Grid.Row="1" AutoGenerateColumns="False"
                     ItemsSource="{Binding Path=Users, UpdateSourceTrigger=PropertyChanged}" ColumnWidth="Auto"
                     HorizontalAlignment="Left" Margin="15" DeleteKeyAction="DeleteRowOfActiveCell">
             <ig:XamGrid.Columns>
@@ -52,7 +113,7 @@
                     </ig:DateColumn.HeaderTemplate>
                 </ig:DateColumn>
 
-                <ig:TextColumn Key="AccountType">
+                <ig:TextColumn Key="AccountTypeModel.AccountTypeName">
                     <ig:TextColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="Тип аккаунта"/>
@@ -85,5 +146,20 @@
             </ig:XamGrid.RowSelectorSettings>
             <!--#END SNIPPET#-->
         </ig:XamGrid>
+
+        <Grid Grid.Row="2" Height="100">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- This button will serve to trigger the "delete record" command only. -->
+            <Button Content="Удалить Записи" Style="{StaticResource DeleteRowsButtonStyle}" Width="150" Height="30"
+                Command="{Binding Path=RemoveSelectedUsersCommand, IsAsync=True}"  
+                CommandParameter="{Binding ElementName=grdUsers, Path=SelectionSettings.SelectedRows}">
+            </Button>
+
+            <controls:IndigoStatusBar Grid.Row="1" DataContext="{Binding Path=ToolbarNotification}" Margin="15,0,15,0"></controls:IndigoStatusBar>
+        </Grid>
     </Grid>
 </UserControl>

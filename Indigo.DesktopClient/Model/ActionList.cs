@@ -143,6 +143,7 @@ namespace Indigo.DesktopClient.Model
                 case PermissionType.DocumentsCollection:
                 {
                     thumbnail = String.Concat(thumbnail, "Inventory - Gray - 36x36.png");
+                    //thumbnail = String.Concat(thumbnail, "Documents_Gray.png");
                 } break;
 
                 case PermissionType.ProfileInformation:
@@ -178,6 +179,7 @@ namespace Indigo.DesktopClient.Model
                 case PermissionType.DocumentsCollection:
                     {
                         thumbnail = String.Concat(thumbnail, "Inventory - White - 36x36.png");
+                        //thumbnail = String.Concat(thumbnail, "Documents_White.png");
                     } break;
 
                 case PermissionType.ProfileInformation:

@@ -139,6 +139,7 @@
     <Compile Include="Model\PenthouseModels\NewDocumentModel.cs" />
     <Compile Include="Model\PenthouseModels\NewStopWordModel.cs" />
     <Compile Include="Model\PenthouseModels\NewSubjectModel.cs" />
+    <Compile Include="Model\PenthouseModels\NewUserModel.cs" />
     <Compile Include="Model\PenthouseModels\ProcessingStatus.cs" />
     <Compile Include="Model\PenthouseModels\ReferenceItem.cs" />
     <Compile Include="Model\PenthouseModels\StopWordModel.cs" />
@@ -401,6 +402,8 @@
     <Resource Include="Images\Odt_Format - 600x600.png" />
     <Resource Include="Images\Rtf_Format - 600x600.png" />
     <Resource Include="Images\Info-status.png" />
+    <Resource Include="Images\Documents_Gray.png" />
+    <Resource Include="Images\Documents_White.png" />
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

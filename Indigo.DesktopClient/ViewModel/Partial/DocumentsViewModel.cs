@@ -112,6 +112,19 @@
             base.SendNavigationMessage(ApplicationView.AddDocuments, NavigationToken.AddDocumentsToken);
         }
 
+        public ICommand AddDocumentCommand
+        {
+            get
+            {
+                return new RelayCommand(AddDocument);
+            }
+        }
+
+        private void AddDocument()
+        {
+            base.SendNavigationMessage(ApplicationView.AddDocument, NavigationToken.AddDocumentToken);
+        }
+
         public ICommand DeleteSelectedDocumentsCommand
         {
             get

@@ -47,7 +47,7 @@
             throw new EntitySqlException("Database not accessible.");
         }
 
-        public async Task<Document> GetByGuid(Guid documentGuid)
+        public async Task<Document> GetByGuidAsync(Guid documentGuid)
         {
             if (base.DataContext != null)
             {

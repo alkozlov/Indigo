@@ -215,6 +215,11 @@
                 this.SelectedViewModel = ServiceLocator.Current.GetInstance<AddDocumentsViewModel>();
             });
 
+            Messenger.Default.Register<NavigationMessage>(this, NavigationToken.AddDocumentToken, message =>
+            {
+                this.SelectedViewModel = ServiceLocator.Current.GetInstance<AddDocumentViewModel>();
+            });
+
             #endregion
         }
 

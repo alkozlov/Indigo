@@ -1,11 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using MsWord = Microsoft.Office.Interop.Word;
-
-namespace Indigo.Tools.Converters
+﻿namespace Indigo.Tools.Converters
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using MsWord = Microsoft.Office.Interop.Word;
+
     public class MsWordDocumentConverter : IDocumentConverter
     {
         public void Dispose()
@@ -37,7 +38,7 @@ namespace Indigo.Tools.Converters
                 MsWord.Document document = application.Documents.Open(ref documentPath, ref missing, ref readOnly,
                     ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing,
                     ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-                
+
                 String documentContent = document.Content.Text;
                 File.WriteAllText(outputFileName, documentContent, Encoding.UTF8);
             });

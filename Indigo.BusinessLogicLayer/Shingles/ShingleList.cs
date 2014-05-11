@@ -1,16 +1,14 @@
-﻿using System.Text;
-using Indigo.DataAccessLayer.IRepositories;
-using Indigo.DataAccessLayer.Repositories;
-
-namespace Indigo.BusinessLogicLayer.Shingles
+﻿namespace Indigo.BusinessLogicLayer.Shingles
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
-    using Indigo.BusinessLogicLayer.Document;
+    using Indigo.DataAccessLayer.IRepositories;
+    using Indigo.DataAccessLayer.Repositories;
 
     public class ShingleList : ReadOnlyCollection<ShingleList.ShingleItem>
     {
@@ -58,34 +56,28 @@ namespace Indigo.BusinessLogicLayer.Shingles
             }
         }
 
-        public Int32 ShingleSize { get; private set; }
+        public ShingleSize ShingleSize { get; private set; }
 
         public Int32? DocumentId { get; private set; }
 
-        private ShingleList(IList<ShingleItem> list, Int32 shingleSize, Int32? documentId) : base(list)
+        private ShingleList(IList<ShingleItem> list, ShingleSize shingleSize, Int32? documentId) : base(list)
         {
             this.ShingleSize = shingleSize;
             this.DocumentId = documentId;
         }
 
-        public static async Task<ShingleList> CreateAsync(List<String> words, List<String> stopWords, Int32 shingleSize, Int32? documentid = null)
+        public static async Task<ShingleList> CreateAsync(List<String> words, ShingleSize shingleSize, Int32? documentid = null)
         {
             ShingleList shingleList = await Task.Run(() =>
             {
-                List<String> modifiedWords = words.Select(x => x.ToLower()).ToList();
-
-                // Remove stop-words
-                foreach (String stopWord in stopWords)
-                {
-                    modifiedWords.RemoveAll(word => String.Equals(word, stopWord, StringComparison.CurrentCultureIgnoreCase));
-                }
-
+                Int32 shingleSizeValue = (byte) shingleSize;
+                
                 // Split list to shingles
-                Int32 shinglesCount = modifiedWords.Count - shingleSize + 1;
+                Int32 shinglesCount = words.Count - shingleSizeValue + 1;
                 List<ShingleItem> shingles = new List<ShingleItem>(shinglesCount);
                 for (int i = 0; i < shinglesCount; i++)
                 {
-                    ShingleItem shingle = new ShingleItem(modifiedWords.Skip(i).Take(shingleSize).ToList());
+                    ShingleItem shingle = new ShingleItem(words.Skip(i).Take(shingleSizeValue).ToList());
                     shingles.Add(shingle);
                 }
 
@@ -95,13 +87,13 @@ namespace Indigo.BusinessLogicLayer.Shingles
             return shingleList;
         }
 
-        public static async Task<ShingleList> GetAsync(Int32 documentId, AnalysisAccuracy analysisAccuracy)
+        public static async Task<ShingleList> GetAsync(Int32 documentId, ShingleSize shingleSize)
         {
             List<ShingleItem> shingles = new List<ShingleItem>();
 
             using (IShinglesRepository shinglesRepository = new ShinglesRepository())
             {
-                var dataShingles = (await shinglesRepository.GetShinglesAsync(documentId, (byte) analysisAccuracy)).ToList();
+                var dataShingles = (await shinglesRepository.GetShinglesAsync(documentId, (byte) shingleSize)).ToList();
                 if (dataShingles.Any())
                 {
                     shingles.AddRange(dataShingles.Select(dataShingle => new ShingleItem
@@ -112,7 +104,7 @@ namespace Indigo.BusinessLogicLayer.Shingles
                 }
             }
 
-            ShingleList shingleList = new ShingleList(shingles, (byte) analysisAccuracy, documentId);
+            ShingleList shingleList = new ShingleList(shingles, shingleSize, documentId);
             return shingleList;
         }
 

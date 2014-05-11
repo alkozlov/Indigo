@@ -11,11 +11,11 @@
     using Indigo.DataAccessLayer.Repositories;
 
 
-    public class CheckSumCollection : ReadOnlyCollection<KeyValuePair<UInt32, Shingle>>
+    public class CheckSumCollection : ReadOnlyCollection<KeyValuePair<long, Shingle>>
     {
         public Int32? DocumentId { get; private set; }
 
-        private CheckSumCollection(IList<KeyValuePair<UInt32, Shingle>> list, Int32? documentId)
+        private CheckSumCollection(IList<KeyValuePair<long, Shingle>> list, Int32? documentId)
             : base(list)
         {
             this.DocumentId = documentId;
@@ -23,24 +23,42 @@
 
         public static async Task<CheckSumCollection> CreateAsync(ShingleList shingles, HashAlgorithmType hashAlgorithmType)
         {
-            CheckSumCollection checkSumCollection = await Task<CheckSumCollection>.Run(() =>
+            CheckSumCollection checkSumCollection = await Task.Run(() =>
             {
-                List<KeyValuePair<UInt32, Shingle>> checkSumList = new List<KeyValuePair<UInt32, Shingle>>();
+                List<KeyValuePair<long, Shingle>> checkSumList = new List<KeyValuePair<long, Shingle>>();
                 foreach (var shingle in shingles)
                 {
-                    Shingle businesShingle = new Shingle(shingle.Words)
+                    Shingle businessShingle = new Shingle(shingle.Words)
                     {
                         ShingleId = shingle.ShingleId,
                         CheckSum = shingle.CheckSum
                     };
 
-                    UInt32 checkSum = ComputeCheckSum(businesShingle, hashAlgorithmType);
-                    checkSumList.Add(new KeyValuePair<UInt32, Shingle>(checkSum, businesShingle));
+                    long checkSum = ComputeCheckSum(businessShingle, hashAlgorithmType);
+                    checkSumList.Add(new KeyValuePair<long, Shingle>(checkSum, businessShingle));
                 }
 
                 return new CheckSumCollection(checkSumList, shingles.DocumentId);
             });
 
+            return checkSumCollection;
+        }
+
+        public static CheckSumCollection Create(ShingleList shingles)
+        {
+            List<KeyValuePair<long, Shingle>> checkSumList = new List<KeyValuePair<long, Shingle>>();
+            foreach (var shingle in shingles)
+            {
+                Shingle businessShingle = new Shingle(shingle.Words)
+                {
+                    ShingleId = shingle.ShingleId,
+                    CheckSum = shingle.CheckSum
+                };
+
+                checkSumList.Add(new KeyValuePair<long, Shingle>(shingle.CheckSum ?? 0, businessShingle));
+            }
+
+            CheckSumCollection checkSumCollection = new CheckSumCollection(checkSumList, shingles.DocumentId);
             return checkSumCollection;
         }
 
@@ -62,7 +80,7 @@
 
         #region Helpers
 
-        private static UInt32 ComputeCheckSum(Shingle shingle, HashAlgorithmType hashAlgorithmType)
+        private static long ComputeCheckSum(Shingle shingle, HashAlgorithmType hashAlgorithmType)
         {
             IHashAlgorithm hasher = HasherFactory.GetHasherInstance(hashAlgorithmType);
             UInt32 checkSum = hasher.ComputeCheckSum(shingle.AsString);

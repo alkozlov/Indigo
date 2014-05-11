@@ -87,7 +87,7 @@
 
         #region Helpers
 
-        public static StopWord ConvertToBusinessObject(DataModels.StopWord dataStopWord)
+        private static StopWord ConvertToBusinessObject(DataModels.StopWord dataStopWord)
         {
             Mapper.CreateMap<DataModels.StopWord, StopWord>();
             StopWord stopWord = Mapper.Map<DataModels.StopWord, StopWord>(dataStopWord);

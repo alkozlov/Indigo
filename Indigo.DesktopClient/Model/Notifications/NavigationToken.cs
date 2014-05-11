@@ -8,6 +8,8 @@
 
         AddDocumentsToken = 2,
 
-        ReferencesToken = 3
+        ReferencesToken = 3,
+
+        AddDocumentToken = 4
     }
 }

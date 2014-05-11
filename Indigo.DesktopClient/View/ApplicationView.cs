@@ -44,6 +44,8 @@
 
         Subjects = 20,
 
-        StopWords = 21
+        StopWords = 21,
+
+        AddDocument = 22
     }
 }

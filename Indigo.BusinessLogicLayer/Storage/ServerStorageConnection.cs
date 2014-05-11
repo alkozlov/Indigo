@@ -83,5 +83,10 @@
             String storageFileFullName = String.Concat(base.StorageDirectory, "\\", storageFileName);
             File.Copy(localFileFullName, storageFileFullName);
         }
+
+        public override void DeleteFile(String storageFileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

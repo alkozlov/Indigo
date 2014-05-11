@@ -58,6 +58,7 @@ namespace Indigo.DesktopClient.ViewModel
             SimpleIoc.Default.Register<AddDocumentsViewModel>();
             SimpleIoc.Default.Register<SubjectsViewModel>();
             SimpleIoc.Default.Register<StopWordsViewModel>();
+            SimpleIoc.Default.Register<AddDocumentViewModel>();
         }
 
         /// <summary>
@@ -295,6 +296,20 @@ namespace Indigo.DesktopClient.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<StopWordsViewModel>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the AddDocumentViewModel property.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public AddDocumentViewModel AddDocumentViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AddDocumentViewModel>();
             }
         }
 

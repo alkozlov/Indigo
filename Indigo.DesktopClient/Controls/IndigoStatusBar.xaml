@@ -43,16 +43,16 @@
                                     <Setter Property="Visibility" Value="Hidden"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Type, Mode=TwoWay}" Value="{x:Static notifications:NotificationType.Success}">
-                                    <Setter Property="Source" Value="../../Images/Success-status.png"></Setter>
+                                    <Setter Property="Source" Value="../Images/Success-status.png"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Type, Mode=TwoWay}" Value="{x:Static notifications:NotificationType.Error}">
-                                    <Setter Property="Source" Value="../../Images/Error-status.png"></Setter>
+                                    <Setter Property="Source" Value="../Images/Error-status.png"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Type, Mode=TwoWay}" Value="{x:Static notifications:NotificationType.Warning}">
-                                    <Setter Property="Source" Value="../../Images/Warning-status.png"></Setter>
+                                    <Setter Property="Source" Value="../Images/Warning-status.png"></Setter>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=Type, Mode=TwoWay}" Value="{x:Static notifications:NotificationType.Info}">
-                                    <Setter Property="Source" Value="../../Images/Info-status.png"></Setter>
+                                    <Setter Property="Source" Value="../Images/Info-status.png"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

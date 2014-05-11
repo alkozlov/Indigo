@@ -21,6 +21,8 @@
 
         public abstract void UploadFile(String localFileFullName, String storageFileName);
 
+        public abstract void DeleteFile(String storageFileName);
+
         #endregion
 
         #region Constructors

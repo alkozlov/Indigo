@@ -1,4 +1,9 @@
-﻿namespace Indigo.DesktopClient.ViewModel.Partial
+﻿using System.IO;
+using GalaSoft.MvvmLight.Command;
+using Indigo.BusinessLogicLayer.Import;
+using Microsoft.Win32;
+
+namespace Indigo.DesktopClient.ViewModel.Partial
 {
     using System;
     using System.Collections.Generic;
@@ -290,6 +295,47 @@
                 String exceptionMessage = "Произошло непредвиденное исключение. Попробуйте еще раз.";
                 this.NewStopWordNotification = base.GetErrorNotification(exceptionMessage);
             }
+        }
+
+        public ICommand ImportFromExcelCommand
+        {
+            get
+            {
+                return new RelayCommand(ImportFromExcel);
+            }
+        }
+
+        private void ImportFromExcel()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel Workbook (*.xls;*.xlsx)|*.xls;*.xlsx";
+            openFileDialog.FilterIndex = 1;
+
+            openFileDialog.FileOk += async (sender, args) =>
+            {
+                OpenFileDialog currentDialog = sender as OpenFileDialog;
+                if (currentDialog != null && !String.IsNullOrEmpty(currentDialog.FileName) && currentDialog.FileName.Length > 0)
+                {
+                    FileInfo selectedFileInfo = new FileInfo(currentDialog.FileName);
+                    if (selectedFileInfo.Exists)
+                    {
+                        ExcelImporter excelImporter = new StopWordsExcelImporter();
+                        ImportResult importResult = await excelImporter.ImportFileToDatabase(currentDialog.FileName);
+                        String message =
+                            String.Format(
+                                "Импорт успешно завершен. Добавлено новых записей: {0}. Пропущено дубликатов: {1}",
+                                importResult.RowsInserted, importResult.RowsDuplicated);
+                        this.NewStopWordNotification = base.GetSuccessNotification(message);
+                        await this.LoadStopWordsAsync();
+                    }
+                }
+                else
+                {
+                    this.NewStopWordNotification = base.GetWarningNotification("Выберите файл для импорта.");
+                }
+            };
+
+            openFileDialog.ShowDialog();
         }
 
         #endregion

@@ -143,17 +143,23 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="15,0,15,0">
             <Button Content="Выбрать файлы" Width="150" Style="{DynamicResource SquareButtonStyle}"
                 Command="{Binding Path=SelectDocumentsCommand, IsAsync=True}" HorizontalAlignment="Center"></Button>
 
-            <ListView ItemsSource="{Binding Path=SelectedDocumets, Mode=TwoWay}">
+            <ListView Grid.Row="1" ItemsSource="{Binding Path=SelectedDocumets, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <DockPanel VerticalAlignment="Top" HorizontalAlignment="Left" Height="Auto" Margin="10,10,0,0">
                             <ContentControl Content="{Binding Path=DocumentType}"></ContentControl>
-                            
+
                             <Grid Margin="10,0,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -181,9 +187,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Width="100" Content="Добавить" Style="{DynamicResource SquareButtonStyle}" HorizontalAlignment="Stretch"
+            <Button Grid.Row="2" Width="100" Content="Добавить" Style="{DynamicResource SquareButtonStyle}" HorizontalAlignment="Stretch"
                 VerticalAlignment="Bottom" Command="{Binding Path=ProcessDocumentsAsyncCommand, IsAsync=True}"></Button>
-        </StackPanel>
+        </Grid>
 
         <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConsoleMessages}" Margin="15,0,15,0" Height="200">
             <ListView.ItemTemplate>

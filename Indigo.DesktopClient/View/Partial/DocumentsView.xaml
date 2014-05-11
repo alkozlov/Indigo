@@ -30,7 +30,7 @@
         </LinearGradientBrush>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -38,7 +38,10 @@
         </Grid.RowDefinitions>
 
         <Grid HorizontalAlignment="Stretch" Margin="15">
-            <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документы" Width="150" Command="{Binding Path=AddDocumentsCommand}"></Button>
+                <Button Style="{DynamicResource SquareButtonStyle}" Content="Добавить документ" Width="150" Margin="15,0,0,0" Command="{Binding Path=AddDocumentCommand}"></Button>
+            </StackPanel>
         </Grid>
 
         <ig:XamGrid Grid.Row="1" x:Name="grdDocuments" ItemsSource="{Binding Path=Documents}" ColumnWidth="Auto">

@@ -14,6 +14,9 @@
         public DbSet<Shingle> Shingles { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<StopWord> StopWords { get; set; }
+        public DbSet<SubjectKeyWord> SubjectKeyWords { get; set; }
+        public DbSet<DocumentKeyWord> DocumentKeyWords { get; set; }
+        public DbSet<DocumentSubject> DocumentSubjects { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -89,6 +92,30 @@
 
             modelBuilder.Entity<StopWord>().HasKey(x => x.StopWordId);
             modelBuilder.Entity<StopWord>().Property(x => x.Content).IsRequired().HasMaxLength(100);
+
+            #endregion
+
+            #region SubjectKeyWord
+
+            modelBuilder.Entity<SubjectKeyWord>().HasKey(x => x.SubjectKeyWordId);
+            modelBuilder.Entity<SubjectKeyWord>().Property(x => x.Word).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<SubjectKeyWord>().HasRequired(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId);
+
+            #endregion
+
+            #region DocumentKeyWord
+
+            modelBuilder.Entity<DocumentKeyWord>().HasKey(x => x.DocumentKeyWordId);
+            modelBuilder.Entity<DocumentKeyWord>().Property(x => x.Word).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<DocumentKeyWord>().HasRequired(x => x.Document).WithMany().HasForeignKey(x => x.DocumentId);
+
+            #endregion
+
+            #region DocumentSubject
+
+            modelBuilder.Entity<DocumentSubject>().HasKey(x => new {x.DocumentId, x.SubjectId});
+            modelBuilder.Entity<DocumentSubject>().HasRequired(x => x.Document).WithMany().HasForeignKey(x => x.DocumentId);
+            modelBuilder.Entity<DocumentSubject>().HasRequired(x => x.Subject).WithMany().HasForeignKey(x => x.SubjectId);
 
             #endregion
 

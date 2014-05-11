@@ -48,55 +48,48 @@
   <ItemGroup>
     <Compile Include="IndigoCreateDatabaseIfNotExists.cs" />
     <Compile Include="IndigoDataContext.cs" />
+    <Compile Include="IRepositories\IDocumentKeyWordsRepository.cs" />
     <Compile Include="IRepositories\IDocumentsRepository.cs" />
+    <Compile Include="IRepositories\IDocumentSubjectsRepository.cs" />
     <Compile Include="IRepositories\IPermissionsRepository.cs" />
     <Compile Include="IRepositories\IShinglesRepository.cs" />
     <Compile Include="IRepositories\IStopWordsRepository.cs" />
+    <Compile Include="IRepositories\ISubjectKeyWordsRepository.cs" />
     <Compile Include="IRepositories\ISubjectsRepository.cs" />
     <Compile Include="IRepositories\IUserAccountRepository.cs" />
-    <Compile Include="Migrations\201404231135309_InitialCreate.cs" />
-    <Compile Include="Migrations\201404231135309_InitialCreate.Designer.cs">
-      <DependentUpon>201404231135309_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201405070640075_InitialCreate.cs" />
+    <Compile Include="Migrations\201405070640075_InitialCreate.Designer.cs">
+      <DependentUpon>201405070640075_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201404231213487_Table_Documents_FK_UserAccount.cs" />
-    <Compile Include="Migrations\201404231213487_Table_Documents_FK_UserAccount.Designer.cs">
-      <DependentUpon>201404231213487_Table_Documents_FK_UserAccount.cs</DependentUpon>
+    <Compile Include="Migrations\201405100922318_ImplementDocumentSubjects.cs" />
+    <Compile Include="Migrations\201405100922318_ImplementDocumentSubjects.Designer.cs">
+      <DependentUpon>201405100922318_ImplementDocumentSubjects.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201404240842575_Shingles_Table_Add.cs" />
-    <Compile Include="Migrations\201404240842575_Shingles_Table_Add.Designer.cs">
-      <DependentUpon>201404240842575_Shingles_Table_Add.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405021048005_Table_Subjects_Add.cs" />
-    <Compile Include="Migrations\201405021048005_Table_Subjects_Add.Designer.cs">
-      <DependentUpon>201405021048005_Table_Subjects_Add.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.cs" />
-    <Compile Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.Designer.cs">
-      <DependentUpon>201405031024313_Table_Subjects_PR_Name_Update.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405031718206_Table_StopWords_Add.cs" />
-    <Compile Include="Migrations\201405031718206_Table_StopWords_Add.Designer.cs">
-      <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201405050727316_SP_DELETE_ShingleTable.cs" />
-    <Compile Include="Migrations\201405050727316_SP_DELETE_ShingleTable.Designer.cs">
-      <DependentUpon>201405050727316_SP_DELETE_ShingleTable.cs</DependentUpon>
+    <Compile Include="Migrations\201405101905299_Table_DocumentKeyWords_UpdateFields.cs" />
+    <Compile Include="Migrations\201405101905299_Table_DocumentKeyWords_UpdateFields.Designer.cs">
+      <DependentUpon>201405101905299_Table_DocumentKeyWords_UpdateFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountPermission.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\DocumentKeyWord.cs" />
+    <Compile Include="Models\DocumentSubject.cs" />
     <Compile Include="Models\StopWord.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\PermissionAccessType.cs" />
     <Compile Include="Models\Shingle.cs" />
+    <Compile Include="Models\SubjectKeyWord.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\DocumentKeyWordsRepository.cs" />
     <Compile Include="Repositories\DocumentsRepository.cs" />
+    <Compile Include="Repositories\DocumentSubjectsRepository.cs" />
     <Compile Include="Repositories\PermissionsRepository.cs" />
     <Compile Include="Repositories\ShinglesRepository.cs" />
     <Compile Include="Repositories\StopWordsRepository.cs" />
+    <Compile Include="Repositories\SubjectKeyWordsRepository.cs" />
     <Compile Include="Repositories\SubjectsRepository.cs" />
     <Compile Include="Repositories\UserAccountRepository.cs" />
   </ItemGroup>
@@ -105,26 +98,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201404231135309_InitialCreate.resx">
-      <DependentUpon>201404231135309_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405070640075_InitialCreate.resx">
+      <DependentUpon>201405070640075_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404231213487_Table_Documents_FK_UserAccount.resx">
-      <DependentUpon>201404231213487_Table_Documents_FK_UserAccount.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405100922318_ImplementDocumentSubjects.resx">
+      <DependentUpon>201405100922318_ImplementDocumentSubjects.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404240842575_Shingles_Table_Add.resx">
-      <DependentUpon>201404240842575_Shingles_Table_Add.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405021048005_Table_Subjects_Add.resx">
-      <DependentUpon>201405021048005_Table_Subjects_Add.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405031024313_Table_Subjects_PR_Name_Update.resx">
-      <DependentUpon>201405031024313_Table_Subjects_PR_Name_Update.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405031718206_Table_StopWords_Add.resx">
-      <DependentUpon>201405031718206_Table_StopWords_Add.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405050727316_SP_DELETE_ShingleTable.resx">
-      <DependentUpon>201405050727316_SP_DELETE_ShingleTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405101905299_Table_DocumentKeyWords_UpdateFields.resx">
+      <DependentUpon>201405101905299_Table_DocumentKeyWords_UpdateFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

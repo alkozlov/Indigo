@@ -52,7 +52,7 @@
         /// </summary>
         public const string EmailOrLoginPropertyName = "EmailOrLogin";
 
-        private String _emailOrLogin = "bfc69ea118544ef7b3040af60b185e3b";
+        private String _emailOrLogin = "7a8276e8130744b8b027ffc2b8064427";
 
         /// <summary>
         /// Sets and gets the EmailOrLogin property.
@@ -82,7 +82,7 @@
         /// </summary>
         public const string PasswordPropertyName = "Password";
 
-        private String _password = "bfc69ea118544ef7b3040af60b185e3b";
+        private String _password = "7a8276e8130744b8b027ffc2b8064427";
 
         /// <summary>
         /// Sets and gets the Password property.

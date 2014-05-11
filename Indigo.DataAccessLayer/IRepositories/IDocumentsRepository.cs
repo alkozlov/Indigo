@@ -11,7 +11,7 @@
         Task<Document> CreateAsync(Document document);
         
         Task<Document> GetByIdAsync(Int32 documentId);
-        Task<Document> GetByGuid(Guid documentGuid);
+        Task<Document> GetByGuidAsync(Guid documentGuid);
         Task<Document> GetByStoredNameAsync(String storedName);
         Task<IEnumerable<Document>> GetAllDocumentsAsync();
 

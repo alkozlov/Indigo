@@ -86,6 +86,22 @@ namespace Indigo.BusinessLogicLayer.Document
             }
         }
 
+        public static async Task<Document> GetAsync(Int32 documentId)
+        {
+            if (documentId <= 0)
+            {
+                throw new ArgumentException("Wrong document ID.", "documentId");
+            }
+
+            using (IDocumentsRepository documentsRepository = new DocumentsRepository())
+            {
+                DataModels.Document dataDocument = await documentsRepository.GetByIdAsync(documentId);
+                Document document = dataDocument != null ? ConvertToBusinessObject(dataDocument) : null;
+
+                return document;
+            }
+        }
+
         public static async Task<Document> GetAsync(Guid documentGuid)
         {
             if (documentGuid.Equals(Guid.Empty))
@@ -95,7 +111,7 @@ namespace Indigo.BusinessLogicLayer.Document
 
             using (IDocumentsRepository documentsRepository = new DocumentsRepository())
             {
-                DataModels.Document dataDocument = await documentsRepository.GetByGuid(documentGuid);
+                DataModels.Document dataDocument = await documentsRepository.GetByGuidAsync(documentGuid);
                 Document document = dataDocument != null ? ConvertToBusinessObject(dataDocument) : null;
 
                 return document;
@@ -104,8 +120,17 @@ namespace Indigo.BusinessLogicLayer.Document
 
         public async Task DeleteAsync()
         {
+            DocumentKeyWordList documentKeyWordsList = await DocumentKeyWordList.GetAsync(this.DocumentId);
+            await documentKeyWordsList.DeleteAsync();
+
             // Delete all document's shingles
             await ShingleList.DeleteDocumentShingles(this.DocumentId);
+
+            // Delete document from storage
+            using (StorageConnection storageConnection = StorageConnector.GetStorageConnection(StorageType.Local))
+            {
+                storageConnection.DeleteFile(this.StoredFileName);
+            }
 
             // Delete document
             using (IDocumentsRepository documentsRepository = new DocumentsRepository())

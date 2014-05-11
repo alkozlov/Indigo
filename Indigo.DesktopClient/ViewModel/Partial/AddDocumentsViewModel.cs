@@ -1,4 +1,6 @@
-﻿namespace Indigo.DesktopClient.ViewModel.Partial
+﻿using Indigo.BusinessLogicLayer.Analysis;
+
+namespace Indigo.DesktopClient.ViewModel.Partial
 {
     using Microsoft.Win32;
     using System;
@@ -37,7 +39,7 @@
             this.ConsoleMessages = new ObservableCollection<ConsoleMessage>();
             this.CpuStatistic = new CpuStatistic();
 
-            this.BeginMonitoringCpu();
+            //this.BeginMonitoringCpu();
 
             // Subscribe to document processor events
             DocumentProcessor.Current.OnDocumentProcessing += OnDocumentProcessingHandler;

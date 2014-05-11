@@ -26,7 +26,7 @@
         {
             using (IStopWordsRepository stopWordsRepository = new StopWordsRepository())
             {
-                var dataStopWords = await stopWordsRepository.GetAllAsync();
+                var dataStopWords = (await stopWordsRepository.GetAllAsync()).ToList();
                 List<StopWordItem> stopWords = new List<StopWordItem>();
                 if (dataStopWords.Any())
                 {

@@ -54,15 +54,13 @@
     </Reference>
     <Reference Include="infragisticswpf4.controls.charts.xamdatachart.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="infragisticswpf4.controls.charts.xamgauge.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="infragisticswpf4.controls.editors.xamslider.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="infragisticswpf4.controls.grids.xamgrid.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.DataManager.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="infragisticswpf4.datapresenter.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.DataVisualization.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.Editors.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="infragisticswpf4.reports.controls.charts.xamdatachart.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.Reports.Controls.Common.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.Reports.Controls.DataVisualization.v13.1, Version=13.1.20131.1058, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="InfragisticsWPF4.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.12.1.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -117,15 +115,13 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Helpers\ConsoleMessageHelper.cs" />
     <Compile Include="Helpers\CpuUsage.cs" />
-    <Compile Include="Helpers\DocumentProcessedEventArgs.cs" />
-    <Compile Include="Helpers\DocumentProcessErrorEventArgs.cs" />
-    <Compile Include="Helpers\DocumentProcessingEventArgs.cs" />
-    <Compile Include="Helpers\DocumentProcessor.cs" />
-    <Compile Include="Helpers\DocumentProcessorConfigurations.cs" />
     <Compile Include="Model\ActionList.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\DocumentAnalysisModel.cs" />
+    <Compile Include="Model\DocumentAnalysis\AnalysisSettings.cs" />
+    <Compile Include="Model\DocumentAnalysis\LsaModel.cs" />
+    <Compile Include="Model\DocumentAnalysis\SimilarDocumentModel.cs" />
     <Compile Include="Model\FileSizeFormatProvider.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\Notifications\AuthorizationMessage.cs" />
@@ -153,6 +149,7 @@
     <Compile Include="ViewModel\HomePageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Partial\AddDocumentsViewModel.cs" />
+    <Compile Include="ViewModel\Partial\AddDocumentViewModel.cs" />
     <Compile Include="ViewModel\Partial\AuthorizedViewModel.cs" />
     <Compile Include="ViewModel\Partial\DocumentsViewModel.cs" />
     <Compile Include="ViewModel\Partial\ProfileViewModel.cs" />
@@ -178,6 +175,9 @@
     </Compile>
     <Compile Include="View\Partial\AddDocumentsView.xaml.cs">
       <DependentUpon>AddDocumentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Partial\AddDocumentView.xaml.cs">
+      <DependentUpon>AddDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Partial\AuthorizedView.xaml.cs">
       <DependentUpon>AuthorizedView.xaml</DependentUpon>
@@ -254,6 +254,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Partial\AddDocumentsView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Partial\AddDocumentView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -404,6 +408,10 @@
     <Resource Include="Images\Info-status.png" />
     <Resource Include="Images\Documents_Gray.png" />
     <Resource Include="Images\Documents_White.png" />
+    <Resource Include="Images\NavigationArrow - Next - White - 16x16.png" />
+    <Resource Include="Images\NavigationArrow - Previous - White - 16x16.png" />
+    <Resource Include="Images\file-add-icon-128x128.png" />
+    <Resource Include="Images\play-icon---64x64.png" />
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

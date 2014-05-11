@@ -1,4 +1,6 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using Indigo.DesktopClient.Model.DocumentAnalysis;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using System;
     using System.Threading;
@@ -8,12 +10,21 @@
     using GalaSoft.MvvmLight.Messaging;
 
     using Indigo.BusinessLogicLayer.Account;
+    using Indigo.BusinessLogicLayer.Analysis;
+    using Indigo.BusinessLogicLayer.Shingles;
     using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.View;
     using Indigo.DesktopClient.ViewModel.Partial;
 
     public abstract class CommonViewModel : ViewModelBase
     {
+        #region Defaults values
+
+        private const ShingleSize DefaultShingleSize = ShingleSize.Size7;
+        private const Int32 DefaultMinimalSimilarityLevel = 10;
+
+        #endregion
+
         public virtual Boolean IsPartialView
         {
             get { return false; }
@@ -23,19 +34,6 @@
         {
             get { return Thread.CurrentPrincipal as IndigoUserPrincipal; }
         }
-
-        //public void NavigateAction(ApplicationView fromView, ApplicationView toView, Object navigationToken = null, Boolean isJumpBack = false)
-        //{
-        //    NavigationMessage navigationMessage = new NavigationMessage(toView, isJumpBack);
-        //    if (navigationToken != null)
-        //    {
-        //        Messenger.Default.Send<NavigationMessage>(navigationMessage, navigationToken);
-        //    }
-        //    else
-        //    {
-        //        Messenger.Default.Send<NavigationMessage>(navigationMessage);
-        //    }
-        //}
 
         public void SendNavigationMessage(ApplicationView targetView, NavigationToken token)
         {
@@ -236,7 +234,24 @@
                     SimpleIoc.Default.Unregister<UsersViewModel>();
                     SimpleIoc.Default.Register<UsersViewModel>();
                 } break;
+
+                case ApplicationView.AddDocument:
+                {
+                    SimpleIoc.Default.Unregister<AddDocumentViewModel>();
+                    SimpleIoc.Default.Register<AddDocumentViewModel>();
+                } break;
             }
+        }
+
+        public AnalysisSettings GetDefaultShingleSize()
+        {
+            AnalysisSettings defaultAnalysisSettings = new AnalysisSettings
+            {
+                ShingleSize = (byte) DefaultShingleSize,
+                MinimalSimilarityLevel = DefaultMinimalSimilarityLevel
+            };
+
+            return defaultAnalysisSettings;
         }
     }
 }

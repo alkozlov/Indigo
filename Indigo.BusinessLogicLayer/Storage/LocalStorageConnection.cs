@@ -102,5 +102,17 @@
             File.Copy(localFileFullName, storageFileFullName);
             
         }
+
+        public override void DeleteFile(String storageFileName)
+        {
+            String storageFileFullName = String.Concat(base.StorageDirectory, "\\", storageFileName);
+            FileInfo fileInfo = new FileInfo(storageFileFullName);
+            if (!fileInfo.Exists)
+            {
+                throw new FileNotFoundException("Can't find file on local disk.", storageFileFullName);
+            }
+
+            fileInfo.Delete();
+        }
     }
 }

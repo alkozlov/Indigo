@@ -1,24 +1,26 @@
-﻿namespace Indigo.DesktopClient.ViewModel
+﻿using System.Drawing;
+using System.Linq;
+
+namespace Indigo.DesktopClient.ViewModel
 {
     using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
+    using System.Collections.ObjectModel;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
 
     using GalaSoft.MvvmLight.Command;
-    
+
+    using Indigo.BusinessLogicLayer.Analysis;
+    using Indigo.BusinessLogicLayer.Document;
     using Indigo.BusinessLogicLayer.Shingles;
     using Indigo.DesktopClient.CommandDelegates;
     using Indigo.DesktopClient.Model;
-    using Indigo.DesktopClient.View;
-    using Indigo.Tools;
-    using Indigo.Tools.Converters;
-    using Indigo.Tools.Parsers;
+    using Indigo.DesktopClient.Model.DocumentAnalysis;
+    using Indigo.DesktopClient.Model.PenthouseModels;
 
     /// <summary>
     /// This class contains properties that a View can data bind to.
@@ -28,9 +30,6 @@
     /// </summary>
     public class DocumentAnalysisViewModel : CommonViewModel
     {
-        private const String TempApplicationFolder = @"Indigo\\";
-        private const String TempLematizationFilePostfix = "_LEM";
-
         #region Properties
 
         /// <summary>
@@ -68,13 +67,13 @@
         /// </summary>
         public const String IsDocumentSelectedPropertyName = "IsDocumentSelected";
 
-        private Visibility _isDocumentSelected = Visibility.Collapsed;
+        private Boolean _isDocumentSelected = false;
 
         /// <summary>
         /// Sets and gets the IsDocumentSelected property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public Visibility IsDocumentSelected
+        public Boolean IsDocumentSelected
         {
             get
             {
@@ -93,11 +92,101 @@
             }
         }
 
+        /// <summary>
+        /// The <see cref="AnalysisPanelSettings" /> property's name.
+        /// </summary>
+        public const string AnalysisPanelSettengsPropertyName = "AnalysisPanelSettings";
+
+        private AnalysisSettings _analysisPanelSettings;
+
+        /// <summary>
+        /// Sets and gets the AnalysisPanelSettings property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public AnalysisSettings AnalysisPanelSettings
+        {
+            get
+            {
+                return this._analysisPanelSettings;
+            }
+
+            set
+            {
+                if (this._analysisPanelSettings == value)
+                {
+                    return;
+                }
+
+                this._analysisPanelSettings = value;
+                base.RaisePropertyChanged(AnalysisPanelSettengsPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="SimilarDocuments" /> property's name.
+        /// </summary>
+        public const string SimilarDocumentsPropertyName = "SimilarDocuments";
+
+        private ObservableCollection<SimilarDocumentModel> _similarDocuments;
+
+        /// <summary>
+        /// Sets and gets the SimilarDocuments property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<SimilarDocumentModel> SimilarDocuments
+        {
+            get
+            {
+                return this._similarDocuments;
+            }
+
+            set
+            {
+                if (this._similarDocuments == value)
+                {
+                    return;
+                }
+
+                this._similarDocuments = value;
+                base.RaisePropertyChanged(SimilarDocumentsPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="LsaMap" /> property's name.
+        /// </summary>
+        public const string LsaMapPropertyName = "LsaMap";
+
+        private ObservableCollection<LsaModel> _lsaMap;
+
+        /// <summary>
+        /// Sets and gets the LsaMap property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<LsaModel> LsaMap
+        {
+            get
+            {
+                return this._lsaMap;
+            }
+
+            set
+            {
+                if (this._lsaMap == value)
+                {
+                    return;
+                }
+
+                this._lsaMap = value;
+                base.RaisePropertyChanged(LsaMapPropertyName);
+            }
+        }
+
         #endregion
 
         #region Commands
 
-        public ICommand LoadDocumentComand
+        public ICommand LoadDocumentCommand
         {
             get
             {
@@ -126,7 +215,8 @@
                         Thumbnail = GetFileExtensionThumbnail(selectedFileInfo.Extension),
                         TempFileFullName = String.Concat(Guid.NewGuid().ToString("N"), selectedFileInfo.Extension)
                     };
-                    this.IsDocumentSelected = Visibility.Visible;
+                    this.IsDocumentSelected = true;
+                    this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
                 }
                 else
                 {
@@ -147,35 +237,38 @@
 
         private async Task AnalysDocuments(object o)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            // Shingles method
-            // 1. Use lemmatization tool for get new file with normalized words
-            // 2. Parse file
-
-            // 1.
-            String currentUserTempFolder = Path.GetTempPath();
-            String outputDirectory = String.Concat(currentUserTempFolder, TempApplicationFolder);
-            String tempFileOnlyName = Guid.NewGuid().ToString("N");
-            String tempTextFileName = String.Format("{0}.txt", tempFileOnlyName);
-            String tempTextFileFullName = String.Concat(outputDirectory, tempTextFileName);
-
-            using (IDocumentConverter converter = new MsWordDocumentConverter())
+            AnalysisTargetDocument targetDocument = new AnalysisTargetDocument
             {
-                await converter.ConvertDocumentToTextFileAsync(this.DocumentAnalysisModel.FullName, tempTextFileFullName);
+                FilePath = this.DocumentAnalysisModel.FullName
+            };
+
+            ShingleSize selectedShingleSize = (ShingleSize) this.AnalysisPanelSettings.ShingleSize;
+            float minimalSimilarityLevel = Convert.ToSingle(this.AnalysisPanelSettings.MinimalSimilarityLevel) / 100;
+            
+            DocumentAnalysisSettings documentAnalysisSettings = new DocumentAnalysisSettings(selectedShingleSize, minimalSimilarityLevel);
+            CompareResult compareResult = await DocumentAnalyzer.Current.AnalyzeDocumentAsync_V2(targetDocument, documentAnalysisSettings);
+
+            if (compareResult.Count > 0)
+            {
+                List<SimilarDocumentModel> similarDocuments = new List<SimilarDocumentModel>();
+                foreach (CompareResultSet compareResultSet in compareResult)
+                {
+                    SimilarDocumentModel similarDocumentModel = await this.ConvertCompareResultSetToModelObject(compareResultSet);
+                    similarDocuments.Add(similarDocumentModel);
+                }
+                this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>(similarDocuments);
+
+                DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
+                List<LsaModel> lsaModels =
+                    compareResult.LsaResult.Select(lsaResultSet => CreateLsaModel(lsaResultSet, documentList)).ToList();
+
+                this.LsaMap = new ObservableCollection<LsaModel>(lsaModels);
             }
-
-            String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName, TempLematizationFilePostfix);
-            String tempLematizationFileFullName = String.Concat(outputDirectory, tempLematizationFileName);
-            await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
-
-            // 2.
-            var words = (await ParserTool.Current.ParseFileAsync(tempLematizationFileFullName)).ToList();
-            ShingleList shingles = await ShingleList.CreateAsync(words, new List<string>(), 7);
-
-            stopwatch.Stop();
-            MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
+            else
+            {
+                this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
+                this.LsaMap = new ObservableCollection<LsaModel>();
+            }
         }
 
         #endregion
@@ -187,7 +280,9 @@
         /// </summary>
         public DocumentAnalysisViewModel()
         {
-            
+            this.AnalysisPanelSettings = base.GetDefaultShingleSize();
+            this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
+            this.LsaMap = new ObservableCollection<LsaModel>();
         }
 
         #endregion
@@ -222,6 +317,86 @@
             }
 
             return thumbnailPath;
+        }
+
+        private async Task<SimilarDocumentModel> ConvertCompareResultSetToModelObject(CompareResultSet compareResultSet)
+        {
+            Document document = await Document.GetAsync(compareResultSet.DocumentId);
+            SimilarDocumentModel similarDocumentModel = null;
+            if (document != null)
+            {
+                Int32 similarityValue = Convert.ToInt32(compareResultSet.ShinglesCompareResult.CompareCoefficient*100);
+
+                similarDocumentModel = new SimilarDocumentModel
+                {
+                    DocumentId = document.DocumentId,
+                    DocumentName = document.OriginalFileName,
+                    SimilarityValue = similarityValue,
+                    DocumentType = GetDocumentType(document.OriginalFileName)
+                };
+            }
+
+            return similarDocumentModel;
+        }
+
+        private DocumentType GetDocumentType(String fileName)
+        {
+            String fileExtansion = Path.GetExtension(fileName);
+            DocumentType documentType = DocumentType.Doc;
+
+            if (!String.IsNullOrEmpty(fileExtansion))
+            {
+                if (fileExtansion.ToLower().Equals(".doc"))
+                {
+                    documentType = DocumentType.Doc;
+                }
+                else if (fileExtansion.ToLower().Equals(".docx"))
+                {
+                    documentType = DocumentType.Docx;
+                }
+                else if (fileExtansion.ToLower().Equals(".odt"))
+                {
+                    documentType = DocumentType.Odt;
+                }
+                else if (fileExtansion.ToLower().Equals(".rtf"))
+                {
+                    documentType = DocumentType.Rtf;
+                }
+            }
+
+            return documentType;
+        }
+
+        private LsaModel CreateLsaModel(LsaResultSet lsaResultSet, DocumentList documentList)
+        {
+            LsaModel lsaModel;
+            if (lsaResultSet.DocumentId.HasValue)
+            {
+                var document = documentList.FirstOrDefault(x => x.DocumentId.Equals(lsaResultSet.DocumentId));
+                lsaModel = new LsaModel
+                {
+                    DocumentId = lsaResultSet.DocumentId,
+                    DocumentName = document != null ? document.OriginalFileName : "НЕ НАЙДЕН",
+                    X = lsaResultSet.X,
+                    Y = lsaResultSet.Y,
+                    Radius = 15,
+                    Brush = Brushes.Teal
+                };
+            }
+            else
+            {
+                lsaModel = new LsaModel
+                {
+                    DocumentId = 0,
+                    DocumentName = "ВЫБРАННЫЙ ДОКУМЕНТ",
+                    X = lsaResultSet.X,
+                    Y = lsaResultSet.Y,
+                    Radius = 25,
+                    Brush = Brushes.Tomato
+                };
+            }
+
+            return lsaModel;
         }
 
         #endregion

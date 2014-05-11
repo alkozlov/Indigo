@@ -36,8 +36,19 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.Excel.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2013.1\WPF\CLR4.0\Bin\SharedXAML\InfragisticsWPF4.Documents.Excel.v13.1.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics.IO">
+      <HintPath>..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.IO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,14 +59,39 @@
     <Compile Include="Account\AccessType.cs" />
     <Compile Include="Account\PermissionType.cs" />
     <Compile Include="Account\UserAccountList.cs" />
+    <Compile Include="Analysis\AnalysisResult.cs" />
+    <Compile Include="Analysis\AnalysisTargetDocument.cs" />
+    <Compile Include="Analysis\CompareResult.cs" />
+    <Compile Include="Analysis\CompareResultSet.cs" />
+    <Compile Include="Analysis\DocumentAnalysisSettings.cs" />
+    <Compile Include="Analysis\DocumentAnalyzer.cs" />
+    <Compile Include="Analysis\DocumentProcessedEventArgs.cs" />
+    <Compile Include="Analysis\DocumentProcessErrorEventArgs.cs" />
+    <Compile Include="Analysis\DocumentProcessingEventArgs.cs" />
+    <Compile Include="Analysis\DocumentProcessor.cs" />
+    <Compile Include="Analysis\DocumentProcessorConfigurations.cs" />
+    <Compile Include="Analysis\DocumentVectorization.cs" />
+    <Compile Include="Analysis\LsaMatrix.cs" />
+    <Compile Include="Analysis\LsaResult.cs" />
+    <Compile Include="Analysis\ShinglesCompareResult.cs" />
+    <Compile Include="Analysis\StopWordFilter.cs" />
+    <Compile Include="Analysis\UsageFilter.cs" />
     <Compile Include="Document\Document.cs" />
+    <Compile Include="Document\DocumentKeyWord.cs" />
+    <Compile Include="Document\DocumentKeyWordList.cs" />
     <Compile Include="Document\DocumentList.cs" />
+    <Compile Include="Document\DocumentSubject.cs" />
     <Compile Include="Document\StopWord.cs" />
     <Compile Include="Document\StopWordList.cs" />
     <Compile Include="Document\Subject.cs" />
+    <Compile Include="Document\SubjectKeyWord.cs" />
+    <Compile Include="Document\SubjectKeyWordList.cs" />
     <Compile Include="Document\SubjectList.cs" />
     <Compile Include="Helpers\CryptographyHelper.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Import\ExcelImporter.cs" />
+    <Compile Include="Import\ImportResult.cs" />
+    <Compile Include="Import\StopWordsExcelImporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Account\AnonymousIdentity.cs" />
     <Compile Include="Account\IndigoUserIdentity.cs" />
@@ -65,6 +101,7 @@
     <Compile Include="Account\UserAccountType.cs" />
     <Compile Include="Shingles\AnalysisAccuracy.cs" />
     <Compile Include="Shingles\CheckSumCollection.cs" />
+    <Compile Include="Shingles\CheckSumComparer.cs" />
     <Compile Include="Shingles\Crc32.cs" />
     <Compile Include="Shingles\Crc32Hasher.cs" />
     <Compile Include="Shingles\HashAlgorithmType.cs" />
@@ -78,6 +115,7 @@
     <Compile Include="Shingles\SHA512Hasher.cs" />
     <Compile Include="Shingles\Shingle.cs" />
     <Compile Include="Shingles\ShingleList.cs" />
+    <Compile Include="Shingles\ShingleSize.cs" />
     <Compile Include="Storage\LocalStorageConnection.cs" />
     <Compile Include="Storage\ServerStorageConnection.cs" />
     <Compile Include="Storage\StorageConnection.cs" />
@@ -90,6 +128,10 @@
       <Project>{af82e4ac-b2c5-4f78-9ddd-05471413404b}</Project>
       <Name>Indigo.DataAccessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Indigo.Tools\Indigo.Tools.csproj">
+      <Project>{6f7de3c2-cd51-43fa-901a-8b481432faf2}</Project>
+      <Name>Indigo.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -100,6 +142,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

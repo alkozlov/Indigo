@@ -19,10 +19,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Indigo.Hash", "Indigo.Hash\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indigo.BusinessLogicLayer.Tests", "Indigo.BusinessLogicLayer.Tests\Indigo.BusinessLogicLayer.Tests.csproj", "{1B2EF48E-777A-4F93-B001-D571CDFAB522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagement1", "InventoryManagement1\InventoryManagement1.csproj", "{9D21A742-14B8-4665-9329-2AC018346D26}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indigo.WinClient", "Indigo.WinClient\Indigo.WinClient.csproj", "{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,42 +165,6 @@ Global
 		{1B2EF48E-777A-4F93-B001-D571CDFAB522}.Release|Win32.ActiveCfg = Release|Any CPU
 		{1B2EF48E-777A-4F93-B001-D571CDFAB522}.Release|x64.ActiveCfg = Release|Any CPU
 		{1B2EF48E-777A-4F93-B001-D571CDFAB522}.Release|x86.ActiveCfg = Release|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Win32.ActiveCfg = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|Win32.Build.0 = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|x86.ActiveCfg = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Debug|x86.Build.0 = Debug|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|ARM.ActiveCfg = Release|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Mixed Platforms.Build.0 = Release|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Win32.ActiveCfg = Release|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|Win32.Build.0 = Release|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|x64.ActiveCfg = Release|Any CPU
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|x86.ActiveCfg = Release|x86
-		{9D21A742-14B8-4665-9329-2AC018346D26}.Release|x86.Build.0 = Release|x86
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|ARM.ActiveCfg = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|Win32.ActiveCfg = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|x64.ActiveCfg = Release|Any CPU
-		{66C2D426-9CD8-4FB6-A2B0-9A3C0F539594}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

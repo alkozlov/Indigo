@@ -49,6 +49,9 @@ namespace Indigo.DesktopClient.Model
                     ActiveThumbnail = GetActiveThumbnail(x.Key)
                 }).ToList();
 
+                // TODO: Temporary remove reports
+                actions = actions.Where(x => x.Permission != PermissionType.Reports).ToList();
+
                 ActionList actionList = new ActionList(actions);
                 return actionList;
             }

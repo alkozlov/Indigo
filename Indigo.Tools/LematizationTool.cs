@@ -62,8 +62,10 @@
         {
             String applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
             this.OutputDirectory = String.Concat(applicationDirectory, DefaultLematizationToolDocumentsDirectory);
-            this.LemmatizationTool = String.Concat(applicationDirectory, DefaultMyStemLematizationTool);
-            this._lemmatizer = new MyStemLemmatizer(this.LemmatizationTool);
+            //this.LemmatizationTool = String.Concat(applicationDirectory, DefaultMyStemLematizationTool);
+            //this._lemmatizer = new MyStemLemmatizer(this.LemmatizationTool);
+
+            this._lemmatizer = new LemmaGenLemmatizer();
         }
 
         #endregion

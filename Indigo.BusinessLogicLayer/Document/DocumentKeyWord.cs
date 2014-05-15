@@ -12,8 +12,8 @@
 
     public class DocumentKeyWord
     {
-        public Int64 DocumentKeyWordId { get; private set; }
-        public Int32 DocumentId { get; private set; }
+        public Int64? DocumentKeyWordId { get; private set; }
+        public Int32? DocumentId { get; private set; }
         public String Word { get; private set; }
         public Int32 Usages { get; private set; }
 
@@ -107,9 +107,12 @@
 
         public async Task DeleteAsync()
         {
-            using (IDocumentKeyWordsRepository documentKeyWordsRepository = new DocumentKeyWordsRepository())
+            if (this.DocumentKeyWordId.HasValue)
             {
-                await documentKeyWordsRepository.DeleteByIdAsync(this.DocumentKeyWordId);
+                using (IDocumentKeyWordsRepository documentKeyWordsRepository = new DocumentKeyWordsRepository())
+                {
+                    await documentKeyWordsRepository.DeleteByIdAsync(this.DocumentKeyWordId.Value);
+                }
             }
         }
 

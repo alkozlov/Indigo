@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LemmaSharp">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuilt">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharpPrebuilt.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuiltCompact">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharpPrebuiltCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Lzma#">
+      <HintPath>..\..\Info\LemmaGen\Lzma#.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +55,15 @@
     <Compile Include="Lemmatization\EmptyFileException.cs" />
     <Compile Include="Lemmatization\GrammaticalInformationOutputMode.cs" />
     <Compile Include="Lemmatization\ILemmatizer.cs" />
+    <Compile Include="Lemmatization\LemmaGenLemmatizer.cs" />
     <Compile Include="Lemmatization\LemmatizerSettings.cs" />
     <Compile Include="Lemmatization\MyStemLemmatizer.cs" />
     <Compile Include="Lemmatization\WordformsOutputMode.cs" />
     <Compile Include="Lemmatization\WordWrappingMode.cs" />
+    <Compile Include="Parsers\IntelligentParser.cs" />
     <Compile Include="Parsers\IParser.cs" />
     <Compile Include="Parsers\MyStemParser.cs" />
+    <Compile Include="Parsers\TextWord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

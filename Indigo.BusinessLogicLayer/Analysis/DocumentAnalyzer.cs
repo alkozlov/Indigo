@@ -15,7 +15,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
     using Indigo.BusinessLogicLayer.Shingles;
     using Indigo.Tools;
     using Indigo.Tools.Converters;
-    using Indigo.Tools.Parsers;
+    using Tools = Indigo.Tools.Parsers;
 
     public class DocumentAnalyzer
     {
@@ -42,7 +42,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
 
         #region Methods
 
-        public async Task<CompareResult> AnalyzeDocumentAsync(AnalysisTargetDocument targetDocument, DocumentAnalysisSettings settings)
+        public async Task<CompareResult> FindSimilarDocumentsAsync(AnalysisTargetDocument targetDocument, DocumentAnalysisSettings settings)
         {
             String tempFileOnlyName = Guid.NewGuid().ToString("N");
             String tempTextFileName = String.Format("{0}.txt", tempFileOnlyName);
@@ -50,90 +50,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
             String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName, DefaultTempLematizationFilePostfix);
             String tempLematizationFileFullName = String.Concat(this.TempDirectory, "\\", tempLematizationFileName);
 
-            List<CompareResultSet> compareResultSets = new List<CompareResultSet>();
-
-            try
-            {
-                // 1. Convert original document to txt format and create copy in temp folder
-                using (IDocumentConverter converter = new MsWordDocumentConverter())
-                {
-                    await converter.ConvertDocumentToTextFileAsync(targetDocument.FilePath, tempTextFileFullName);
-                }
-
-                try
-                {
-                    // 2. Lematization
-                    await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
-                    
-                    // Parse temp documents to words
-                    var words = (await ParserTool.Current.ParseFileAsync(tempLematizationFileFullName)).ToList();
-                    StopWordList stopWordList = await StopWordList.GetAllStopWordsAsync();
-                    
-                    // Remove stop-words from origin text
-                    List<String> modifiedWords = words.Select(x => x.ToLower()).ToList();
-                    foreach (var stopWord in stopWordList)
-                    {
-                        modifiedWords.RemoveAll(word => String.Equals(word, stopWord.Content, StringComparison.CurrentCultureIgnoreCase));
-                    }
-
-                    #region Shingles algorithm
-
-                    ShingleList shingleList = await ShingleList.CreateAsync(modifiedWords, settings.ShingleSize);
-                    CheckSumCollection checkSumCollection = await CheckSumCollection.CreateAsync(shingleList, HashAlgorithmType.SHA256);
-
-                    // TODO: Add caching checksum
-
-                    DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
-                    var asyncTasks = documentList.Select(document => Task<CompareResultSet>.Factory.StartNew(() =>
-                    {
-                        ShingleList documentShingleList = ShingleList.GetAsync(document.DocumentId, settings.ShingleSize).Result;
-                        CheckSumCollection documentCheckSumCollection = CheckSumCollection.Create(documentShingleList);
-                        float matchingCoefficient = CheckSumComparer.CalculateMatchingPercentage(checkSumCollection, documentCheckSumCollection);
-                        
-                        ShinglesCompareResult shinglesCompareResult = new ShinglesCompareResult(settings.ShingleSize, matchingCoefficient);
-                        CompareResultSet compareResultSet = new CompareResultSet(document.DocumentId, shinglesCompareResult);
-
-                        return compareResultSet;
-                    }));
-
-                    compareResultSets = (await Task.WhenAll(asyncTasks)).ToList();
-
-                    #endregion
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("Error{0}: {1}", e.HResult, e.Message);
-                    throw;
-                }
-                finally
-                {
-                    // Remove temp files
-                    File.Delete(tempTextFileFullName);
-                    File.Delete(tempLematizationFileFullName);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            // Filtration
-            List<CompareResultSet> filterCompareResult =
-                compareResultSets.Where(x => x.ShinglesCompareResult.CompareCoefficient >= settings.MinimalSimilarityLevel).ToList();
-
-            CompareResult compareResult = new CompareResult(filterCompareResult, null);
-            return compareResult;
-        }
-
-        public async Task<CompareResult> AnalyzeDocumentAsync_V2(AnalysisTargetDocument targetDocument, DocumentAnalysisSettings settings)
-        {
-            String tempFileOnlyName = Guid.NewGuid().ToString("N");
-            String tempTextFileName = String.Format("{0}.txt", tempFileOnlyName);
-            String tempTextFileFullName = String.Concat(this.TempDirectory, "\\", tempTextFileName);
-            String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName, DefaultTempLematizationFilePostfix);
-            String tempLematizationFileFullName = String.Concat(this.TempDirectory, "\\", tempLematizationFileName);
-
-            List<CompareResultSet> compareResultSets = new List<CompareResultSet>();
+            ShinglesResult shinglesResult = null;
             LsaResult lsaResult = null;
 
             try
@@ -150,15 +67,11 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
 
                     // Parse temp documents to words
-                    var words = (await ParserTool.Current.ParseFileAsync(tempLematizationFileFullName)).ToList();
-                    StopWordList stopWordList = await StopWordList.GetAllStopWordsAsync();
+                    var parserWords = (await Tools.ParserTool.Current.ParseDocumentAsync(tempLematizationFileFullName)).ToList();
+                    List<DocumentWord> documentWords = ConvertToBusinessDocumentWords(parserWords);
 
                     // Remove stop-words from origin text
-                    List<String> modifiedWords = words.Select(x => x.ToLower()).ToList();
-                    foreach (var stopWord in stopWordList)
-                    {
-                        modifiedWords.RemoveAll(word => String.Equals(word, stopWord.Content, StringComparison.CurrentCultureIgnoreCase));
-                    }
+                    List<DocumentWord> modifiedWords = await StopWordFilter.FilterAsync(documentWords);
 
                     #region Shingles algorithm
 
@@ -168,29 +81,31 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     // TODO: Add caching checksum
 
                     DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
-                    var asyncTasks = documentList.Select(document => Task<CompareResultSet>.Factory.StartNew(() =>
+                    var asyncTasks = documentList.Select(document => Task<ShinglesResultSet>.Factory.StartNew(() =>
                     {
                         ShingleList documentShingleList = ShingleList.GetAsync(document.DocumentId, settings.ShingleSize).Result;
                         CheckSumCollection documentCheckSumCollection = CheckSumCollection.Create(documentShingleList);
                         float matchingCoefficient = CheckSumComparer.CalculateMatchingPercentage(checkSumCollection, documentCheckSumCollection);
+                        List<Shingle> similarShingles = CheckSumComparer.GetSimilarShingles(checkSumCollection, documentCheckSumCollection);
 
-                        ShinglesCompareResult shinglesCompareResult = new ShinglesCompareResult(settings.ShingleSize, matchingCoefficient);
-                        CompareResultSet compareResultSet = new CompareResultSet(document.DocumentId, shinglesCompareResult);
-
-                        return compareResultSet;
+                        ShinglesResultSet shinglesResultSet =
+                            new ShinglesResultSet(document.DocumentId, matchingCoefficient, similarShingles);
+                        return shinglesResultSet;
                     }));
 
-                    compareResultSets = (await Task.WhenAll(asyncTasks)).ToList();
+                    List<ShinglesResultSet> shinglesResultSets = (await Task.WhenAll(asyncTasks)).ToList();
+                    List<ShinglesResultSet> filterShinglesResultSets =
+                        shinglesResultSets.Where(x => x.MatchingCoefficient >= settings.MinimalSimilarityLevel).ToList();
+                    shinglesResult = new ShinglesResult(settings.ShingleSize, filterShinglesResultSets);
 
                     #endregion
 
                     #region LSA
 
-                    List<String> modifiedWordsUsageFilter = UsageFilter.Filter(modifiedWords, MinimalWordsUsageInDocument);
+                    List<DocumentWord> modifiedWordsUsageFilter = UsageFilter.Filter(modifiedWords, MinimalWordsUsageInDocument);
                     DocumentVector documentVector = DocumentVectorization.Vectorisation(modifiedWordsUsageFilter);
 
-                    List<DocumentVector> documentsVectors = new List<DocumentVector>();
-                    documentsVectors.Add(documentVector);
+                    List<DocumentVector> documentsVectors = new List<DocumentVector> {documentVector};
                     foreach (var item in documentList)
                     {
                         DocumentKeyWordList documentKeyWordList = await DocumentKeyWordList.GetAsync(item.DocumentId);
@@ -212,7 +127,8 @@ namespace Indigo.BusinessLogicLayer.Analysis
                         {
                             DocumentId = documentsVectors[i].DocumentId,
                             X = Convert.ToSingle(vt[0, i]),
-                            Y = Convert.ToSingle(vt[1, i])
+                            Y = Convert.ToSingle(vt[1, i]),
+                            Z = Convert.ToSingle(vt[2, i])
                         };
                         lsaResultSets.Add(lsaResultSet);
                     }
@@ -238,11 +154,63 @@ namespace Indigo.BusinessLogicLayer.Analysis
             }
 
             // Filtration
-            List<CompareResultSet> filterCompareResult =
-                compareResultSets.Where(x => x.ShinglesCompareResult.CompareCoefficient >= settings.MinimalSimilarityLevel).ToList();
-
-            CompareResult compareResult = new CompareResult(filterCompareResult, lsaResult);
+            CompareResult compareResult = new CompareResult(shinglesResult, lsaResult);
             return compareResult;
+        }
+
+        public async Task<AnalysisResult> AnalyzeDocumentAsync(AnalysisTargetDocument targetDocument)
+        {
+            String tempFileOnlyName = Guid.NewGuid().ToString("N");
+            String tempTextFileName = String.Format("{0}.txt", tempFileOnlyName);
+            String tempTextFileFullName = String.Concat(this.TempDirectory, "\\", tempTextFileName);
+            String tempLematizationFileName = String.Format("{0}{1}.txt", tempFileOnlyName, DefaultTempLematizationFilePostfix);
+            String tempLematizationFileFullName = String.Concat(this.TempDirectory, "\\", tempLematizationFileName);
+
+            AnalysisResult analysisResult = null;
+
+            try
+            {
+                // 1. Convert original document to txt format and create copy in temp folder
+                using (IDocumentConverter converter = new MsWordDocumentConverter())
+                {
+                    await converter.ConvertDocumentToTextFileAsync(targetDocument.FilePath, tempTextFileFullName);
+                }
+
+                try
+                {
+                    // 2. Lematization// 3. Lematization
+                    await LematizationTool.Current.ProcessDocumntAsync(tempTextFileFullName, tempLematizationFileFullName);
+
+                    // 3. Parse temp documents to words
+                    var parserWords = (await Tools.ParserTool.Current.ParseDocumentAsync(tempLematizationFileFullName)).ToList();
+                    List<DocumentWord> documentWords = ConvertToBusinessDocumentWords(parserWords);
+
+                    // 4. Remove stop-words from origin text
+                    List<DocumentWord> modifiedWords = await StopWordFilter.FilterAsync(documentWords);
+
+                    // 5. Vectorization document words for get usage value for each word
+                    DocumentVector documentVector = DocumentVectorization.Vectorisation(modifiedWords);
+
+                    analysisResult = new AnalysisResult();
+                    analysisResult.DocumentKeyWords = DocumentKeyWordList.Create(null, documentVector); ;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    // Remove temp files
+                    File.Delete(tempTextFileFullName);
+                    File.Delete(tempLematizationFileFullName);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return analysisResult;
         }
 
         #endregion
@@ -266,6 +234,17 @@ namespace Indigo.BusinessLogicLayer.Analysis
                 .ToList();
 
             return sublists;
+        }
+
+        private List<DocumentWord> ConvertToBusinessDocumentWords(List<Tools.DocumentWord> toolDocumentWords)
+        {
+            List<DocumentWord> documentWords = toolDocumentWords.Select(x => new DocumentWord
+            {
+                Word = x.Word,
+                StartIndex = x.StartIndex
+            }).ToList();
+
+            return documentWords;
         }
 
         #endregion

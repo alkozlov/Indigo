@@ -37,6 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Charts.v13.2.Core, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Mvvm.v13.2, Version=13.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -52,16 +57,41 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\net45\GalaSoft.MvvmLight.WPF45.dll</HintPath>
     </Reference>
-    <Reference Include="infragisticswpf4.controls.charts.xamdatachart.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="infragisticswpf4.controls.charts.xamgauge.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="infragisticswpf4.controls.editors.xamslider.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="infragisticswpf4.controls.grids.xamgrid.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.DataManager.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="infragisticswpf4.datapresenter.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.DataVisualization.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.Editors.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="InfragisticsWPF4.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="infragisticswpf4.controls.charts.xamdatachart.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="infragisticswpf4.controls.charts.xamgauge.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="infragisticswpf4.controls.editors.xamslider.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="infragisticswpf4.controls.grids.xamgrid.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="infragisticswpf4.controls.menus.xamdatatree.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="infragisticswpf4.datapresenter.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataVisualization.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DragDrop.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2013.1\WPF\CLR4.0\Bin\SharedXAML\InfragisticsWPF4.DragDrop.v13.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.12.1.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -113,6 +143,9 @@
     </Compile>
     <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Framework\DragDropHelper.cs" />
+    <Compile Include="Framework\DraggedAdorner.cs" />
+    <Compile Include="Framework\InsertionAdorner.cs" />
     <Compile Include="Helpers\ConsoleMessageHelper.cs" />
     <Compile Include="Helpers\CpuUsage.cs" />
     <Compile Include="Model\ActionList.cs" />
@@ -120,6 +153,7 @@
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\DocumentAnalysisModel.cs" />
     <Compile Include="Model\DocumentAnalysis\AnalysisSettings.cs" />
+    <Compile Include="Model\DocumentAnalysis\KeyWordModel.cs" />
     <Compile Include="Model\DocumentAnalysis\LsaModel.cs" />
     <Compile Include="Model\DocumentAnalysis\SimilarDocumentModel.cs" />
     <Compile Include="Model\FileSizeFormatProvider.cs" />
@@ -412,6 +446,7 @@
     <Resource Include="Images\NavigationArrow - Previous - White - 16x16.png" />
     <Resource Include="Images\file-add-icon-128x128.png" />
     <Resource Include="Images\play-icon---64x64.png" />
+    <Resource Include="Images\file-icon-28x32.png" />
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

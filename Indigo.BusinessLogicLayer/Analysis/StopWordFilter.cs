@@ -9,15 +9,19 @@
 
     public class StopWordFilter
     {
-        public static async Task<List<String>> FilterAsync(List<String> words)
+        public static async Task<List<DocumentWord>> FilterAsync(List<DocumentWord> words)
         {
             StopWordList stopWordList = await StopWordList.GetAllStopWordsAsync();
 
             // Remove stop-words from origin text
-            List<String> modifiedWords = words.Select(x => x.ToLower()).ToList();
+            List<DocumentWord> modifiedWords = words.Select(x => new DocumentWord
+            {
+                Word = x.Word.ToLower(),
+                StartIndex = x.StartIndex
+            }).ToList();
             foreach (var stopWord in stopWordList)
             {
-                modifiedWords.RemoveAll(word => String.Equals(word, stopWord.Content, StringComparison.CurrentCultureIgnoreCase));
+                modifiedWords.RemoveAll(x => String.Equals(x.Word, stopWord.Content, StringComparison.CurrentCultureIgnoreCase));
             }
 
             return modifiedWords;

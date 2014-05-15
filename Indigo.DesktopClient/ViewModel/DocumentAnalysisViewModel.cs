@@ -182,6 +182,36 @@ namespace Indigo.DesktopClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="LsaSelectedDocument" /> property's name.
+        /// </summary>
+        public const string LsaSelectedDocumentPropertyName = "LsaSelectedDocument";
+
+        private ObservableCollection<LsaModel> _lsaSelectedDocument;
+
+        /// <summary>
+        /// Sets and gets the LsaSelectedDocument property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<LsaModel> LsaSelectedDocument
+        {
+            get
+            {
+                return this._lsaSelectedDocument;
+            }
+
+            set
+            {
+                if (this._lsaSelectedDocument == value)
+                {
+                    return;
+                }
+
+                this._lsaSelectedDocument = value;
+                base.RaisePropertyChanged(LsaSelectedDocumentPropertyName);
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -246,29 +276,32 @@ namespace Indigo.DesktopClient.ViewModel
             float minimalSimilarityLevel = Convert.ToSingle(this.AnalysisPanelSettings.MinimalSimilarityLevel) / 100;
             
             DocumentAnalysisSettings documentAnalysisSettings = new DocumentAnalysisSettings(selectedShingleSize, minimalSimilarityLevel);
-            CompareResult compareResult = await DocumentAnalyzer.Current.AnalyzeDocumentAsync_V2(targetDocument, documentAnalysisSettings);
+            CompareResult compareResult = await DocumentAnalyzer.Current.FindSimilarDocumentsAsync(targetDocument, documentAnalysisSettings);
 
-            if (compareResult.Count > 0)
+            if (compareResult.ShinglesResult.Count > 0)
             {
                 List<SimilarDocumentModel> similarDocuments = new List<SimilarDocumentModel>();
-                foreach (CompareResultSet compareResultSet in compareResult)
+                foreach (var shinglesResultSet in compareResult.ShinglesResult)
                 {
-                    SimilarDocumentModel similarDocumentModel = await this.ConvertCompareResultSetToModelObject(compareResultSet);
+                    SimilarDocumentModel similarDocumentModel = await this.ConvertCompareResultSetToModelObject(shinglesResultSet);
                     similarDocuments.Add(similarDocumentModel);
                 }
                 this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>(similarDocuments);
-
-                DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
-                List<LsaModel> lsaModels =
-                    compareResult.LsaResult.Select(lsaResultSet => CreateLsaModel(lsaResultSet, documentList)).ToList();
-
-                this.LsaMap = new ObservableCollection<LsaModel>(lsaModels);
             }
             else
             {
                 this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
                 this.LsaMap = new ObservableCollection<LsaModel>();
             }
+
+            DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
+            List<LsaModel> lsaModels =
+                compareResult.LsaResult.Select(lsaResultSet => CreateLsaModel(lsaResultSet, documentList)).ToList();
+
+            var lsaSelectedDocument = lsaModels.FirstOrDefault(x => x.DocumentId.HasValue && x.DocumentId.Equals(0));
+            lsaModels.Remove(lsaSelectedDocument);
+            this.LsaSelectedDocument = new ObservableCollection<LsaModel>(new List<LsaModel> { lsaSelectedDocument });
+            this.LsaMap = new ObservableCollection<LsaModel>(lsaModels);
         }
 
         #endregion
@@ -319,13 +352,13 @@ namespace Indigo.DesktopClient.ViewModel
             return thumbnailPath;
         }
 
-        private async Task<SimilarDocumentModel> ConvertCompareResultSetToModelObject(CompareResultSet compareResultSet)
+        private async Task<SimilarDocumentModel> ConvertCompareResultSetToModelObject(ShinglesResultSet shinglesResultSet)
         {
-            Document document = await Document.GetAsync(compareResultSet.DocumentId);
+            Document document = await Document.GetAsync(shinglesResultSet.DocumentId);
             SimilarDocumentModel similarDocumentModel = null;
             if (document != null)
             {
-                Int32 similarityValue = Convert.ToInt32(compareResultSet.ShinglesCompareResult.CompareCoefficient*100);
+                Int32 similarityValue = Convert.ToInt32(shinglesResultSet.MatchingCoefficient * 100);
 
                 similarDocumentModel = new SimilarDocumentModel
                 {

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Indigo.DesktopClient.View.DocumentAnalysisView"
+﻿<UserControl xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"  x:Class="Indigo.DesktopClient.View.DocumentAnalysisView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -364,8 +364,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                
-                <ig:XamDataChart Grid.Row="1" Height="500">
+
+                <!--<ig:XamDataChart Grid.Row="1" Height="500">
                     <ig:XamDataChart.Axes>
                         <ig:NumericXAxis x:Name="XAxis" 
                                  MinimumValue="-1" MaximumValue="1" Interval="0.05">
@@ -381,17 +381,15 @@
                                  YAxis="{Binding ElementName=YAxis}"
                                  Title="High Income"
                                  ItemsSource="{Binding Path=LsaMap}"
-                                 RadiusMemberPath="Radius"
-                                 FillMemberPath="Radius">
+                                 RadiusMemberPath="Radius">
 
                             <ig:BubbleSeries.RadiusScale>
-                                <ig:SizeScale IsLogarithmic="False" MaximumValue="25" MinimumValue="15"/>
+                                <ig:SizeScale IsLogarithmic="False" MaximumValue="15" MinimumValue="15"/>
                             </ig:BubbleSeries.RadiusScale>
                             <ig:BubbleSeries.FillScale>
                                 <ig:CustomPaletteBrushScale BrushSelectionMode="Interpolate">
                                     <ig:CustomPaletteBrushScale.Brushes>
                                         <ig:BrushCollection>
-                                            <SolidColorBrush Color="#FFC6EEFB" />
                                             <SolidColorBrush Color="#FF084CFE" />
                                         </ig:BrushCollection>
                                     </ig:CustomPaletteBrushScale.Brushes>
@@ -405,8 +403,54 @@
                                 </Grid>
                             </ig:BubbleSeries.ToolTip>
                         </ig:BubbleSeries>
+                        <ig:BubbleSeries XMemberPath="X"
+                                 YMemberPath="Y"
+                                 MarkerType="Circle"
+                                 XAxis="{Binding ElementName=XAxis}"
+                                 YAxis="{Binding ElementName=YAxis}"
+                                 Title="High Income"
+                                 ItemsSource="{Binding Path=LsaSelectedDocument}"
+                                 RadiusMemberPath="Radius">
+
+                            <ig:BubbleSeries.RadiusScale>
+                                <ig:SizeScale IsLogarithmic="False" MaximumValue="25" MinimumValue="25"/>
+                            </ig:BubbleSeries.RadiusScale>
+                            <ig:BubbleSeries.FillScale>
+                                <ig:CustomPaletteBrushScale BrushSelectionMode="Interpolate">
+                                    <ig:CustomPaletteBrushScale.Brushes>
+                                        <ig:BrushCollection>
+                                            <SolidColorBrush Color="Tomato" />
+                                        </ig:BrushCollection>
+                                    </ig:CustomPaletteBrushScale.Brushes>
+                                </ig:CustomPaletteBrushScale>
+                            </ig:BubbleSeries.FillScale>
+                            <ig:BubbleSeries.ToolTip>
+                                <Grid>
+                                    <StackPanel Orientation="Vertical" >
+                                        <TextBlock Margin="2" FontWeight="Bold" Text="{Binding Item.DocumentName}"></TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </ig:BubbleSeries.ToolTip>
+                        </ig:BubbleSeries>
                     </ig:XamDataChart.Series>
-                </ig:XamDataChart>
+                </ig:XamDataChart>-->
+
+                <dxc:ChartControl Grid.Row="1" Name="chartControl1">
+                    <dxc:ChartControl.Diagram>
+                        <dxc:XYDiagram3D>
+                            <dxc:XYDiagram3D.Series>
+                                <dxc:BubbleSeries3D ColorEach="True" MinSize="0.5" MaxSize="1">
+                                    <dxc:BubbleSeries3D.Points>
+                                        <dxc:SeriesPoint Argument="A" Value="10" dxc:BubbleSeries3D.Weight="1" />
+                                        <dxc:SeriesPoint Argument="B" Value="12" dxc:BubbleSeries3D.Weight="1" />
+                                        <dxc:SeriesPoint Argument="C" Value="14" dxc:BubbleSeries3D.Weight="1" />
+                                        <dxc:SeriesPoint Argument="D" Value="17" dxc:BubbleSeries3D.Weight="1" />
+                                    </dxc:BubbleSeries3D.Points>
+                                </dxc:BubbleSeries3D>
+                            </dxc:XYDiagram3D.Series>
+                        </dxc:XYDiagram3D>
+                    </dxc:ChartControl.Diagram>
+                </dxc:ChartControl>
             </Grid>
         </Grid>
         

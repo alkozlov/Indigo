@@ -129,7 +129,11 @@ namespace Indigo.BusinessLogicLayer.Document
             // Delete document from storage
             using (StorageConnection storageConnection = StorageConnector.GetStorageConnection(StorageType.Local))
             {
-                storageConnection.DeleteFile(this.StoredFileName);
+                FileInfo storegeFileInfo = storageConnection.GetFileInfo(this.StoredFileName);
+                if (storegeFileInfo != null && storegeFileInfo.Exists)
+                {
+                    storageConnection.DeleteFile(this.StoredFileName);
+                }
             }
 
             // Delete document

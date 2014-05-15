@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Indigo.BusinessLogicLayer.Document;
 
-    public class DocumentVector : Dictionary<String, Int32>
+    public class DocumentVector : Dictionary<DocumentWord, Int32>
     {
         public Int32? DocumentId { get; private set; }
 
@@ -14,7 +15,8 @@
             this.DocumentId = documentId;
         }
 
-        public DocumentVector(int? documentId, IDictionary<String, Int32> dictionary) : base(dictionary)
+        public DocumentVector(int? documentId, IDictionary<DocumentWord, Int32> dictionary)
+            : base(dictionary)
         {
             this.DocumentId = documentId;
         }
@@ -22,12 +24,12 @@
 
     public class DocumentVectorization
     {
-        public static DocumentVector Vectorisation(List<String> documentWords)
+        public static DocumentVector Vectorisation(List<DocumentWord> documentWords)
         {
             DocumentVector vector = new DocumentVector(null);
             foreach (var documentWord in documentWords)
             {
-                if (!vector.ContainsKey(documentWord))
+                if (!vector.Any(x => x.Key.Word == documentWord.Word && x.Key.StartIndex == documentWord.StartIndex))
                 {
                     vector.Add(documentWord, 1);
                 }
@@ -45,7 +47,12 @@
             DocumentVector vector = new DocumentVector(documentKeyWordList.DocumentId);
             foreach (var documentKeyWord in documentKeyWordList)
             {
-                vector.Add(documentKeyWord.Word, documentKeyWord.Usages);
+                DocumentWord documentWord = new DocumentWord
+                {
+                    Word = documentKeyWord.Word,
+                    StartIndex = -1
+                };
+                vector.Add(documentWord, documentKeyWord.Usages);
             }
 
             return vector;

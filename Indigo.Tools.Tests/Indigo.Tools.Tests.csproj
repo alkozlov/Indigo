@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LemmaSharp">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuilt">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharpPrebuilt.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuiltCompact">
+      <HintPath>..\..\Info\LemmaGen\LemmaSharpPrebuiltCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Lzma#">
+      <HintPath>..\..\Info\LemmaGen\Lzma#.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>

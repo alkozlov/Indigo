@@ -39,6 +39,7 @@
     <Reference Include="InfragisticsWPF4.Documents.Excel.v13.1, Version=13.1.20131.2336, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2013.1\WPF\CLR4.0\Bin\SharedXAML\InfragisticsWPF4.Documents.Excel.v13.1.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.dll</HintPath>
@@ -62,7 +63,6 @@
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\AnalysisTargetDocument.cs" />
     <Compile Include="Analysis\CompareResult.cs" />
-    <Compile Include="Analysis\CompareResultSet.cs" />
     <Compile Include="Analysis\DocumentAnalysisSettings.cs" />
     <Compile Include="Analysis\DocumentAnalyzer.cs" />
     <Compile Include="Analysis\DocumentProcessedEventArgs.cs" />
@@ -73,7 +73,8 @@
     <Compile Include="Analysis\DocumentVectorization.cs" />
     <Compile Include="Analysis\LsaMatrix.cs" />
     <Compile Include="Analysis\LsaResult.cs" />
-    <Compile Include="Analysis\ShinglesCompareResult.cs" />
+    <Compile Include="Analysis\ShinglesResult.cs" />
+    <Compile Include="Analysis\ShinglesResultSet.cs" />
     <Compile Include="Analysis\StopWordFilter.cs" />
     <Compile Include="Analysis\UsageFilter.cs" />
     <Compile Include="Document\Document.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Document\DocumentKeyWordList.cs" />
     <Compile Include="Document\DocumentList.cs" />
     <Compile Include="Document\DocumentSubject.cs" />
+    <Compile Include="Document\DocumentWord.cs" />
     <Compile Include="Document\StopWord.cs" />
     <Compile Include="Document\StopWordList.cs" />
     <Compile Include="Document\Subject.cs" />
@@ -99,6 +101,9 @@
     <Compile Include="Account\LoginException.cs" />
     <Compile Include="Account\UserAccount.cs" />
     <Compile Include="Account\UserAccountType.cs" />
+    <Compile Include="Reports\IReport.cs" />
+    <Compile Include="Reports\ReportGenerator.cs" />
+    <Compile Include="Reports\StopWordsReport.cs" />
     <Compile Include="Shingles\AnalysisAccuracy.cs" />
     <Compile Include="Shingles\CheckSumCollection.cs" />
     <Compile Include="Shingles\CheckSumComparer.cs" />

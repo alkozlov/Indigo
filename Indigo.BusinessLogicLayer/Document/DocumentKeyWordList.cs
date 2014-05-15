@@ -22,16 +22,30 @@
             public Int32 Usages { get; set; }
         }
 
-        private DocumentKeyWordList(int documentId, IList<Item> list) : base(list)
+        private DocumentKeyWordList(Int32? documentId, IList<Item> list) : base(list)
         {
             this.DocumentId = documentId;
+        }
+
+        public static DocumentKeyWordList Create(Int32? documentId, DocumentVector documentVector)
+        {
+            List<Item> items = documentVector.Select(x => new Item
+            {
+                DocumentKeyWordId = null,
+                Word = x.Key.Word,
+                Usages = x.Value
+            }).ToList();
+
+            DocumentKeyWordList documentKeyWordList = new DocumentKeyWordList(documentId, items);
+            return documentKeyWordList;
         }
 
         public static async Task<DocumentKeyWordList> CreateAndSaveAsync(Int32 documentId, DocumentVector documentWords)
         {
             using (IDocumentKeyWordsRepository documentKeyWordsRepository = new DocumentKeyWordsRepository())
             {
-                var dataDocumentKeyWords = await documentKeyWordsRepository.CreateRangeAsync(documentId, documentWords);
+                var documentKeyWordsDictionary = documentWords.ToDictionary(x => x.Key.Word, x => x.Value);
+                var dataDocumentKeyWords = await documentKeyWordsRepository.CreateRangeAsync(documentId, documentKeyWordsDictionary);
                 List<Item> items = dataDocumentKeyWords.Select(dataDocumentKeyWord => new Item
                 {
                     DocumentKeyWordId = dataDocumentKeyWord.DocumentKeyWordId,

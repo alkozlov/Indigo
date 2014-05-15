@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-            <Image Width="125" Height="125" Source="Thumbnails/icon-user-default.png" HorizontalAlignment="Left"></Image>
+            <Image Width="125" Height="125" Source="../../Thumbnails/icon-user-default.png" HorizontalAlignment="Left"></Image>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>

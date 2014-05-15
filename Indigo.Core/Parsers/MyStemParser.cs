@@ -45,5 +45,10 @@
 
             return words;
         }
+
+        public Task<IEnumerable<TextWord>> ExtractDocumentWordsWithPositionsAsync(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

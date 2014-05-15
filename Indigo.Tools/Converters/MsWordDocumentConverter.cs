@@ -2,9 +2,9 @@
 {
     using System;
     using System.IO;
-    using System.Text;
     using System.Threading.Tasks;
 
+    using Microsoft.Office.Core;
     using MsWord = Microsoft.Office.Interop.Word;
 
     public class MsWordDocumentConverter : IDocumentConverter
@@ -34,13 +34,19 @@
                 object missing = Type.Missing;
                 object readOnly = true;
                 object documentPath = originDocumentName;
+                object convertedDocumentPath = outputFileName;
+                object convertedDocumentFormat = MsWord.WdSaveFormat.wdFormatText;
+                object convertedDocumentEncoding = MsoEncoding.msoEncodingUTF8;
 
                 MsWord.Document document = application.Documents.Open(ref documentPath, ref missing, ref readOnly,
                     ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing,
                     ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
 
-                String documentContent = document.Content.Text;
-                File.WriteAllText(outputFileName, documentContent, Encoding.UTF8);
+                document.SaveAs(ref convertedDocumentPath, ref convertedDocumentFormat, ref missing, ref missing, ref missing, 
+                    ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref convertedDocumentEncoding,
+                    ref missing, ref missing, ref missing, ref missing);
+                document.Close();
+                application.Quit();
             });
         }
     }

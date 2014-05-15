@@ -11,6 +11,8 @@
         public float X { get; set; }
 
         public float Y { get; set; }
+
+        public float Z { get; set; }
     }
 
     public class LsaResult : ReadOnlyCollection<LsaResultSet>

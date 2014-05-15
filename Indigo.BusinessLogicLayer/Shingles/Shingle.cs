@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.Text;
 
+    using Indigo.BusinessLogicLayer.Document;
+
     public class Shingle
     {
         public long? ShingleId { get; set; }
 
-            public List<String> Words { get; private set; }
+            public List<DocumentWord> Words { get; private set; }
 
             public byte Size
             {
@@ -23,9 +25,9 @@
                     if (String.IsNullOrEmpty(this._asString))
                     {
                         StringBuilder stringBuilder = new StringBuilder();
-                        foreach (String word in this.Words)
+                        foreach (DocumentWord documentWord in this.Words)
                         {
-                            stringBuilder.Append(String.Format(" {0}", word));
+                            stringBuilder.Append(String.Format(" {0}", documentWord.Word));
                         }
 
                         this._asString = stringBuilder.ToString().Trim();
@@ -39,10 +41,10 @@
 
             public Shingle()
             {
-                this.Words = new List<String>();
+                this.Words = new List<DocumentWord>();
             }
 
-            public Shingle(List<String> words)
+            public Shingle(List<DocumentWord> words)
             {
                 this.Words = words;
             }

@@ -1,15 +1,21 @@
 ﻿namespace Indigo.BusinessLogicLayer.Analysis
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
-    public class CompareResult : ReadOnlyCollection<CompareResultSet>
+    public class CompareResult
     {
-        public LsaResult LsaResult { get; private set; }
-
-        public CompareResult(IList<CompareResultSet> list, LsaResult lsaResult) : base(list)
+        public CompareResult()
         {
+            this.ShinglesResult = null;
+            this.LsaResult = null;
+        }
+
+        public CompareResult(ShinglesResult shinglesResult, LsaResult lsaResult)
+        {
+            this.ShinglesResult = shinglesResult;
             this.LsaResult = lsaResult;
         }
+
+        public ShinglesResult ShinglesResult { get; private set; }
+
+        public LsaResult LsaResult { get; private set; }
     }
 }

@@ -7,6 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using Indigo.BusinessLogicLayer.Document;
     using Indigo.DataAccessLayer.IRepositories;
     using Indigo.DataAccessLayer.Repositories;
 
@@ -16,7 +17,7 @@
         {
             public long? ShingleId { get; set; }
 
-            public List<String> Words { get; private set; }
+            public List<DocumentWord> Words { get; private set; }
 
             public byte Size
             {
@@ -31,9 +32,9 @@
                     if (String.IsNullOrEmpty(this._asString))
                     {
                         StringBuilder stringBuilder = new StringBuilder();
-                        foreach (String word in this.Words)
+                        foreach (DocumentWord documentWord in this.Words)
                         {
-                            stringBuilder.Append(String.Format(" {0}", word));
+                            stringBuilder.Append(String.Format(" {0}", documentWord.Word));
                         }
 
                         this._asString = stringBuilder.ToString().Trim();
@@ -43,14 +44,24 @@
                 }
             }
 
+            public Int32 StartIndex
+            {
+                get { return this.Words.First().StartIndex; }
+            }
+
+            public Int32 EndIndex
+            {
+                get { return this.Words.Last().StartIndex + this.Words.Last().Word.Length; }
+            }
+
             public long? CheckSum { get; set; }
 
             public ShingleItem()
             {
-                this.Words = new List<String>();
+                this.Words = new List<DocumentWord>();
             }
 
-            public ShingleItem(List<String> words)
+            public ShingleItem(List<DocumentWord> words)
             {
                 this.Words = words;
             }
@@ -66,7 +77,7 @@
             this.DocumentId = documentId;
         }
 
-        public static async Task<ShingleList> CreateAsync(List<String> words, ShingleSize shingleSize, Int32? documentid = null)
+        public static async Task<ShingleList> CreateAsync(List<DocumentWord> words, ShingleSize shingleSize, Int32? documentid = null)
         {
             ShingleList shingleList = await Task.Run(() =>
             {

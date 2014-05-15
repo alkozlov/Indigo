@@ -4,6 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:DragDrop="clr-namespace:Indigo.DesktopClient.Framework"
+        xmlns:penthouseModels="clr-namespace:Indigo.DesktopClient.Model.PenthouseModels"
         mc:Ignorable="d ignore"
         DataContext="{Binding AddDocumentViewModel, Source={StaticResource Locator}}">
 
@@ -127,11 +132,28 @@
             <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         </Style>
+
+        <DataTemplate x:Key="DragTemplate">
+            <!--<DataTemplate.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Width" Value="50" />
+                    <Setter Property="Height" Value="50" />
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </DataTemplate.Resources>-->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Word}"/>
+                <TextBlock Text="{Binding Path=Count}"/>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type penthouseModels:SubjectModel}">
+            
+        </DataTemplate>
     </UserControl.Resources>
 
-        <Grid>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -149,26 +171,26 @@
                 </Button.Content>
             </Button>
         </ToolBar>
-
-        <Grid Row="1" Margin="0,20,0,0">
+        
+        <Grid x:Name="grdAnalysPanel" Grid.Row="1" Margin="15,15,15,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsDocumentSelected}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-            <Image Grid.RowSpan="4" Source="{Binding Path=SelectedDocumentModel.Thumbnail}"
-                       Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
-
-            <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
+            <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,10">
+                <Image Source="../../Images/file-icon-28x32.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0"/>
                 <TextBlock Text="{Binding Path=SelectedDocumentModel.FileName}">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
@@ -178,14 +200,13 @@
                             <Setter Property="FontFamily" Value="Segoe UI"/>
                             <Setter Property="FontWeight" Value="DemiBold"/>
                             <Setter Property="Foreground" Value="#222222"/>
-                            <Setter Property="Margin" Value="0,0,0,5"/>
+                            <Setter Property="Margin" Value="0,0,10,5"/>
                             <Setter Property="Padding" Value="0"/>
                             <Setter Property="Height" Value="18"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-
-                <TextBlock Grid.Row="1" Text="{Binding Path=SelectedDocumentModel.Directory}">
+                <TextBlock Text="{Binding Path=SelectedDocumentModel.SizeAsString}">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -199,21 +220,51 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
+            </StackPanel>
+            
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="Тематики" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Ключевые слова документа" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                <TextBlock Grid.Row="2" Text="{Binding Path=SelectedDocumentModel.SizeAsString}">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="FontFamily" Value="Segoe UI"/>
-                            <Setter Property="Foreground" Value="#696969"/>
-                            <Setter Property="Margin" Value="0,0,0,5"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Height" Value="18"/>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=Subjects}"
+                          DragDrop:DragDropHelper.IsDropTarget="True" DragDrop:DragDropHelper.IsDragSource="True"
+                          DragDrop:DragDropHelper.DragDropTemplate="{StaticResource DragTemplate}"
+                          AllowDrop="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=SubjectHeader}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <TextBlock Text="{Binding Path=TargetSubject}"></TextBlock>
+                </StackPanel>
+                
+                <ListView x:Name="lstKeyWords" Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=KeyWords}" Height="300"
+                          DragDrop:DragDropHelper.IsDropTarget="True" DragDrop:DragDropHelper.IsDragSource="True"
+                          DragDrop:DragDropHelper.DragDropTemplate="{StaticResource DragTemplate}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Word}"/>
+                                <TextBlock Text="{Binding Path=Count}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Grid>
     </Grid>

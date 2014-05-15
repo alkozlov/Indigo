@@ -77,7 +77,7 @@
 
             #endregion
 
-            #region Account permissions
+            #region Insert Account permissions
 
             DateTime firstDraftDateUtc = DateTime.UtcNow;
 
@@ -265,6 +265,24 @@
             };
 
             context.AccountPermissions.AddOrUpdate(accountPermissions.ToArray());
+
+            #endregion
+
+            #region Insert Admin
+
+            UserAccount adminAccount = new UserAccount
+            {
+                AccountType = 1,
+                CreatedDateUtc = DateTime.UtcNow,
+                Login = "admin",
+                Email = "admin@indigo.com",
+                IsActive = true,
+                UserGuid = Guid.NewGuid(),
+                PasswordSalt = "yV3TnCe7723EaXfYNyRp96bZ4BCCTXyxzZuD8a8yxqQ+bkPouZUc34gbU6FDVYm7238ukvR6+BfayPX3Eg2koJL9b2Pj2pLqT/ka",
+                Password = "DTKqnngs6hE72MqZsWKL5Q=="
+            };
+
+            context.UserAccounts.AddOrUpdate(adminAccount);
 
             #endregion
 

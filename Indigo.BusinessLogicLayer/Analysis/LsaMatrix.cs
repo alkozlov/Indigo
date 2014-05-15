@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Double.Factorization;
-using MathNet.Numerics.LinearAlgebra.Generic;
-using MathNet.Numerics.LinearAlgebra.Storage;
-
-namespace Indigo.BusinessLogicLayer.Analysis
+﻿namespace Indigo.BusinessLogicLayer.Analysis
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using MathNet.Numerics.LinearAlgebra.Double;
+    using MathNet.Numerics.LinearAlgebra.Generic;
+
     public class LsaMatrix : DenseMatrix
     {
         public List<String> MatrixWords { get; private set; }
@@ -31,7 +29,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
             List<String> words = new List<String>();
             foreach (DocumentVector documentVector in documentVectors)
             {
-                words.AddRange(documentVector.Select(x => x.Key));
+                words.AddRange(documentVector.Select(x => x.Key.Word));
             }
 
             words = words.Distinct().ToList();
@@ -42,7 +40,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
             {
                 for (int j = 0; j < documentVectors.Length; j++)
                 {
-                    if (documentVectors[j].ContainsKey(words[i]))
+                    if (documentVectors[j].Any(x => x.Key.Word == words[i]))
                     {
                         matrix[i, j]++;
                     }

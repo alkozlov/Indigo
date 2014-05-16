@@ -70,6 +70,11 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     var parserWords = (await Tools.ParserTool.Current.ParseDocumentAsync(tempLematizationFileFullName)).ToList();
                     List<DocumentWord> documentWords = ConvertToBusinessDocumentWords(parserWords);
 
+                    // Parse origignal document to words
+                    var parserOriginalWords = (await Tools.ParserTool.Current.ParseDocumentAsync(tempTextFileFullName)).ToList();
+                    List<DocumentWord> originalDocumentWords = ConvertToBusinessDocumentWords(parserOriginalWords);
+                    documentWords = MergeDocumentWordsPositions(originalDocumentWords, documentWords);
+
                     // Remove stop-words from origin text
                     List<DocumentWord> modifiedWords = await StopWordFilter.FilterAsync(documentWords);
 
@@ -245,6 +250,18 @@ namespace Indigo.BusinessLogicLayer.Analysis
             }).ToList();
 
             return documentWords;
+        }
+
+        public List<DocumentWord> MergeDocumentWordsPositions(List<DocumentWord> originalDocumentWords,
+            List<DocumentWord> processedDocumentWords)
+        {
+            List<DocumentWord> mergedDocumentWords = processedDocumentWords.Select((x, i) => new DocumentWord
+            {
+                Word = x.Word,
+                StartIndex = originalDocumentWords[i].StartIndex
+            }).ToList();
+
+            return mergedDocumentWords;
         }
 
         #endregion

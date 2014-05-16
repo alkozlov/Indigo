@@ -35,5 +35,10 @@
                 File.WriteAllText(outputFileName, documentContent, Encoding.UTF8);
             });
         }
+
+        public Task<string> ConvertDocumentToText(string originDocumentName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

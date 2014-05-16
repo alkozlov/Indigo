@@ -35,7 +35,7 @@
                 List<TextWord> textWords = new List<TextWord>();
 
                 // Get all symbols that not part of word - stop symbols
-                String originalDocumentText = File.ReadAllText(filePath, Encoding.UTF8).ToLower();
+                String originalDocumentText = File.ReadAllText(filePath, Encoding.Default).ToLower();
                 List<LemmaGenLemmatizer.StopSymbolPosition> stopSymbolPositions = new List<LemmaGenLemmatizer.StopSymbolPosition>();
                 for (int i = 0; i < originalDocumentText.Length; i++)
                 {

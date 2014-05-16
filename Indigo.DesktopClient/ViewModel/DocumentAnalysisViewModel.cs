@@ -1,5 +1,14 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Text;
+using DevExpress.Xpf.RichEdit;
+using DevExpress.XtraEditors.Controls.Rtf;
+using DevExpress.XtraRichEdit;
+using DevExpress.XtraRichEdit.Internal;
+using DevExpress.XtraRichEdit.Model;
+using GalaSoft.MvvmLight.Messaging;
+using Indigo.DesktopClient.Helpers;
+using Indigo.DesktopClient.Model.Notifications;
+using CharacterStyleCollection = DevExpress.XtraRichEdit.API.Native.CharacterStyleCollection;
+using RichEditControl = DevExpress.XtraRichEdit.RichEditControl;
 
 namespace Indigo.DesktopClient.ViewModel
 {
@@ -7,7 +16,9 @@ namespace Indigo.DesktopClient.ViewModel
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Drawing;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
@@ -212,6 +223,36 @@ namespace Indigo.DesktopClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="SelectedDocumentContent" /> property's name.
+        /// </summary>
+        public const string SelectedDocumentContentPropertyName = "SelectedDocumentContent";
+
+        private RichEditDocumentContent _selectedDocumentContent;
+
+        /// <summary>
+        /// Sets and gets the SelectedDocumentContent property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public RichEditDocumentContent SelectedDocumentContent
+        {
+            get
+            {
+                return this._selectedDocumentContent;
+            }
+
+            set
+            {
+                if (this._selectedDocumentContent.Content == value.Content)
+                {
+                    return;
+                }
+
+                this._selectedDocumentContent = value;
+                base.RaisePropertyChanged(SelectedDocumentContentPropertyName);
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -230,7 +271,7 @@ namespace Indigo.DesktopClient.ViewModel
             openFileDialog.Filter = "Microsoft Word Document (*.doc;*.docx)|*.doc;*.docx|OpenDocument Text (*.odt)|*.odt|Rich Text Format (*.rtf)|*.rtf|All files (*.doc;*.docx;*.odt;*.rtf)|*.doc;*.docx;*.odt;*.rtf";
             openFileDialog.FilterIndex = 1;
 
-            openFileDialog.FileOk += (sender, args) =>
+            openFileDialog.FileOk += async (sender, args) =>
             {
                 OpenFileDialog currentDialog = sender as OpenFileDialog;
                 if (currentDialog != null && !String.IsNullOrEmpty(currentDialog.FileName) && currentDialog.FileName.Length > 0)
@@ -247,6 +288,21 @@ namespace Indigo.DesktopClient.ViewModel
                     };
                     this.IsDocumentSelected = true;
                     this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
+
+                    // Load selected document plan text
+                    String documentPlainText = await DocumentContentHelper.GetDocumentPlainText(selectedFileInfo.FullName);
+                    using (var documentModel = new DevExpress.XtraRichEdit.Model.DocumentModel())
+                    {
+                        var rtfConverter = new StringEditValueToDocumentModelConverter(DocumentFormat.PlainText, Encoding.Default);
+                        var stringConverter = new DocumentModelToStringConverter(DocumentFormat.Rtf, Encoding.Default);
+
+                        rtfConverter.ConvertToDocumentModel(documentModel, documentPlainText);
+                        documentModel.DefaultCharacterProperties.FontName = "Tahoma";
+                        documentModel.DefaultCharacterProperties.DoubleFontSize = 16;
+
+                        String rtfString = stringConverter.ConvertToEditValue(documentModel) as String;
+                        this.SelectedDocumentContent = new RichEditDocumentContent(DocumentFormat.Rtf, rtfString);
+                    }
                 }
                 else
                 {
@@ -287,6 +343,10 @@ namespace Indigo.DesktopClient.ViewModel
                     similarDocuments.Add(similarDocumentModel);
                 }
                 this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>(similarDocuments);
+
+                var firstShinglesSet = compareResult.ShinglesResult.First();
+                SimilarDocumentsSearchNotification message = new SimilarDocumentsSearchNotification(firstShinglesSet);
+                Messenger.Default.Send<SimilarDocumentsSearchNotification>(message, "1111");
             }
             else
             {

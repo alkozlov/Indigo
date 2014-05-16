@@ -36,7 +36,7 @@ namespace Indigo.Core.Lemmatization
                 }
 
                 // Get all symbols that not part of word - stop symbols
-                String originalDocumentText = File.ReadAllText(originalDocument, Encoding.UTF8).ToLower();
+                String originalDocumentText = File.ReadAllText(originalDocument, Encoding.Default).ToLower();
                 List<StopSymbolPosition> stopSymbolPositions = new List<StopSymbolPosition>();
                 for (int i = 0; i < originalDocumentText.Length; i++)
                 {
@@ -87,7 +87,7 @@ namespace Indigo.Core.Lemmatization
                         stopSymbolPosition.Position == stopSymbolPositionsStack.Peek().Position - 1);
                 }
 
-                File.WriteAllText(outputDocument, stringBuilder.ToString(), Encoding.UTF8);
+                File.WriteAllText(outputDocument, stringBuilder.ToString(), Encoding.Default);
             });
         }
     }

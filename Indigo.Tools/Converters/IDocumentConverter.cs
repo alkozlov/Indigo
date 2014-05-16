@@ -6,5 +6,7 @@
     public interface IDocumentConverter : IDisposable
     {
         Task ConvertDocumentToTextFileAsync(String originDocumentName, String outputFileName);
+
+        Task<String> ConvertDocumentToText(String originDocumentName);
     }
 }

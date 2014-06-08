@@ -143,7 +143,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     #region LSA
 
                     List<DocumentWord> modifiedWordsUsageFilter = UsageFilter.Filter(modifiedWords, MinimalWordsUsageInDocument);
-                    DocumentVector documentVector = DocumentVectorization.Vectorisation(modifiedWordsUsageFilter);
+                    DocumentVector documentVector = DocumentVectorization.CreateVector(modifiedWordsUsageFilter);
                     DocumentKeyWordList documentKeyWordList =
                         await DocumentKeyWordList.CreateAndSaveAsync(storedDocument.DocumentId, documentVector);
 

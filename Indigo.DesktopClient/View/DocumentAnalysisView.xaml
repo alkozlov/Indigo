@@ -292,16 +292,61 @@
                 <dxre:RichEditControl Name="RichEditControl1" Content="{Binding Path=SelectedDocumentContent, Mode=OneWay}">
                 </dxre:RichEditControl>
 
-                <ListView Grid.Column="1" ItemsSource="{Binding Path=SimilarDocuments}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Path=DocumentName}"></TextBlock>
-                                <TextBlock Text="{Binding Path=SimilarityValue}"></TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <ListView ItemsSource="{Binding Path=SimilarDocuments}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=DocumentName}"></TextBlock>
+                                    <TextBlock Text="{Binding Path=SimilarityValue}"></TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <dxc:ChartControl Grid.Row="1" Name="chartControl1">
+                        <dxc:ChartControl.Diagram>
+                            <dxc:XYDiagram3D>
+                                <dxc:XYDiagram3D.Series>
+                                    <dxc:PointSeries3D ColorEach="True">
+                                        <dxc:Series.Points>
+                                            <dxc:SeriesPoint Argument="Illinois" Value="528.9" />
+                                            <dxc:SeriesPoint Argument="Indiana" Value="227.27" />
+                                            <dxc:SeriesPoint Argument="Michigan" Value="372.57" />
+                                            <dxc:SeriesPoint Argument="Ohio" Value="418.25" />
+                                            <dxc:SeriesPoint Argument="Wisconsin" Value="211.72" />
+                                        </dxc:Series.Points>
+                                    </dxc:PointSeries3D>
+
+                                    <dxc:PointSeries3D ColorEach="True">
+                                        <dxc:Series.Points>
+                                            <dxc:SeriesPoint Argument="Illinois" Value="476.85" />
+                                            <dxc:SeriesPoint Argument="Indiana" Value="195.75" />
+                                            <dxc:SeriesPoint Argument="Michigan" Value="335.79" />
+                                            <dxc:SeriesPoint Argument="Ohio" Value="374.76" />
+                                            <dxc:SeriesPoint Argument="Wisconsin" Value="182.36" />
+                                        </dxc:Series.Points>
+                                    </dxc:PointSeries3D>
+
+                                    <dxc:PointSeries3D ColorEach="True">
+                                        <dxc:Series.Points>
+                                            <dxc:SeriesPoint Argument="Illinois" Value="423.72" />
+                                            <dxc:SeriesPoint Argument="Indiana" Value="178.71" />
+                                            <dxc:SeriesPoint Argument="Michigan" Value="308.84" />
+                                            <dxc:SeriesPoint Argument="Ohio" Value="348.54" />
+                                            <dxc:SeriesPoint Argument="Wisconsin" Value="160.27" />
+                                        </dxc:Series.Points>
+                                    </dxc:PointSeries3D>
+                                </dxc:XYDiagram3D.Series>
+                            </dxc:XYDiagram3D>
+                        </dxc:ChartControl.Diagram>
+                    </dxc:ChartControl>
+                </Grid>
             </Grid>
 
             <!--<Grid Row="1" Margin="0,20,0,0">
@@ -462,14 +507,14 @@
 
                         <TextBlock Text="Размер шингла:" Foreground="White" FontSize="14" Margin="0,0,0,15"></TextBlock>
                         
-                        <!--<ig:XamNumericRangeSlider MinValue="3" MaxValue="10" Grid.Row="1">
+                        <ig:XamNumericRangeSlider MinValue="3" MaxValue="10" Grid.Row="1">
                             <ig:XamNumericRangeSlider.TickMarks>
                                 <ig:SliderTickMarks TickMarksFrequency="1" UseFrequency="True"/>
                                 <ig:SliderTickMarks TickMarksFrequency="1" UseFrequency="True" HorizontalTickMarksTemplate="{StaticResource HorizontalTick}"/>
                             </ig:XamNumericRangeSlider.TickMarks>
                             <ig:XamSliderNumericThumb Value="{Binding Path=AnalysisPanelSettings.ShingleSize, Mode=TwoWay}"
                                                       TrackFillBrush="Tomato" InteractionMode="Push"></ig:XamSliderNumericThumb>
-                        </ig:XamNumericRangeSlider>-->
+                        </ig:XamNumericRangeSlider>
                     </Grid>
                     
                     <Grid Margin="10,30,0,0">

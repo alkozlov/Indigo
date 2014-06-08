@@ -29,7 +29,7 @@
             List<String> words = new List<String>();
             foreach (DocumentVector documentVector in documentVectors)
             {
-                words.AddRange(documentVector.Select(x => x.Key.Word));
+                words.AddRange(documentVector.Select(x => x.Key));
             }
 
             words = words.Distinct().ToList();
@@ -40,7 +40,7 @@
             {
                 for (int j = 0; j < documentVectors.Length; j++)
                 {
-                    if (documentVectors[j].Any(x => x.Key.Word == words[i]))
+                    if (documentVectors[j].Any(x => x.Key == words[i]))
                     {
                         matrix[i, j]++;
                     }

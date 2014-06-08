@@ -32,7 +32,7 @@
             List<Item> items = documentVector.Select(x => new Item
             {
                 DocumentKeyWordId = null,
-                Word = x.Key.Word,
+                Word = x.Key,
                 Usages = x.Value
             }).ToList();
 
@@ -44,7 +44,7 @@
         {
             using (IDocumentKeyWordsRepository documentKeyWordsRepository = new DocumentKeyWordsRepository())
             {
-                var documentKeyWordsDictionary = documentWords.ToDictionary(x => x.Key.Word, x => x.Value);
+                var documentKeyWordsDictionary = documentWords.ToDictionary(x => x.Key, x => x.Value);
                 var dataDocumentKeyWords = await documentKeyWordsRepository.CreateRangeAsync(documentId, documentKeyWordsDictionary);
                 List<Item> items = dataDocumentKeyWords.Select(dataDocumentKeyWord => new Item
                 {

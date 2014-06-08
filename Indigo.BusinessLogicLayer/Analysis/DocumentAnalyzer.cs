@@ -108,13 +108,13 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     #region LSA
 
                     List<DocumentWord> modifiedWordsUsageFilter = UsageFilter.Filter(modifiedWords, MinimalWordsUsageInDocument);
-                    DocumentVector documentVector = DocumentVectorization.Vectorisation(modifiedWordsUsageFilter);
+                    DocumentVector documentVector = DocumentVectorization.CreateVector(modifiedWordsUsageFilter);
 
                     List<DocumentVector> documentsVectors = new List<DocumentVector> {documentVector};
                     foreach (var item in documentList)
                     {
                         DocumentKeyWordList documentKeyWordList = await DocumentKeyWordList.GetAsync(item.DocumentId);
-                        DocumentVector itemVector = DocumentVectorization.Vectorisation(documentKeyWordList);
+                        DocumentVector itemVector = DocumentVectorization.CreateVector(documentKeyWordList);
                         documentsVectors.Add(itemVector);
                     }
 
@@ -194,7 +194,7 @@ namespace Indigo.BusinessLogicLayer.Analysis
                     List<DocumentWord> modifiedWords = await StopWordFilter.FilterAsync(documentWords);
 
                     // 5. Vectorization document words for get usage value for each word
-                    DocumentVector documentVector = DocumentVectorization.Vectorisation(modifiedWords);
+                    DocumentVector documentVector = DocumentVectorization.CreateVector(modifiedWords);
 
                     analysisResult = new AnalysisResult();
                     analysisResult.DocumentKeyWords = DocumentKeyWordList.Create(null, documentVector); ;

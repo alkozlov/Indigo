@@ -7,6 +7,7 @@
         xmlns:ignore="http://www.ignore.com"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d ignore"
         DataContext="{Binding DocumentAnalysisViewModel, Source={StaticResource Locator}}">
     
@@ -298,7 +299,12 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <ListView ItemsSource="{Binding Path=SimilarDocuments}">
+                    <ListView Name="lstSimilarDocuments" ItemsSource="{Binding Path=SimilarDocuments}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding Path=SelectSimilarDocumentCommand}" CommandParameter="{Binding ElementName=lstSimilarDocuments, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
@@ -309,7 +315,50 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <dxc:ChartControl Grid.Row="1" Name="chartControl1">
+                    <ig:XamDataChart Grid.Row="1" Height="300">
+                        <ig:XamDataChart.Axes>
+                            <ig:NumericXAxis x:Name="XAxis" 
+                                 MinimumValue="-1" MaximumValue="1" Interval="2">
+                            </ig:NumericXAxis>
+                            <ig:NumericYAxis x:Name="YAxis" MinimumValue="-1" MaximumValue="1" Interval="2">
+                            </ig:NumericYAxis>
+                        </ig:XamDataChart.Axes>
+                        <ig:XamDataChart.Series>
+                            <ig:BubbleSeries XMemberPath="X"
+                                 YMemberPath="Y"
+                                 MarkerType="Circle"
+                                 XAxis="{Binding ElementName=XAxis}"
+                                 YAxis="{Binding ElementName=YAxis}"
+                                 Title="High Income"
+                                 ItemsSource="{Binding Path=LsaMap}"
+                                 RadiusMemberPath="Radius"
+                                 FillMemberPath="Radius">
+
+                                <ig:BubbleSeries.RadiusScale>
+                                    <ig:SizeScale IsLogarithmic="False" MaximumValue="25" MinimumValue="15"/>
+                                </ig:BubbleSeries.RadiusScale>
+                                <ig:BubbleSeries.FillScale>
+                                    <ig:CustomPaletteBrushScale BrushSelectionMode="Interpolate">
+                                        <ig:CustomPaletteBrushScale.Brushes>
+                                            <ig:BrushCollection>
+                                                <SolidColorBrush Color="#FFC6EEFB" />
+                                                <SolidColorBrush Color="#FF084CFE" />
+                                            </ig:BrushCollection>
+                                        </ig:CustomPaletteBrushScale.Brushes>
+                                    </ig:CustomPaletteBrushScale>
+                                </ig:BubbleSeries.FillScale>
+                                <ig:BubbleSeries.ToolTip>
+                                    <Grid>
+                                        <StackPanel Orientation="Vertical" >
+                                            <TextBlock Margin="2" FontWeight="Bold" Text="{Binding Item.DocumentName}"></TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </ig:BubbleSeries.ToolTip>
+                            </ig:BubbleSeries>
+                        </ig:XamDataChart.Series>
+                    </ig:XamDataChart>
+
+                    <!--<dxc:ChartControl Grid.Row="1" Name="chartControl1">
                         <dxc:ChartControl.Diagram>
                             <dxc:XYDiagram3D>
                                 <dxc:XYDiagram3D.Series>
@@ -345,7 +394,7 @@
                                 </dxc:XYDiagram3D.Series>
                             </dxc:XYDiagram3D>
                         </dxc:ChartControl.Diagram>
-                    </dxc:ChartControl>
+                    </dxc:ChartControl>-->
                 </Grid>
             </Grid>
 

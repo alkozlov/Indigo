@@ -23,7 +23,9 @@ namespace Indigo.DesktopClient.View
             Messenger.Default.Register<SimilarDocumentsSearchNotification>(this, "1111", message =>
             {
                 String similarTextStyleName = "SimilarText";
+                String defaultTextStyleName = "DefaultText";
                 var similarTextStyle = this.RichEditControl1.Document.CharacterStyles[similarTextStyleName];
+                var defaultTextStyle = this.RichEditControl1.Document.CharacterStyles[defaultTextStyleName];
                 if (similarTextStyle == null)
                 {
                     similarTextStyle = this.RichEditControl1.Document.CharacterStyles.CreateNew();
@@ -32,6 +34,21 @@ namespace Indigo.DesktopClient.View
                     similarTextStyle.BackColor = Color.FromArgb(135, Color.Tomato);
                     this.RichEditControl1.Document.CharacterStyles.Add(similarTextStyle);
                 }
+
+                if (defaultTextStyle == null)
+                {
+                    defaultTextStyle = this.RichEditControl1.Document.CharacterStyles.CreateNew();
+                    defaultTextStyle.Name = similarTextStyleName;
+                    defaultTextStyle.Parent = this.RichEditControl1.Document.CharacterStyles["Default Paragraph Font"];
+                    defaultTextStyle.BackColor = Color.FromArgb(135, Color.White);
+                    this.RichEditControl1.Document.CharacterStyles.Add(defaultTextStyle);
+                }
+
+                // Setup default format before selecting similar text parts
+                CharacterProperties defaultCharacterProperties =
+                    this.RichEditControl1.Document.BeginUpdateCharacters(0, this.RichEditControl1.Document.Length);
+                defaultCharacterProperties.Style = defaultTextStyle;
+                this.RichEditControl1.Document.EndUpdateCharacters(defaultCharacterProperties);
 
                 Int32 startIndex, length;
                 foreach (Shingle similarShingle in message.ShinglesResultSet.SimilarShingles)

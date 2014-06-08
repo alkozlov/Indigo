@@ -134,6 +134,36 @@ namespace Indigo.DesktopClient.ViewModel
         }
 
         /// <summary>
+        /// The <see cref="CompareResltShingles" /> property's name.
+        /// </summary>
+        public const string CompareResltShinglesPropertyName = "CompareResltShingles";
+
+        private ShinglesResult _compareResltShingles;
+
+        /// <summary>
+        /// Sets and gets the CompareResltShingles property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ShinglesResult CompareResltShingles
+        {
+            get
+            {
+                return this._compareResltShingles;
+            }
+
+            set
+            {
+                if (this._compareResltShingles == value)
+                {
+                    return;
+                }
+
+                this._compareResltShingles = value;
+                base.RaisePropertyChanged(CompareResltShinglesPropertyName);
+            }
+        }
+
+        /// <summary>
         /// The <see cref="SimilarDocuments" /> property's name.
         /// </summary>
         public const string SimilarDocumentsPropertyName = "SimilarDocuments";
@@ -160,6 +190,36 @@ namespace Indigo.DesktopClient.ViewModel
 
                 this._similarDocuments = value;
                 base.RaisePropertyChanged(SimilarDocumentsPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="SelectedSimilarDocument" /> property's name.
+        /// </summary>
+        public const string SelectedSimilarDocumentPropertyName = "SelectedSimilarDocument";
+
+        private SimilarDocumentModel _selectedSimilarDocument;
+
+        /// <summary>
+        /// Sets and gets the SelectedSimilarDocument property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public SimilarDocumentModel SelectedSimilarDocument
+        {
+            get
+            {
+                return this._selectedSimilarDocument;
+            }
+
+            set
+            {
+                if (this._selectedSimilarDocument == value)
+                {
+                    return;
+                }
+
+                this._selectedSimilarDocument = value;
+                base.RaisePropertyChanged(SelectedSimilarDocumentPropertyName);
             }
         }
 
@@ -253,6 +313,36 @@ namespace Indigo.DesktopClient.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="SelectedDocumentPlainText" /> property's name.
+        /// </summary>
+        public const string SelectedDocumentPlainTextPropertyName = "SelectedDocumentPlainText";
+
+        private String _selectedDocumentPlainText = String.Empty;
+
+        /// <summary>
+        /// Sets and gets the SelectedDocumentPlainText property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public String SelectedDocumentPlainText
+        {
+            get
+            {
+                return this._selectedDocumentPlainText;
+            }
+
+            set
+            {
+                if (this._selectedDocumentPlainText == value)
+                {
+                    return;
+                }
+
+                this._selectedDocumentPlainText = value;
+                base.RaisePropertyChanged(SelectedDocumentPlainTextPropertyName);
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -290,13 +380,13 @@ namespace Indigo.DesktopClient.ViewModel
                     this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
 
                     // Load selected document plan text
-                    String documentPlainText = await DocumentContentHelper.GetDocumentPlainText(selectedFileInfo.FullName);
+                    this.SelectedDocumentPlainText = await DocumentContentHelper.GetDocumentPlainText(selectedFileInfo.FullName);
                     using (var documentModel = new DevExpress.XtraRichEdit.Model.DocumentModel())
                     {
                         var rtfConverter = new StringEditValueToDocumentModelConverter(DocumentFormat.PlainText, Encoding.Default);
                         var stringConverter = new DocumentModelToStringConverter(DocumentFormat.Rtf, Encoding.Default);
 
-                        rtfConverter.ConvertToDocumentModel(documentModel, documentPlainText);
+                        rtfConverter.ConvertToDocumentModel(documentModel, this.SelectedDocumentPlainText);
                         documentModel.DefaultCharacterProperties.FontName = "Tahoma";
                         documentModel.DefaultCharacterProperties.DoubleFontSize = 16;
 
@@ -333,6 +423,7 @@ namespace Indigo.DesktopClient.ViewModel
             
             DocumentAnalysisSettings documentAnalysisSettings = new DocumentAnalysisSettings(selectedShingleSize, minimalSimilarityLevel);
             CompareResult compareResult = await DocumentAnalyzer.Current.FindSimilarDocumentsAsync(targetDocument, documentAnalysisSettings);
+            this.CompareResltShingles = compareResult.ShinglesResult;
 
             if (compareResult.ShinglesResult.Count > 0)
             {
@@ -345,23 +436,60 @@ namespace Indigo.DesktopClient.ViewModel
                 this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>(similarDocuments);
 
                 var firstShinglesSet = compareResult.ShinglesResult.First();
+                this.SelectedSimilarDocument = similarDocuments.First();
                 SimilarDocumentsSearchNotification message = new SimilarDocumentsSearchNotification(firstShinglesSet);
                 Messenger.Default.Send<SimilarDocumentsSearchNotification>(message, "1111");
+
+                // LSA
+                DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
+                List<LsaModel> lsaModels =
+                    compareResult.LsaResult.Select(lsaResultSet => CreateLsaModel(lsaResultSet, documentList)).ToList();
+
+                var lsaSelectedDocument = lsaModels.FirstOrDefault(x => x.DocumentId.HasValue && x.DocumentId.Equals(0));
+                //lsaModels.Remove(lsaSelectedDocument);
+                this.LsaSelectedDocument = new ObservableCollection<LsaModel>(new List<LsaModel> { lsaSelectedDocument });
+                this.LsaMap = new ObservableCollection<LsaModel>(lsaModels);
             }
             else
             {
                 this.SimilarDocuments = new ObservableCollection<SimilarDocumentModel>();
                 this.LsaMap = new ObservableCollection<LsaModel>();
             }
+        }
 
-            DocumentList documentList = await DocumentList.GetAllDocumentsAsync();
-            List<LsaModel> lsaModels =
-                compareResult.LsaResult.Select(lsaResultSet => CreateLsaModel(lsaResultSet, documentList)).ToList();
+        public ICommand SelectSimilarDocumentCommand
+        {
+            get
+            {
+                return new RelayCommand<SimilarDocumentModel>(SelectSimilarDocument);
+            }
+        }
 
-            var lsaSelectedDocument = lsaModels.FirstOrDefault(x => x.DocumentId.HasValue && x.DocumentId.Equals(0));
-            lsaModels.Remove(lsaSelectedDocument);
-            this.LsaSelectedDocument = new ObservableCollection<LsaModel>(new List<LsaModel> { lsaSelectedDocument });
-            this.LsaMap = new ObservableCollection<LsaModel>(lsaModels);
+        private void SelectSimilarDocument(SimilarDocumentModel similarDocument)
+        {
+            if (similarDocument != null && this.CompareResltShingles.Any())
+            {
+                ShinglesResultSet selectedSimilarDocument =
+                    this.CompareResltShingles.FirstOrDefault(x => x.DocumentId.Equals(similarDocument.DocumentId));
+                if (selectedSimilarDocument != null)
+                {
+                    //using (var documentModel = new DevExpress.XtraRichEdit.Model.DocumentModel())
+                    //{
+                    //    var rtfConverter = new StringEditValueToDocumentModelConverter(DocumentFormat.PlainText, Encoding.Default);
+                    //    var stringConverter = new DocumentModelToStringConverter(DocumentFormat.Rtf, Encoding.Default);
+
+                    //    rtfConverter.ConvertToDocumentModel(documentModel, this.SelectedDocumentPlainText);
+                    //    documentModel.DefaultCharacterProperties.FontName = "Tahoma";
+                    //    documentModel.DefaultCharacterProperties.DoubleFontSize = 16;
+
+                    //    String rtfString = stringConverter.ConvertToEditValue(documentModel) as String;
+                    //    this.SelectedDocumentContent = new RichEditDocumentContent(DocumentFormat.Rtf, rtfString);
+                    //}
+
+                    SimilarDocumentsSearchNotification message = new SimilarDocumentsSearchNotification(selectedSimilarDocument);
+                    Messenger.Default.Send<SimilarDocumentsSearchNotification>(message, "1111");
+                }
+            }
         }
 
         #endregion

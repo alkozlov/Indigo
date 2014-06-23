@@ -30,7 +30,7 @@
 
         #endregion
 
-        public static async Task<IndigoUserPrincipal> SigninAsync(String emailOrLogin, String passeord)
+        public static async Task<IndigoUserPrincipal> SigninAsync(String emailOrLogin, String password)
         {
             UserAccount userAccount = await UserAccount.GetUserAsync(emailOrLogin);
 
@@ -46,7 +46,7 @@
                     String.Format("Пользователь {0} заблокирован", emailOrLogin));
             }
 
-            if (!userAccount.ValidatePassword(passeord))
+            if (!userAccount.ValidatePassword(password))
             {
                 throw new LoginException(LoginExceptionReason.EmailOrPasswordInvalid,
                     String.Format("Неверные логин или пароль для пользователя {0}", emailOrLogin));

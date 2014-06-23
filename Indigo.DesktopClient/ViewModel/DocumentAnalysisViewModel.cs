@@ -473,19 +473,6 @@ namespace Indigo.DesktopClient.ViewModel
                     this.CompareResltShingles.FirstOrDefault(x => x.DocumentId.Equals(similarDocument.DocumentId));
                 if (selectedSimilarDocument != null)
                 {
-                    //using (var documentModel = new DevExpress.XtraRichEdit.Model.DocumentModel())
-                    //{
-                    //    var rtfConverter = new StringEditValueToDocumentModelConverter(DocumentFormat.PlainText, Encoding.Default);
-                    //    var stringConverter = new DocumentModelToStringConverter(DocumentFormat.Rtf, Encoding.Default);
-
-                    //    rtfConverter.ConvertToDocumentModel(documentModel, this.SelectedDocumentPlainText);
-                    //    documentModel.DefaultCharacterProperties.FontName = "Tahoma";
-                    //    documentModel.DefaultCharacterProperties.DoubleFontSize = 16;
-
-                    //    String rtfString = stringConverter.ConvertToEditValue(documentModel) as String;
-                    //    this.SelectedDocumentContent = new RichEditDocumentContent(DocumentFormat.Rtf, rtfString);
-                    //}
-
                     SimilarDocumentsSearchNotification message = new SimilarDocumentsSearchNotification(selectedSimilarDocument);
                     Messenger.Default.Send<SimilarDocumentsSearchNotification>(message, "1111");
                 }

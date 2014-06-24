@@ -429,63 +429,177 @@
     <Resource Include="Thumbnails\Doc_Format.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\AppIcon.ico" />
-    <Resource Include="Images\Customers - Gray - 36x36.png" />
-    <Resource Include="Images\Customers - White - 36x36.png" />
-    <Resource Include="Images\Customers 116x116.png" />
-    <Resource Include="Images\Customers Export - Color - 16x16.png" />
-    <Resource Include="Images\Customers Export - White - 16x16.png" />
-    <Resource Include="Images\Customers FullList - Color - 16x16.png" />
-    <Resource Include="Images\Customers FullList - White - 16x16.png" />
-    <Resource Include="Images\Customers NewCustomer - Color - 16x16.png" />
-    <Resource Include="Images\Customers NewCustomer - White - 16x16.png" />
-    <Resource Include="Images\Customers NewSupplier - Color - 16x16.png" />
-    <Resource Include="Images\Customers NewSupplier - White - 16x16.png" />
-    <Resource Include="Images\Home - Gray - 36x36.png" />
-    <Resource Include="Images\Home - White - 36x36.png" />
-    <Resource Include="Images\Home NewProduct.png" />
-    <Resource Include="Images\Inventory - Gray - 36x36.png" />
-    <Resource Include="Images\Inventory - White - 36x36.png" />
-    <Resource Include="Images\Inventory 116x116.png" />
-    <Resource Include="Images\Inventory AddNewProduct - Color - 16x16.png" />
-    <Resource Include="Images\Inventory AddNewProduct - White - 16x16.png" />
-    <Resource Include="Images\Inventory ExportProduct - Color - 16x16.png" />
-    <Resource Include="Images\Inventory ExportProduct - White - 16x16.png" />
-    <Resource Include="Images\Inventory ImportProduct - Color - 16x16.png" />
-    <Resource Include="Images\Inventory ImportProduct - White - 16x16.png" />
-    <Resource Include="Images\Inventory Product - Color - 16x16.png" />
-    <Resource Include="Images\Inventory Product - White - 16x16.png" />
-    <Resource Include="Images\MoreActivityIndicator_Down.png" />
-    <Resource Include="Images\MoreActivityIndicator_Up.png" />
-    <Resource Include="Images\NavigationArrow - Next - 16x16.png" />
-    <Resource Include="Images\NavigationArrow - Previous - 16x16.png" />
-    <Resource Include="Images\Orders - Gray - 36x36.png" />
-    <Resource Include="Images\Orders - White - 36x36.png" />
-    <Resource Include="Images\Orders 116x116.png" />
-    <Resource Include="Images\Orders Daily - Color - 16x16.png" />
-    <Resource Include="Images\Orders Daily - White - 16x16.png" />
-    <Resource Include="Images\Orders Monthly - Color - 16x16.png" />
-    <Resource Include="Images\Orders Monthly - White - 16x16.png" />
-    <Resource Include="Images\Orders Weekly - Color - 16x16.png" />
-    <Resource Include="Images\Orders Weekly - White - 16x16.png" />
-    <Resource Include="Images\Reports - Gray - 36x36.png" />
-    <Resource Include="Images\Reports - White - 36x36.png" />
-    <Resource Include="Images\Reports 116x116.png" />
-    <Resource Include="Images\Error-status.png" />
-    <Resource Include="Images\Success-status.png" />
-    <Resource Include="Images\Warning-status.png" />
-    <Resource Include="Images\Docx_Format - 600x600.png" />
-    <Resource Include="Images\Doc_Format - 600x600.png" />
-    <Resource Include="Images\Odt_Format - 600x600.png" />
-    <Resource Include="Images\Rtf_Format - 600x600.png" />
-    <Resource Include="Images\Info-status.png" />
-    <Resource Include="Images\Documents_Gray.png" />
-    <Resource Include="Images\Documents_White.png" />
-    <Resource Include="Images\NavigationArrow - Next - White - 16x16.png" />
-    <Resource Include="Images\NavigationArrow - Previous - White - 16x16.png" />
-    <Resource Include="Images\file-add-icon-128x128.png" />
-    <Resource Include="Images\play-icon---64x64.png" />
-    <Resource Include="Images\file-icon-28x32.png" />
+    <Resource Include="Images\AppIcon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers - Gray - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers - White - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers 116x116.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers Export - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers Export - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers FullList - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers FullList - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers NewCustomer - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers NewCustomer - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers NewSupplier - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Customers NewSupplier - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Home - Gray - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Home - White - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Home NewProduct.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory - Gray - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory - White - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory 116x116.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory AddNewProduct - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory AddNewProduct - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory ExportProduct - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory ExportProduct - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory ImportProduct - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory ImportProduct - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory Product - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Inventory Product - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\MoreActivityIndicator_Down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\MoreActivityIndicator_Up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\NavigationArrow - Next - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\NavigationArrow - Previous - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders - Gray - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders - White - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders 116x116.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Daily - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Daily - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Monthly - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Monthly - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Weekly - Color - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Orders Weekly - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Reports - Gray - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Reports - White - 36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Reports 116x116.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Error-status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Success-status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Warning-status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Docx_Format - 600x600.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Doc_Format - 600x600.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Odt_Format - 600x600.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Rtf_Format - 600x600.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Info-status.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Documents_Gray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Documents_White.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\NavigationArrow - Next - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\NavigationArrow - Previous - White - 16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\file-add-icon-128x128.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\play-icon---64x64.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\file-icon-28x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="tools\mystem.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

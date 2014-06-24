@@ -1,8 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Double.Factorization;
-using MathNet.Numerics.LinearAlgebra.Generic;
-
-namespace Indigo.BusinessLogicLayer.Analysis
+﻿namespace Indigo.BusinessLogicLayer.Analysis
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +6,9 @@ namespace Indigo.BusinessLogicLayer.Analysis
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using MathNet.Numerics.LinearAlgebra.Double;
+    using MathNet.Numerics.LinearAlgebra.Double.Factorization;
 
     using Indigo.BusinessLogicLayer.Document;
     using Indigo.BusinessLogicLayer.Shingles;
@@ -143,7 +142,6 @@ namespace Indigo.BusinessLogicLayer.Analysis
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Error{0}: {1}", e.HResult, e.Message);
                     throw;
                 }
                 finally
@@ -216,6 +214,99 @@ namespace Indigo.BusinessLogicLayer.Analysis
             }
 
             return analysisResult;
+        }
+
+        public async Task<CompareResult> CompareDocumentsAsync(AnalysisTargetDocument targetDocument1, AnalysisTargetDocument targetDocument2)
+        {
+            DocumentAnalysisSettings settings = new DocumentAnalysisSettings(ShingleSize.Size3, 0.01f);
+
+            String tempFile1OnlyName = Guid.NewGuid().ToString("N");
+            String tempTextFile1Name = String.Format("{0}.txt", tempFile1OnlyName);
+            String tempTextFile1FullName = String.Concat(this.TempDirectory, "\\", tempTextFile1Name);
+            String tempLematizationFile1Name = String.Format("{0}{1}.txt", tempFile1OnlyName, DefaultTempLematizationFilePostfix);
+            String tempLematizationFile1FullName = String.Concat(this.TempDirectory, "\\", tempLematizationFile1Name);
+
+            String tempFile2OnlyName = Guid.NewGuid().ToString("N");
+            String tempTextFile2Name = String.Format("{0}.txt", tempFile2OnlyName);
+            String tempTextFile2FullName = String.Concat(this.TempDirectory, "\\", tempTextFile2Name);
+            String tempLematizationFile2Name = String.Format("{0}{1}.txt", tempFile2OnlyName, DefaultTempLematizationFilePostfix);
+            String tempLematizationFile2FullName = String.Concat(this.TempDirectory, "\\", tempLematizationFile2Name);
+
+            ShinglesResult shinglesResult = null;
+            LsaResult lsaResult = null;
+
+            try
+            {
+                // 1. Convert original document to txt format and create copy in temp folder
+                using (IDocumentConverter converter = new MsWordDocumentConverter())
+                {
+                    await converter.ConvertDocumentToTextFileAsync(targetDocument1.FilePath, tempTextFile1FullName);
+                    await converter.ConvertDocumentToTextFileAsync(targetDocument2.FilePath, tempTextFile2FullName);
+                }
+
+                // 2. Lematization
+                await LematizationTool.Current.ProcessDocumntAsync(tempTextFile1FullName, tempLematizationFile1FullName);
+                await LematizationTool.Current.ProcessDocumntAsync(tempTextFile2FullName, tempLematizationFile2FullName);
+
+                try
+                {
+                    // Parse temp documents to words
+                    var parserWords1 = (await Tools.ParserTool.Current.ParseDocumentAsync(tempLematizationFile1FullName)).ToList();
+                    List<DocumentWord> document1Words = ConvertToBusinessDocumentWords(parserWords1);
+                    var parserWords2 = (await Tools.ParserTool.Current.ParseDocumentAsync(tempLematizationFile2FullName)).ToList();
+                    List<DocumentWord> document2Words = ConvertToBusinessDocumentWords(parserWords2);
+
+                    // Parse origignal document to words
+                    var parserOriginalWords1 = (await Tools.ParserTool.Current.ParseDocumentAsync(tempTextFile1FullName)).ToList();
+                    List<DocumentWord> originalDocument1Words = ConvertToBusinessDocumentWords(parserOriginalWords1);
+                    document1Words = MergeDocumentWordsPositions(originalDocument1Words, document1Words);
+                    var parserOriginalWords2 = (await Tools.ParserTool.Current.ParseDocumentAsync(tempTextFile2FullName)).ToList();
+                    List<DocumentWord> originalDocument2Words = ConvertToBusinessDocumentWords(parserOriginalWords2);
+                    document2Words = MergeDocumentWordsPositions(originalDocument2Words, document2Words);
+
+                    // Remove stop-words from origin text
+                    List<DocumentWord> modifiedWords1 = await StopWordFilter.FilterAsync(document1Words);
+                    List<DocumentWord> modifiedWords2 = await StopWordFilter.FilterAsync(document2Words);
+
+                    ShingleList shingleList1 = await ShingleList.CreateAsync(modifiedWords1, settings.ShingleSize);
+                    CheckSumCollection checkSumCollection1 = await CheckSumCollection.CreateAsync(shingleList1, HashAlgorithmType.SHA256);
+                    ShingleList shingleList2 = await ShingleList.CreateAsync(modifiedWords2, settings.ShingleSize);
+                    CheckSumCollection checkSumCollection2 = await CheckSumCollection.CreateAsync(shingleList2, HashAlgorithmType.SHA256);
+
+                    List<Shingle> similarShingles1 = CheckSumComparer.GetSimilarShingles(checkSumCollection1, checkSumCollection2);
+                    float matchingCoefficient1 = CheckSumComparer.CalculateMatchingPercentage(checkSumCollection1, checkSumCollection2);
+                    List<Shingle> similarShingles2 = CheckSumComparer.GetSimilarShingles(checkSumCollection2, checkSumCollection1);
+                    float matchingCoefficient2 = CheckSumComparer.CalculateMatchingPercentage(checkSumCollection2, checkSumCollection1);
+
+                    ShinglesResultSet shinglesResultSet1 = new ShinglesResultSet(-1, matchingCoefficient1, similarShingles1);
+                    ShinglesResultSet shinglesResultSet2 = new ShinglesResultSet(-1, matchingCoefficient2, similarShingles2);
+                    shinglesResult = new ShinglesResult(settings.ShingleSize, new List<ShinglesResultSet>
+                    {
+                        shinglesResultSet1, shinglesResultSet2
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error{0}: {1}", e.HResult, e.Message);
+                    throw;
+                }
+                finally
+                {
+                    // Remove temp files
+                    File.Delete(tempTextFile1FullName);
+                    File.Delete(tempLematizationFile1FullName);
+                    File.Delete(tempTextFile2FullName);
+                    File.Delete(tempLematizationFile2FullName);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            // Filtration
+            CompareResult compareResult = new CompareResult(shinglesResult, lsaResult);
+            return compareResult;
         }
 
         #endregion

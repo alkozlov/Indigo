@@ -1,36 +1,31 @@
-﻿using System.Text;
-using DevExpress.Xpf.RichEdit;
-using DevExpress.XtraEditors.Controls.Rtf;
-using DevExpress.XtraRichEdit;
-using DevExpress.XtraRichEdit.Internal;
-using DevExpress.XtraRichEdit.Model;
-using GalaSoft.MvvmLight.Messaging;
-using Indigo.DesktopClient.Helpers;
-using Indigo.DesktopClient.Model.Notifications;
-using CharacterStyleCollection = DevExpress.XtraRichEdit.API.Native.CharacterStyleCollection;
-using RichEditControl = DevExpress.XtraRichEdit.RichEditControl;
-
-namespace Indigo.DesktopClient.ViewModel
+﻿namespace Indigo.DesktopClient.ViewModel
 {
-    using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Drawing;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Microsoft.Win32;
 
+    using DevExpress.Xpf.RichEdit;
+    using DevExpress.XtraEditors.Controls.Rtf;
+    using DevExpress.XtraRichEdit;
     using GalaSoft.MvvmLight.Command;
-
+    using GalaSoft.MvvmLight.Messaging;
+    
     using Indigo.BusinessLogicLayer.Analysis;
     using Indigo.BusinessLogicLayer.Document;
     using Indigo.BusinessLogicLayer.Shingles;
     using Indigo.DesktopClient.CommandDelegates;
+    using Indigo.DesktopClient.Helpers;
     using Indigo.DesktopClient.Model;
     using Indigo.DesktopClient.Model.DocumentAnalysis;
+    using Indigo.DesktopClient.Model.Notifications;
     using Indigo.DesktopClient.Model.PenthouseModels;
 
     /// <summary>
